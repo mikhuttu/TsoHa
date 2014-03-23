@@ -1,5 +1,5 @@
 build/
 dist/
 nbproject/private
-web/META_INF/context.xml
+web/META_INF/
 *~
