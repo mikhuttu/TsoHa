@@ -1,46 +1,39 @@
+package Servletit;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class TestServlet extends HttpServlet {
+
+public class Kirjautuminen extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter(); 
-        
-        List<String> asiat = new ArrayList<String>();
-        asiat.add("Kirahvi");
-        asiat.add("Trumpetti");
-        asiat.add("Jeesus");
-        asiat.add("Parta");
+        PrintWriter out = response.getWriter();
         
         try {
-            out.println("<html>"); 
-            out.println("<head><title>Servlet TestiServlet</title></head>");
-            out.println("<body>");
+            String tunnus = request.getParameter("tunnus");
+            String salasana = request.getParameter("salasana");
             
-            out.println("<ul>");
-            
-            for (String asia: asiat) {
-                out.println("<li>" + asia + "</li>");
+            if ("yllapitaja".equals(tunnus) && "qwerty123".equals(salasana)) {
+                response.sendRedirect("esittelysivu");
             }
             
-            out.println("</ul>");
-            out.println("</body>");
-            out.println("</html>");
-        } 
-    
-        finally {            
+            else {
+                request.setAttribute("kayttaja", tunnus);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("kirjautuminen.jsp");
+                dispatcher.forward(request, response);
+            }
+            
+        } finally {
             out.close();
-        }   
+        }
     }
 
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
@@ -55,5 +48,4 @@ public class TestServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }
-
 }
