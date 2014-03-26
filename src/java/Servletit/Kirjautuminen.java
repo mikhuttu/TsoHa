@@ -19,21 +19,46 @@ public class Kirjautuminen extends HttpServlet {
             String tunnus = request.getParameter("tunnus");
             String salasana = request.getParameter("salasana");
             
+            if (tunnus == null || tunnus.length() == 0) {
+                asetaVirhe("Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.", request);
+                naytaJSP("kirjautuminen", request, response);
+                return;
+            }
+            
+            request.setAttribute("kayttaja", tunnus);
+            
+            if (salasana == null || salasana.length() == 0) {
+                asetaVirhe("Kirjautuminen epäonnistui! Et antanut salasanaa.", request);
+                naytaJSP("kirjautuminen", request, response);
+                return;
+            }
+            
+            
             if ("yllapitaja".equals(tunnus) && "qwerty123".equals(salasana)) {
-                response.sendRedirect("esittelysivu");
+                response.sendRedirect("esittelysivu.jsp");
             }
             
             else {
-                request.setAttribute("kayttaja", tunnus);
-                RequestDispatcher dispatcher = request.getRequestDispatcher("kirjautuminen.jsp");
-                dispatcher.forward(request, response);
+                asetaVirhe("Kirjautuminen epäonnistui! Antamasi tunnus tai salasana on väärä.", request);
+                naytaJSP("kirjautuminen", request, response);
             }
             
         } finally {
             out.close();
         }
     }
+    
+    
+    private void asetaVirhe(String ilmoitus, HttpServletRequest request) {
+        request.setAttribute("virheIlmoitus", ilmoitus);
+    }
+    
+    private void naytaJSP(String sivu, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher(sivu + ".jsp");
+        dispatcher.forward(request, response);
+    }
 
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);

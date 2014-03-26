@@ -1,9 +1,12 @@
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<t:pohja pageTitle="Kirjautuminen">
+</t:pohja>
+
 <div class="container">
-    
     
     <h1>Kirjautumissivu</h1>
     
-    <form class="form-horizontal" role="form" action="/kirjautuminen" method="POST">
+    <form class="form-horizontal" role="form" action="kirjautuminen" method="POST">
      
         <div class="form-group">
             <label for="tunnus" class="col-md-2 control-label">Käyttäjänimi: </label>

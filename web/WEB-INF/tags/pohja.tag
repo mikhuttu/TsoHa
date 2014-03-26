@@ -5,14 +5,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title${pageTitle}</title>
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/bootstrap-theme.css" rel="stylesheet">
-        <link href="css/main.css" rel="stylesheet">  
+        <link href="../../css/bootstrap.css" rel="stylesheet">
+        <link href="../../css/bootstrap-theme.css" rel="stylesheet">
+        <link href="../../css/main.css" rel="stylesheet">
+        
+        <title>${pageTitle}</title>
+        
+        <style>
+            h1 { font-size: 1.4em; }
+        </style>
+        
+        <c:if test="${virheViesti != null}">
+            <div class="alert alert-danger">${virheIlmoitus}</div>
+        </c:if>
+ 
     </head>
     
     <body>
         <jsp:doBody/>
     </body>
-</html>    
-    
+</html>
