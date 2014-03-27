@@ -5,9 +5,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="../../css/bootstrap.css" rel="stylesheet">
-        <link href="../../css/bootstrap-theme.css" rel="stylesheet">
-        <link href="../../css/main.css" rel="stylesheet">
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/bootstrap-theme.css" rel="stylesheet">
+        <link href="css/main.css" rel="stylesheet">
         
         <title>${pageTitle}</title>
         

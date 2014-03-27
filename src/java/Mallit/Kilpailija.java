@@ -26,10 +26,9 @@ public class Kilpailija {
     }
     
     public static List<Kilpailija> getKilpailijat() throws Exception {
-        Tietokanta tietokanta = new Tietokanta();
         
         String sql = "SELECT ID, Nimi from kilpailija";
-        Connection yhteys = tietokanta.getYhteys();
+        Connection yhteys = Tietokanta.getYhteys();
         PreparedStatement kysely = yhteys.prepareStatement(sql);
         ResultSet tulokset = kysely.executeQuery();
 

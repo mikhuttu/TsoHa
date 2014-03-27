@@ -1,6 +1,5 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:pohja pageTitle="Kirjautuminen">
-</t:pohja>
 
 <div class="container">
     
@@ -40,3 +39,5 @@
                 
    </form>
 </div>
+
+</t:pohja>

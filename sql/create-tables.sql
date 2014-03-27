@@ -1,26 +1,31 @@
 create table kilpailu (
-	ID 		SERIAL 		PRIMARY KEY,
-	Nimi		varchar(30)					NOT NULL
+	id 		SERIAL 		PRIMARY KEY,
+	nimi		varchar(30)					NOT NULL
 );
 
 create table kilpailija (
-	ID 		SERIAL		PRIMARY KEY,
-	Nimi		varchar(50)					NOT NULL
+	id 		SERIAL		PRIMARY KEY,
+	nimi		varchar(50)					NOT NULL
 );
 
 create table valiaikapiste (
-	ID		SERIAL		PRIMARY KEY,
-	Kilpailu	int references kilpailu(ID)			NOT NULL
+	id		SERIAL		PRIMARY KEY,
+	kilpailu	int references kilpailu(ID)			NOT NULL
 );
 
 create table tulos (
-	ID		SERIAL		PRIMARY KEY,
-	Aika		time						NOT NULL,
-	Kilpailija	int references kilpailija(ID)			NOT NULL,
-	Valiaikapiste	int references valiaikapiste(ID)		NOT NULL
+	id		SERIAL		PRIMARY KEY,
+	aika		time						NOT NULL,
+	kilpailija	int references kilpailija(ID)			NOT NULL,
+	valiaikapiste	int references valiaikapiste(ID)		NOT NULL
 );
 
 create table osallistuja (
-	Kilpailu	int references kilpailu(ID)			NOT NULL,
-	Kilpailija	int references kilpailija(ID)			NOT NULL
+	kilpailu	int references kilpailu(ID)			NOT NULL,
+	kilpailija	int references kilpailija(ID)			NOT NULL
+);
+
+create table kayttaja (
+	tunnus		varchar(20)	PRIMARY KEY,
+	salasana	varchar(20)					NOT NULL
 );

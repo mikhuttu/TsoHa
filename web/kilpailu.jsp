@@ -1,6 +1,6 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:pohja pageTitle="Kilpailu">
-</t:pohja>
+
 
 <div class="container">
     <h1>Valittu kilpailu: ${kilpailu}</h1>
@@ -49,3 +49,5 @@
         </p>
     </ul>
 </div>
+    
+</t:pohja>

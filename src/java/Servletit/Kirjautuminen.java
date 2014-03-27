@@ -1,27 +1,37 @@
 package Servletit;
 
+import Mallit.Kayttaja;
+import Mallit.KirjautuminenMalli;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class Kirjautuminen extends HttpServlet {
+public class Kirjautuminen extends YleisServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        if (onkoKirjautunut(request)) {
+            ohjaaSivulle(response, "etusivu");
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+        PrintWriter out = null;
+        
+        try {
+            out = response.getWriter();
+        }
+        catch (IOException e) {}
         
         try {
             String tunnus = request.getParameter("tunnus");
             String salasana = request.getParameter("salasana");
             
+            
             if (tunnus == null || tunnus.length() == 0) {
                 asetaVirhe("Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.", request);
-                naytaJSP("kirjautuminen", request, response);
+                naytaSivu("kirjautuminen", request, response);
                 return;
             }
             
@@ -29,43 +39,39 @@ public class Kirjautuminen extends HttpServlet {
             
             if (salasana == null || salasana.length() == 0) {
                 asetaVirhe("Kirjautuminen epäonnistui! Et antanut salasanaa.", request);
-                naytaJSP("kirjautuminen", request, response);
+                naytaSivu("kirjautuminen", request, response);
                 return;
             }
             
+            Kayttaja kayttaja = KirjautuminenMalli.etsiKayttajaTunnuksilla(tunnus, salasana);
             
-            if ("yllapitaja".equals(tunnus) && "qwerty123".equals(salasana)) {
-                response.sendRedirect("esittelysivu.jsp");
+            if (kayttaja != null) {
+                talletaKirjautunut(request, kayttaja);
+                ohjaaSivulle(response, "etusivu");
             }
             
             else {
                 asetaVirhe("Kirjautuminen epäonnistui! Antamasi tunnus tai salasana on väärä.", request);
-                naytaJSP("kirjautuminen", request, response);
+                naytaSivu("kirjautuminen", request, response);
             }
             
-        } finally {
-            out.close();
+        } 
+        
+        finally {
+            if (out != null) {
+                out.close();
+            }
         }
-    }
-    
-    
-    private void asetaVirhe(String ilmoitus, HttpServletRequest request) {
-        request.setAttribute("virheIlmoitus", ilmoitus);
-    }
-    
-    private void naytaJSP(String sivu, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher(sivu + ".jsp");
-        dispatcher.forward(request, response);
     }
 
     
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
     }
 
