@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 public class Kirjautuminen extends YleisServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        if (onkoKirjautunut(request)) {
-            ohjaaSivulle(response, "etusivu");
+        if (onkoKirjautunut(request) != null) {
+            ohjaaSivulle("etusivu", response);
             return;
         }
         
@@ -31,15 +31,16 @@ public class Kirjautuminen extends YleisServlet {
             
             if (tunnus == null || tunnus.length() == 0) {
                 asetaVirhe("Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.", request);
-                naytaSivu("kirjautuminen", request, response);
+                naytaJSP("kirjautuminen", request, response);
                 return;
             }
             
             request.setAttribute("kayttaja", tunnus);
+//            request.getSession(true);
             
             if (salasana == null || salasana.length() == 0) {
                 asetaVirhe("Kirjautuminen epäonnistui! Et antanut salasanaa.", request);
-                naytaSivu("kirjautuminen", request, response);
+                naytaJSP("kirjautuminen", request, response);
                 return;
             }
             
@@ -47,12 +48,12 @@ public class Kirjautuminen extends YleisServlet {
             
             if (kayttaja != null) {
                 talletaKirjautunut(request, kayttaja);
-                ohjaaSivulle(response, "etusivu");
+                ohjaaSivulle("etusivu", response);
             }
             
             else {
                 asetaVirhe("Kirjautuminen epäonnistui! Antamasi tunnus tai salasana on väärä.", request);
-                naytaSivu("kirjautuminen", request, response);
+                naytaJSP("kirjautuminen", request, response);
             }
             
         } 

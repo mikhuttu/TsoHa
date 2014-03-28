@@ -10,6 +10,17 @@
         <servlet-name>Etusivu</servlet-name>
         <servlet-class>Servletit.Etusivu</servlet-class>
     </servlet>
+    
+    <servlet>
+        <servlet-name>KilpailuMuokkaus</servlet-name>
+        <servlet-class>Servletit.KilpailuMuokkaus</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>KirjauduUlos</servlet-name>
+        <servlet-class>Servletit.KirjauduUlos</servlet-class>
+    </servlet>    
+
 
     <servlet-mapping>
         <servlet-name>Kirjautuminen</servlet-name>
@@ -19,6 +30,16 @@
     <servlet-mapping>
         <servlet-name>Etusivu</servlet-name>
         <url-pattern>/etusivu</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>KilpailuMuokkaus</servlet-name>
+        <url-pattern>/kilpailumuokkaus</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>KirjauduUlos</servlet-name>
+        <url-pattern>/kirjauduulos</url-pattern>
     </servlet-mapping>
     
     <session-config>

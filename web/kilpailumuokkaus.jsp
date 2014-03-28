@@ -1,6 +1,6 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:pohja pageTitle="Kilpailun muokkaussivu">
-
+    
 <h1>Muokkaa kilpailua: ${kilpailu}</h1>
         
 <ul>

@@ -17,7 +17,7 @@ public class YleisServlet extends HttpServlet {
         request.setAttribute("virheIlmoitus", ilmoitus);
     }
     
-    protected void ohjaaSivulle(HttpServletResponse response, String sivu) {
+    protected void ohjaaSivulle(String sivu, HttpServletResponse response) {
         try {
             response.sendRedirect(sivu);
         } 
@@ -27,8 +27,9 @@ public class YleisServlet extends HttpServlet {
         }
     }
     
-    protected void naytaSivu(String sivu, HttpServletRequest request, HttpServletResponse response) {
-        RequestDispatcher dispatcher = request.getRequestDispatcher(sivu);
+    protected void naytaJSP(String sivu, HttpServletRequest request, HttpServletResponse response) {
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher(sivu + ".jsp");
         
         try {
             dispatcher.forward(request, response);
@@ -43,15 +44,17 @@ public class YleisServlet extends HttpServlet {
         }
     }
     
+    
+    
     protected void talletaKirjautunut(HttpServletRequest request, Kayttaja kayttaja) {
         request.getSession().setAttribute("kirjautunut", kayttaja);
     }
     
-    protected boolean onkoKirjautunut(HttpServletRequest request) {
+    protected Kayttaja onkoKirjautunut(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
         
-        return kayttaja != null;
+        return kayttaja;
     }
     
     protected void kirjauduUlos(HttpServletRequest request) {

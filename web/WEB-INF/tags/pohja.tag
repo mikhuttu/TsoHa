@@ -9,6 +9,8 @@
         <link href="css/bootstrap-theme.css" rel="stylesheet">
         <link href="css/main.css" rel="stylesheet">
         
+        <meta charset="utf-8" />
+        
         <title>${pageTitle}</title>
         
         <style>

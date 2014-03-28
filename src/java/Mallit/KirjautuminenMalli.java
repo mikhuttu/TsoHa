@@ -31,7 +31,7 @@ public class KirjautuminenMalli {
             try { yhteys.close(); } catch (SQLException e) {}
             
             return kirjautunut;
-        } 
+        }
         
         catch (SQLException ex) {
             Logger.getLogger(KirjautuminenMalli.class.getName()).log(Level.SEVERE, null, ex);
