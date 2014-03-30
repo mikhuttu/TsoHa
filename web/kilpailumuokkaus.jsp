@@ -1,9 +1,12 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <t:pohja pageTitle="Kilpailun muokkaussivu">
-    
-<h1>Muokkaa kilpailua: ${kilpailu}</h1>
-        
-<ul>
+
+<c:if test= "${kirjautunut!= null}">
+
+    <h1>Muokkaa kilpailua: ${kilpailu}</h1>
+
+    <ul>
     <p>
         <button type="button" class="btn-default">Laadi lähtölista</button>
     </p>
@@ -72,6 +75,8 @@
                 <button type="submit" class="btn btn-default">Lisää</button>
         </form>
     </p>
-</ul>
+    </ul>
+
+</c:if> 
 
 </t:pohja>
