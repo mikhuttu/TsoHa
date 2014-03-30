@@ -4,10 +4,9 @@ TsoHa
 Tietokantasovellus (Hiihtokisojen tulospalvelu)
 
 
-ConnectionTest on lakkasi toimimasta sunnuntaipäivällä yhtäkkiä sen jälkeen kun olin tehnyt tietokantaan muutoksia käyttäen
-"psql < *.sql" lauseita. Ongelmana tulee virheilmoitus: 
+Uloskirjautuminen ei toimi. Yritin toteuttaa sitä omalla koneellani, mutta jostain syystä en pääse sillä käsiksi palvelimelle
+laisinkaan; "FATAL too many connections for role [username]" tyyppisen virheilmoituksen antaa, ja näin en pystynyt mitenkään
+testaamaan että miten saisin kirjautumisen kotikoneella tehtyä.
 
-FATAL: too many connections for too many connections for role "mikhuttu"org.postgresql.util.PSQLException: 
-FATAL: too many connections for role "mikhuttu".
-
-Sain kuitenkin tietokannan tätä ennen toimimaan oikein ja en nyt tiedä yhtään, missä on vika.
+Lisäksi kirjautumissivu ei ohjaa käyttäjää vielä minnekään muualle jos kirjautumista yrittää uudestaan. Tämä olisi tarkoitus
+toteuttaa kun JSP:n koodi tulee pikkasen selvemmäksi.
