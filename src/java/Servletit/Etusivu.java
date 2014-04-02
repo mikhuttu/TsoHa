@@ -1,8 +1,10 @@
 package Servletit;
 
 import Mallit.Kayttaja;
+import Mallit.KilpailuMalli;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
     
@@ -10,8 +12,13 @@ public class Etusivu extends YleisServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
         Kayttaja kirjautunut = onkoKirjautunut(request);
-        request.setAttribute("kirjautunut", kirjautunut.getTunnus());
+        request.setAttribute("kirjautunut", kirjautunut);
         
+        List<KilpailuMalli> kilpailut = KilpailuMalli.getKilpailut();
+
+        request.setAttribute("kilpailut", kilpailut);
+        
+
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = null;
         

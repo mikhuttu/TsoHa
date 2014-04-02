@@ -10,11 +10,11 @@ import java.util.logging.Logger;
 
 public class KirjautuminenMalli {
     public static Kayttaja etsiKayttajaTunnuksilla(String tunnus, String salasana) {
-        
         try {
             String sql = "SELECT tunnus, salasana FROM kayttaja WHERE tunnus = ? AND salasana = ?";
             
             Connection yhteys = Tietokanta.getYhteys();
+            
             PreparedStatement kysely = yhteys.prepareStatement(sql);
             kysely.setString(1, tunnus);
             kysely.setString(2, salasana);
@@ -31,11 +31,12 @@ public class KirjautuminenMalli {
             try { yhteys.close(); } catch (SQLException e) {}
             
             return kirjautunut;
-        }
-        
-        catch (SQLException ex) {
+            
+
+        } catch (SQLException ex) {
             Logger.getLogger(KirjautuminenMalli.class.getName()).log(Level.SEVERE, null, ex);
-            throw new IllegalStateException("Kayttäjää ei määritelty.");
+            //            throw new IllegalStateException("Kayttäjää ei määritelty.");
         }
+        return null;
     }
 }

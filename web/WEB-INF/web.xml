@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-    <servlet>
-        <servlet-name>Kirjautuminen</servlet-name>
-        <servlet-class>Servletit.Kirjautuminen</servlet-class>
-    </servlet>
+
     
     <servlet>
         <servlet-name>Etusivu</servlet-name>
         <servlet-class>Servletit.Etusivu</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>Kilpailu</servlet-name>
+        <servlet-class>Servletit.Kilpailu</servlet-class>
     </servlet>
     
     <servlet>
@@ -21,27 +23,43 @@
         <servlet-class>Servletit.KirjauduUlos</servlet-class>
     </servlet>    
 
-
-    <servlet-mapping>
+    <servlet>
         <servlet-name>Kirjautuminen</servlet-name>
-        <url-pattern>/kirjautuminen</url-pattern>
-    </servlet-mapping>
+        <servlet-class>Servletit.Kirjautuminen</servlet-class>
+    </servlet>
+    
+    
     
     <servlet-mapping>
         <servlet-name>Etusivu</servlet-name>
         <url-pattern>/etusivu</url-pattern>
     </servlet-mapping>
     
+    
+    <servlet-mapping>
+        <servlet-name>Kilpailu</servlet-name>
+        <url-pattern>/kilpailu</url-pattern>
+    </servlet-mapping>
+    
+    
     <servlet-mapping>
         <servlet-name>KilpailuMuokkaus</servlet-name>
         <url-pattern>/kilpailumuokkaus</url-pattern>
     </servlet-mapping>
+    
     
     <servlet-mapping>
         <servlet-name>KirjauduUlos</servlet-name>
         <url-pattern>/kirjauduulos</url-pattern>
     </servlet-mapping>
     
+    
+    <servlet-mapping>
+        <servlet-name>Kirjautuminen</servlet-name>
+        <url-pattern>/kirjautuminen</url-pattern>
+    </servlet-mapping>
+
+
     <session-config>
         <session-timeout>
             30

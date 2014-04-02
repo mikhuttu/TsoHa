@@ -1,4 +1,5 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <t:pohja pageTitle="Kilpailu">
 
 
@@ -10,10 +11,15 @@
             <button type='button' class='btn-link expandable collapsed' data-toggle='collapse' data-target='#expandable_1'>Tarkastele lähtölistaa</button>
          
             <div id='expandable_1' class='collapse'>
-        
+                
                 <section>
                     <figure
-                        <p>Täällä ei ole vielä mitään.</p>
+                        <ul>
+                            <c:forEach var="kilpailija" items="${kilpailut}">
+                                <a href="Kilpailu?id=${kilpailu.id}">${kilpailu.nimi}</a>
+                            </c:forEach>
+                            
+                        </ul>
                     </figure>
                 </section>
     

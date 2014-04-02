@@ -1,20 +1,25 @@
 package Servletit;
 
-import Mallit.Kayttaja;
+import Mallit.KilpailuMalli;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-public class KilpailuMuokkaus extends YleisServlet {
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        Kayttaja kirjautunut = onkoKirjautunut(request);
-        if (kirjautunut == null) {
-            asetaVirhe("Sinun pitää ensin kirjautua sisään.", request);
-            ohjaaSivulle("kirjautuminen", response);
-            return;
+public class Kilpailu extends YleisServlet {
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
+        String idParam = request.getParameter("id");
+        int id;
+        try {
+            id = Integer.parseInt(idParam);
         }
+        catch(NumberFormatException e) {
+            id = 0;
+        }
+        
+        KilpailuMalli kilpailu = KilpailuMalli.etsi(id);
+        request.setAttribute("kilpailu", kilpailu);
         
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = null;
@@ -25,7 +30,7 @@ public class KilpailuMuokkaus extends YleisServlet {
         catch (IOException e) {}
         
         try {
-            naytaJSP("kilpailumuokkaus", request, response);
+            naytaJSP("kilpailu", request, response);
         }
         
         finally {
@@ -36,6 +41,7 @@ public class KilpailuMuokkaus extends YleisServlet {
         
     }
     
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
@@ -49,5 +55,6 @@ public class KilpailuMuokkaus extends YleisServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }  
+    }
+    
 }

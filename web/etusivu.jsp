@@ -18,18 +18,17 @@
             <li class="active">Kilpailut</li>
               
         </ul>
-                    <?php foreach(kilpailut as kilpailu): ?>
-                        <a href="#"><? php echo kilpailu.nimi; ?></a>
-                    <?php endforeach; ?>
+        
         <br>
     
         <ul>
-            <li><a href="#">Kilpailu 1</a></li>
-            <li><a href="#">Kilpailu 2</a></li>
-            <li><a href="#">Kilpailu 3</a></li>
-            <li><a href="#">Kilpailu 4</a></li>
-            <li><a href="#">Kilpailu 5</a></li>
-        </ul>     
+            
+            <c:forEach var="kilpailu" items="${kilpailut}">
+
+                <a href="/HiihtoTulosPalvelu/kilpailu?id=${kilpailu.id}"> ${kilpailu.nimi}</a>
+
+            </c:forEach>
+        </ul>
             
     </div>
     
