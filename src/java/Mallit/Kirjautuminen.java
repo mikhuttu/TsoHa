@@ -8,8 +8,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class KirjautuminenMalli {
-    public static Kayttaja etsiKayttajaTunnuksilla(String tunnus, String salasana) {
+public class Kirjautuminen {
+    public Kayttaja etsiKayttajaTunnuksilla(String tunnus, String salasana) {
+        
         try {
             String sql = "SELECT tunnus, salasana FROM kayttaja WHERE tunnus = ? AND salasana = ?";
             
@@ -34,7 +35,7 @@ public class KirjautuminenMalli {
             
 
         } catch (SQLException ex) {
-            Logger.getLogger(KirjautuminenMalli.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Kirjautuminen.class.getName()).log(Level.SEVERE, null, ex);
             //            throw new IllegalStateException("Kayttäjää ei määritelty.");
         }
         return null;

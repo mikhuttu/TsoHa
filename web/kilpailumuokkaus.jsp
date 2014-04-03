@@ -10,7 +10,7 @@
     <p>
         <button type="button" class="btn-default">Laadi lähtölista</button>
     </p>
-            
+
     <p>
         <button type="button" class="btn-default">Muuta tietoja</button>
     </p>

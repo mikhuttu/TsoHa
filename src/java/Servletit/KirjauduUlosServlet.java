@@ -3,12 +3,12 @@ package Servletit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class KirjauduUlos extends YleisServlet {
+public class KirjauduUlosServlet extends YleisServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         kirjauduUlos(request);
-        ohjaaSivulle("etusivu", response);
-        
+        asetaVirhe("Uloskirjautuminen onnistui.", request);
+        naytaJSP("etusivu", request, response);
     }
     
     @Override

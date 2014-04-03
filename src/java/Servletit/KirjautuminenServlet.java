@@ -1,14 +1,14 @@
 package Servletit;
 
 import Mallit.Kayttaja;
-import Mallit.KirjautuminenMalli;
+import Mallit.Kirjautuminen;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class Kirjautuminen extends YleisServlet {
+public class KirjautuminenServlet extends YleisServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         if (onkoKirjautunut(request) != null) {
@@ -36,7 +36,6 @@ public class Kirjautuminen extends YleisServlet {
             }
             
             request.setAttribute("kayttaja", tunnus);
-//            request.getSession(true);
             
             if (salasana == null || salasana.length() == 0) {
                 asetaVirhe("Kirjautuminen epäonnistui! Et antanut salasanaa.", request);
@@ -44,7 +43,7 @@ public class Kirjautuminen extends YleisServlet {
                 return;
             }
             
-            Kayttaja kayttaja = KirjautuminenMalli.etsiKayttajaTunnuksilla(tunnus, salasana);
+            Kayttaja kayttaja = new Kirjautuminen().etsiKayttajaTunnuksilla(tunnus, salasana);
             
             if (kayttaja != null) {
                 talletaKirjautunut(request, kayttaja);

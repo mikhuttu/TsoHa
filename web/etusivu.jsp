@@ -8,28 +8,26 @@
     
         <ul class="nav nav-tabs">
             
-            <c:if test= "${kirjautunut!= null}">
-                <br>
-                <li><a href="/HiihtoTulosPalvelu/kilpailumuokkaus">Kilpailumuokkaussivu</a></li>
-                <li><a href="/HiihtoTulosPalvelu/kirjauduulos">Kirjaudu ulos</a></li>
-                
-            </c:if>
+            <li class="active"><a>Kilpailut</a></li>
             
-            <li class="active">Kilpailut</li>
-              
+            
+            <c:if test ="${kirjautunut == null}">
+                <li><a href="/HiihtoTulosPalvelu/kirjautuminen">Kirjaudu sisään</a></li>
+            </c:if>
+                
+            <c:if test= "${kirjautunut!= null}">
+                <li><a href="/HiihtoTulosPalvelu/kirjauduulos">Kirjaudu ulos</a></li>
+            </c:if>
+  
         </ul>
         
         <br>
-    
-        <ul>
-            
+        
+        <ul>   
             <c:forEach var="kilpailu" items="${kilpailut}">
-
-                <a href="/HiihtoTulosPalvelu/kilpailu?id=${kilpailu.id}"> ${kilpailu.nimi}</a>
-
-            </c:forEach>
-        </ul>
-            
+                <li><a href="/HiihtoTulosPalvelu/kilpailu?id=${kilpailu.id}"> ${kilpailu.nimi}</a></li>
+            </c:forEach>   
+        </ul>    
     </div>
     
 </t:pohja>

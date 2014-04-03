@@ -1,24 +1,21 @@
 package Servletit;
 
 import Mallit.Kayttaja;
-import Mallit.KilpailuMalli;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+public class KilpailuMuokkausServlet extends YleisServlet {
     
-public class Etusivu extends YleisServlet {
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         Kayttaja kirjautunut = onkoKirjautunut(request);
-        request.setAttribute("kirjautunut", kirjautunut);
+        if (kirjautunut == null) {
+            asetaVirhe("Sinun pitää ensin kirjautua sisään.", request);
+            ohjaaSivulle("kirjautuminen", response);
+            return;
+        }
         
-        List<KilpailuMalli> kilpailut = KilpailuMalli.getKilpailut();
-
-        request.setAttribute("kilpailut", kilpailut);
-        
-
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = null;
         
@@ -28,7 +25,7 @@ public class Etusivu extends YleisServlet {
         catch (IOException e) {}
         
         try {
-            naytaJSP("etusivu", request, response);
+            naytaJSP("kilpailumuokkaus", request, response);
         }
         
         finally {
@@ -39,7 +36,6 @@ public class Etusivu extends YleisServlet {
         
     }
     
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
@@ -53,6 +49,5 @@ public class Etusivu extends YleisServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }
-    
+    }  
 }

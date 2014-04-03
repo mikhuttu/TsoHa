@@ -15,7 +15,7 @@
         </div>
      
         <div class="form-group">     
-            <label for="salasana" class="col-md-2 control-label">Salasana: </label>     
+            <label for="salasana" class="col-md-2 control-label">Salasana: </label>
             <div class="col-md-10">    
                 <input type="password" class="form-control" name="salasana">
             </div> 
