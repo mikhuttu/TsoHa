@@ -2,6 +2,7 @@ package Servletit;
 
 import Mallit.Kayttaja;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -60,5 +61,16 @@ public class YleisServlet extends HttpServlet {
     protected void kirjauduUlos(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("kirjautunut");
+    }
+    
+    protected PrintWriter luoPrintWriter(HttpServletResponse response) {
+        PrintWriter out = null;
+        
+        try {
+            out = response.getWriter();
+        }
+        catch (IOException e) {}
+        
+        return out;
     }
 }

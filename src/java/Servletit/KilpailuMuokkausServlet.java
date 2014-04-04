@@ -1,7 +1,6 @@
 package Servletit;
 
 import Mallit.Kayttaja;
-import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,21 +8,17 @@ import javax.servlet.http.HttpServletResponse;
 public class KilpailuMuokkausServlet extends YleisServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = luoPrintWriter(response);
+        
         Kayttaja kirjautunut = onkoKirjautunut(request);
+        
         if (kirjautunut == null) {
             asetaVirhe("Sinun pitää ensin kirjautua sisään.", request);
-            ohjaaSivulle("kirjautuminen", response);
+            naytaJSP("kirjautuminen", request, response);
             return;
         }
-        
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = null;
-        
-        try {
-            out = response.getWriter();
-        }
-        catch (IOException e) {}
-        
+
         try {
             naytaJSP("kilpailumuokkaus", request, response);
         }

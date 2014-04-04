@@ -49,8 +49,8 @@
                 <div id="collapseTwo" class="panel-collapse collapse in">
                     <div class="panel-body">
                         <ul>
-                            <c:forEach var="kilpailutulos" items="${kilpailutulokset}">
-                                <li><div class="${kilpailutulos.id}">${kilpailutulos.kilpailija}, ${kilpailutulos.aika}</div></li>
+                            <c:forEach var="tulos" items="${kilpailutulokset}">
+                                <li><div class="${tulos.id}">Kilpailija: ${tulos.kilpailija}, Aika: ${tulos.aika}</div></li>
                             </c:forEach>
                             
                         </ul>
@@ -73,8 +73,8 @@
                 <div id="collapseThree" class="panel-collapse collapse in">
                     <div class="panel-body">
                         <ul>
-                            <c:forEach var="valiaikapiste" items="${valiaikapisteet}">                   
-                                <li><a href="/HiihtoTulosPalvelu/valiaikapiste=?id=${valiaikapiste.id}">Väliaikapiste ${valiaikapiste.id}</a></li>
+                            <c:forEach var="valiaikapiste" items="${valiaikapisteet}">
+                                <li><a href="/HiihtoTulosPalvelu/valiaikapiste=?id=${valiaikapiste.id}">Väliaikapiste ${valiaikapiste.numero}</a></li>
                             </c:forEach>
                             
                         </ul>
@@ -97,8 +97,8 @@
                 <label>Väliaikapisteet</label>
             
                 <select name="kilpailija">
-                    <c:forEach var="kilpailija" items="${kilpailijat}">
-                        <option value="${kilpailija.id}">${kilpailija.nimi}</option>
+                    <c:forEach var="valiaikapiste" items="${valiaikapisteet}">
+                        <option value="${valiaikapiste.id}">${valiaikapiste.numero}</option>
                     </c:forEach>   
                 </select>
         </p>

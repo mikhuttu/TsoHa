@@ -2,7 +2,6 @@ package Servletit;
 
 import Mallit.Kayttaja;
 import Mallit.Kirjautuminen;
-import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,18 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 public class KirjautuminenServlet extends YleisServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/html;charset=UTF-8");
+        
         if (onkoKirjautunut(request) != null) {
             ohjaaSivulle("etusivu", response);
             return;
         }
         
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = null;
-        
-        try {
-            out = response.getWriter();
-        }
-        catch (IOException e) {}
+        PrintWriter out = luoPrintWriter(response);
         
         try {
             String tunnus = request.getParameter("tunnus");

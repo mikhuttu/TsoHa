@@ -11,13 +11,13 @@ INSERT INTO osallistuja VALUES (1, 2);
 INSERT INTO osallistuja VALUES (2, 3);
 
 
-INSERT INTO valiaikapiste VALUES (1, 1, 1);
-INSERT INTO valiaikapiste VALUES (2, 1, 2);
+INSERT INTO valiaikapiste VALUES (1, 1);			// id, race1
+INSERT INTO valiaikapiste VALUES (2, 2);			// id, race2
 
 
-INSERT INTO tulos VALUES (1, 001122, 1, 1);
-INSERT INTO tulos VALUES (2, 001030, 2, 1);
-INSERT INTO tulos VALUES (3, 001453, 3, 2);
+INSERT INTO tulos VALUES (1, 00:11:22, 1, 1);			// id, aika, joonas, race1-väliaikapiste1
+INSERT INTO tulos VALUES (2, 00:10:30, 2, 1);			// id, aika, seppo, race1-väliaikapiste1
+INSERT INTO tulos VALUES (3, 00:14:53, 3, 1);			// id, aika, pekka, race2-väliaikapiste1
 
 
 INSERT INTO kayttaja (Tunnus, Salasana) VALUES ('yllapitaja', 'qwerty123');

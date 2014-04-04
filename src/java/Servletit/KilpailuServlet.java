@@ -1,7 +1,6 @@
 package Servletit;
 
 import Mallit.Kilpailu;
-import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 public class KilpailuServlet extends YleisServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
+        response.setContentType("text/html;charset=UTF-8");
+        
         String idParam = request.getParameter("id");
         System.out.println(idParam);
         
@@ -28,13 +29,7 @@ public class KilpailuServlet extends YleisServlet {
         request.setAttribute("kilpailutulokset", kilpailu.haeLoppuTulokset());
         request.setAttribute("valiaikapisteet", kilpailu.haeValiaikapisteet());
         
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = null;
-        
-        try {
-            out = response.getWriter();
-        }
-        catch (IOException e) {}
+        PrintWriter out = luoPrintWriter(response);
         
         try {
             naytaJSP("kilpailu", request, response);
@@ -45,7 +40,6 @@ public class KilpailuServlet extends YleisServlet {
                 out.close();
             }
         }
-        
     }
     
 

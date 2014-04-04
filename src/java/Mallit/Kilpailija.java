@@ -29,25 +29,21 @@ public class Kilpailija {
         this.nimi = nimi;
     }
     
-    public ArrayList<Kilpailija> haeKilpailijat() {
-        return haeKilpailunKilpailijat(null);
-    }
-    
     public ArrayList<Kilpailija> haeKilpailunKilpailijat(Kilpailu kilpailu) {
         
+        Connection yhteys = null;
+        PreparedStatement kysely = null;
+        ResultSet tulokset = null;
+        
         try {
-            String sql = "SELECT id, nimi FROM kilpailija WHERE kilpailija.id = ?";
-            Connection yhteys = Tietokanta.getYhteys();
-            PreparedStatement kysely = yhteys.prepareStatement(sql);
+            String sql = "SELECT kilpailija.id, kilpailija.nimi FROM kilpailija, osallistuja WHERE kilpailija.id = osallistuja.kilpailija AND osallistuja.kilpailu = ?";
             
-            if (kilpailu != null) {
-                kysely.setString(1, "osallistuja.kilpailija AND osallistuja.kilpailu = " + kilpailu.getId());
-            }
-            else {
-                kysely.setString(1, "'");       // mikä tahansa kilpailija kelpaa
-            }
+            yhteys = Tietokanta.getYhteys();
+            kysely = yhteys.prepareStatement(sql);
             
-            ResultSet tulokset = kysely.executeQuery();
+            kysely.setInt(1, kilpailu.getId());
+
+            tulokset = kysely.executeQuery();
             
             ArrayList<Kilpailija> kilpailijat = new ArrayList<Kilpailija>();
             
@@ -60,29 +56,37 @@ public class Kilpailija {
                 kilpailijat.add(k);
             }
             
-            try { tulokset.close(); } catch (SQLException e) {}
-            try { kysely.close(); } catch (SQLException e) {}
-            try { yhteys.close(); } catch (SQLException e) {}
-            
             return kilpailijat;
             
-        } catch (SQLException ex) {
+        } 
+        catch (SQLException ex) {
             Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        finally {
+            try { tulokset.close(); } catch (Exception e) {}
+            try { kysely.close(); } catch (Exception e) {}
+            try { yhteys.close(); } catch (Exception e) {}
+        }
+        
         return null;
     }
     
     
     public Kilpailija haeKilpailijaTulosTaulunKautta() {
         
+        Connection yhteys = null;
+        PreparedStatement kysely = null;
+        ResultSet tulokset = null;
+        
         try {
-            String sql = "SELECT id, nimi FROM kilpailija WHERE kilpailija.id = ? ' LIMIT = 1";
+            String sql = "SELECT id, nimi FROM kilpailija WHERE kilpailija.id = ? LIMIT 1";
             
-            Connection yhteys = Tietokanta.getYhteys();
-            PreparedStatement kysely = yhteys.prepareStatement(sql);
+            yhteys = Tietokanta.getYhteys();
+            kysely = yhteys.prepareStatement(sql);
             
             kysely.setString(1, "tulos.kilpailija");
-            ResultSet tulokset = kysely.executeQuery();
+            tulokset = kysely.executeQuery();
             
             Kilpailija k =  null;
             
@@ -101,8 +105,13 @@ public class Kilpailija {
         catch (SQLException ex) {
             Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        finally {
+            try { tulokset.close(); } catch (Exception e) {}
+            try { kysely.close(); } catch (Exception e) {}
+            try { yhteys.close(); } catch (Exception e) {}
+        }
+        
         return null;
     }
-    
-    
 }

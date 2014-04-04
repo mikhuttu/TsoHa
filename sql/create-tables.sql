@@ -10,12 +10,13 @@ create table kilpailija (
 
 create table valiaikapiste (
 	id		SERIAL		PRIMARY KEY,
+	numero		int						NOT NULL,
 	kilpailu	int references kilpailu(ID)			NOT NULL
 );
 
 create table tulos (
 	id		SERIAL		PRIMARY KEY,
-	aika		time						NOT NULL,
+	aika		varchar(10)					NOT NULL,
 	kilpailija	int references kilpailija(ID)			NOT NULL,
 	valiaikapiste	int references valiaikapiste(ID)		NOT NULL
 );

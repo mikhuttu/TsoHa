@@ -6,12 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Valiaikapiste {
     private int id;
+    private int numero;
     private int kilpailu;
     private ArrayList<Tulos> tulokset;
     
@@ -23,6 +23,10 @@ public class Valiaikapiste {
         return this.kilpailu;
     }
     
+    public int getNumero() {
+        return this.numero;
+    }
+    
     public void setId(int id) {
         this.id = id;
     }
@@ -31,24 +35,29 @@ public class Valiaikapiste {
         this.kilpailu = kilpailu;
     }
     
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+    
     public ArrayList<Tulos> haeTulokset() {
-        tulokset = new Tulos().haeValiaikapisteenTulokset(this);
-        jarjestaTulokset();
-        
-        return this.tulokset;
+        return new Tulos().haeValiaikapisteenTulokset(this);
     }
     
     public Valiaikapiste haeValiaikapisteTulosTaulunKautta() {
         
+        Connection yhteys = null;
+        PreparedStatement kysely = null;
+        ResultSet rs = null;
+        
         try {
-            String sql = "SELECT id, kilpailu FROM valiaikapiste WHERE valiaikapiste.id = ? ' LIMIT = 1";
+            String sql = "SELECT id, kilpailu FROM valiaikapiste WHERE valiaikapiste.id = ? LIMIT 1";
             
-            Connection yhteys = Tietokanta.getYhteys();
-            PreparedStatement kysely = yhteys.prepareStatement(sql);
+            yhteys = Tietokanta.getYhteys();
+            kysely = yhteys.prepareStatement(sql);
 
             kysely.setString(1, "tulos.valiaikapiste");
 
-            ResultSet rs = kysely.executeQuery();
+            rs = kysely.executeQuery();
             
             Valiaikapiste piste = null;
             
@@ -58,29 +67,36 @@ public class Valiaikapiste {
                 piste.setKilpailu(rs.getInt("kilpailu"));
             }
             
-            try { rs.close(); } catch (SQLException e) {}
-            try { kysely.close(); } catch (SQLException e) {}
-            try { yhteys.close(); } catch (SQLException e) {}
-            
             return piste;
         }
         catch (SQLException ex) {
             Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        finally {
+            try { rs.close(); } catch (Exception e) {}
+            try { kysely.close(); } catch (Exception e) {}
+            try { yhteys.close(); } catch (Exception e) {}
+        }
+        
         return null;
     }
     
     public ArrayList<Valiaikapiste> haeKilpailunValiaikapisteet(Kilpailu kilpailu) {
         
+        Connection yhteys = null;
+        PreparedStatement kysely = null;
+        ResultSet rs = null;
+        
         try {
-            String sql = "SELECT id, kilpailu FROM valiaikapiste WHERE valiaikapiste.kilpailu = ?";
+            String sql = "SELECT DISTINCT id, numero, kilpailu FROM valiaikapiste WHERE valiaikapiste.kilpailu = ?";
             
-            Connection yhteys = Tietokanta.getYhteys();
-            PreparedStatement kysely = yhteys.prepareStatement(sql);
+            yhteys = Tietokanta.getYhteys();
+            kysely = yhteys.prepareStatement(sql);
 
-            kysely.setString(1, "kilpailu.id");
+            kysely.setInt(1, kilpailu.getId());
 
-            ResultSet rs = kysely.executeQuery();
+            rs = kysely.executeQuery();
             
             ArrayList<Valiaikapiste> valiaikapisteet = new ArrayList<Valiaikapiste>();
             
@@ -88,25 +104,24 @@ public class Valiaikapiste {
                 
                 Valiaikapiste piste = new Valiaikapiste();
                 piste.setId(rs.getInt("id"));
+                piste.setNumero(rs.getInt("numero"));
                 piste.setKilpailu(rs.getInt("kilpailu"));
+                
+                valiaikapisteet.add(piste);
             }
-            
-            try { rs.close(); } catch (SQLException e) {}
-            try { kysely.close(); } catch (SQLException e) {}
-            try { yhteys.close(); } catch (SQLException e) {}
             
             return valiaikapisteet;
         }
         catch (SQLException ex) {
             Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        finally {
+            try { rs.close(); } catch (Exception e) {}
+            try { kysely.close(); } catch (Exception e) {}
+            try { yhteys.close(); } catch (Exception e) {}
+        }
+        
         return null;
-        
-        
-        
-    }
-    
-    public void jarjestaTulokset() {
-        Collections.sort(tulokset);
     }
 }
