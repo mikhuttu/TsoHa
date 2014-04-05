@@ -30,7 +30,6 @@ public class EtusivuServlet extends YleisServlet {
                 out.close();
             }
         }
-        
     }
 
     @Override

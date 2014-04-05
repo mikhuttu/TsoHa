@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -104,6 +105,49 @@ public class Kilpailija {
         }
         catch (SQLException ex) {
             Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        finally {
+            try { tulokset.close(); } catch (Exception e) {}
+            try { kysely.close(); } catch (Exception e) {}
+            try { yhteys.close(); } catch (Exception e) {}
+        }
+        
+        return null;
+    }
+
+    public ArrayList<Kilpailija> haeKaikkiJotkaEivatOsallistu(Kilpailu kilpailu) {
+        
+        Connection yhteys = null;
+        PreparedStatement kysely = null;
+        ResultSet tulokset = null;
+        
+        try {
+            String sql = "SELECT kilpailija.id, kilpailija.nimi FROM kilpailija, osallistuja WHERE kilpailija.id = osallistuja.kilpailija AND osallistuja.kilpailu != ?";
+            
+            yhteys = Tietokanta.getYhteys();
+            kysely = yhteys.prepareStatement(sql);
+            
+            kysely.setInt(1, kilpailu.getId());
+
+            tulokset = kysely.executeQuery();
+            
+            ArrayList<Kilpailija> kilpailijat = new ArrayList<Kilpailija>();
+            
+            while (tulokset.next()) {
+                
+                Kilpailija k = new Kilpailija();
+                k.setId(tulokset.getInt("id"));
+                k.setNimi(tulokset.getString("nimi"));
+
+                kilpailijat.add(k);
+            }
+            
+            return kilpailijat;
+            
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         finally {

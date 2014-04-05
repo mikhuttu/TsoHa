@@ -73,4 +73,19 @@ public class YleisServlet extends HttpServlet {
         
         return out;
     }
+    
+    protected int haeId(HttpServletRequest request) {
+        String idParam = request.getParameter("id");
+        int id;
+        
+        try {
+            id = Integer.parseInt(idParam);
+        }
+        catch(NumberFormatException e) {
+            id = 0;
+            asetaVirhe("ID haku epäonnistui!", request);
+        }
+        
+        return id;
+    }
 }

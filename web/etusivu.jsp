@@ -4,24 +4,7 @@
 
     <div class="container">
     
-        <h1>Etusivu</h1>
-    
-        <ul class="nav nav-tabs">
-            
-            <li class="active"><a>Kilpailut</a></li>
-            
-            
-            <c:if test ="${kirjautunut == null}">
-                <li><a href="/HiihtoTulosPalvelu/kirjautuminen">Kirjaudu sisään</a></li>
-            </c:if>
-                
-            <c:if test= "${kirjautunut!= null}">
-                <li><a href="/HiihtoTulosPalvelu/kirjauduulos">Kirjaudu ulos</a></li>
-            </c:if>
-  
-        </ul>
-        
-        <br>
+        <h1>Kilpailut</h1>
         
         <ul>   
             <c:forEach var="kilpailu" items="${kilpailut}">

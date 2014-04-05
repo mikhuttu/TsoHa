@@ -40,8 +40,12 @@ public class Kilpailu {
         this.valiaikapisteet = new Valiaikapiste().haeKilpailunValiaikapisteet(this);
     }
     
-    public List<Kilpailija> haeKilpailijat() {
+    public List<Kilpailija> haeOsallistujat() {
         return new Kilpailija().haeKilpailunKilpailijat(this);
+    }
+    
+    public List<Kilpailija> haeKilpailijatJotkaEivatOsallistu() {
+       return new Kilpailija().haeKaikkiJotkaEivatOsallistu(this);
     }
     
     public List<Valiaikapiste> haeValiaikapisteet() {

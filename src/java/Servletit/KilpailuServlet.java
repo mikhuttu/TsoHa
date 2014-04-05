@@ -9,22 +9,12 @@ public class KilpailuServlet extends YleisServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
         response.setContentType("text/html;charset=UTF-8");
-        
-        String idParam = request.getParameter("id");
-        System.out.println(idParam);
-        
-        int id;
-        
-        try {
-            id = Integer.parseInt(idParam);
-        }
-        catch(NumberFormatException e) {
-            id = 0;
-        }
+
+        int id = haeId(request);
         
         Kilpailu kilpailu = new Kilpailu().haeKilpailu(id);
         request.setAttribute("kilpailu", kilpailu);
-        request.setAttribute("kilpailijat", kilpailu.haeKilpailijat());
+        request.setAttribute("kilpailijat", kilpailu.haeOsallistujat());
         
         request.setAttribute("kilpailutulokset", kilpailu.haeLoppuTulokset());
         request.setAttribute("valiaikapisteet", kilpailu.haeValiaikapisteet());
