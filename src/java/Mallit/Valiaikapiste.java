@@ -1,19 +1,14 @@
 package Mallit;
 
-import Tietokanta.Tietokanta;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Valiaikapiste {
+public class Valiaikapiste extends KyselyToiminnot {
     private int id;
     private int numero;
     private int kilpailu;
-    private ArrayList<Tulos> tulokset;
     
     public int getId() {
         return this.id;
@@ -44,27 +39,21 @@ public class Valiaikapiste {
     }
     
     public Valiaikapiste haeValiaikapisteTulosTaulunKautta() {
-        
-        Connection yhteys = null;
-        PreparedStatement kysely = null;
-        ResultSet rs = null;
-        
+
         try {
             String sql = "SELECT id, kilpailu FROM valiaikapiste WHERE valiaikapiste.id = ? LIMIT 1";
             
-            yhteys = Tietokanta.getYhteys();
-            kysely = yhteys.prepareStatement(sql);
+            alustaKysely(sql);
+            statement.setString(1, "tulos.valiaikapiste");
 
-            kysely.setString(1, "tulos.valiaikapiste");
-
-            rs = kysely.executeQuery();
+            suoritaKysely();
             
             Valiaikapiste piste = null;
             
-            if (rs.next()) {
+            if (results.next()) {
                 piste = new Valiaikapiste();
-                piste.setId(rs.getInt("id"));
-                piste.setKilpailu(rs.getInt("kilpailu"));
+                piste.setId(results.getInt("id"));
+                piste.setKilpailu(results.getInt("kilpailu"));
             }
             
             return piste;
@@ -74,9 +63,7 @@ public class Valiaikapiste {
         }
         
         finally {
-            try { rs.close(); } catch (Exception e) {}
-            try { kysely.close(); } catch (Exception e) {}
-            try { yhteys.close(); } catch (Exception e) {}
+            lopeta();
         }
         
         return null;
@@ -84,28 +71,22 @@ public class Valiaikapiste {
     
     public ArrayList<Valiaikapiste> haeKilpailunValiaikapisteet(Kilpailu kilpailu) {
         
-        Connection yhteys = null;
-        PreparedStatement kysely = null;
-        ResultSet rs = null;
-        
         try {
             String sql = "SELECT DISTINCT id, numero, kilpailu FROM valiaikapiste WHERE valiaikapiste.kilpailu = ?";
             
-            yhteys = Tietokanta.getYhteys();
-            kysely = yhteys.prepareStatement(sql);
+            alustaKysely(sql);
+            statement.setInt(1, kilpailu.getId());
 
-            kysely.setInt(1, kilpailu.getId());
-
-            rs = kysely.executeQuery();
+            suoritaKysely();
             
             ArrayList<Valiaikapiste> valiaikapisteet = new ArrayList<Valiaikapiste>();
             
-            while (rs.next()) {
+            while (results.next()) {
                 
                 Valiaikapiste piste = new Valiaikapiste();
-                piste.setId(rs.getInt("id"));
-                piste.setNumero(rs.getInt("numero"));
-                piste.setKilpailu(rs.getInt("kilpailu"));
+                piste.setId(results.getInt("id"));
+                piste.setNumero(results.getInt("numero"));
+                piste.setKilpailu(results.getInt("kilpailu"));
                 
                 valiaikapisteet.add(piste);
             }
@@ -117,9 +98,7 @@ public class Valiaikapiste {
         }
         
         finally {
-            try { rs.close(); } catch (Exception e) {}
-            try { kysely.close(); } catch (Exception e) {}
-            try { yhteys.close(); } catch (Exception e) {}
+            lopeta();
         }
         
         return null;

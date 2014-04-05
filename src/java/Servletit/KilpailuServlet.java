@@ -45,7 +45,6 @@ public class KilpailuServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Näyttää kilpailusivun.";
     }
-    
 }

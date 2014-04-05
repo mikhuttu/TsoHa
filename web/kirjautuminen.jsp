@@ -25,7 +25,7 @@
             <div class="col-md-offset-2 col-md-10">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox"> Muista kirjautuminen
+                        <input type="checkbox"> Muista kirjautuminen>
                     </label>
                 </div> 
             </div>

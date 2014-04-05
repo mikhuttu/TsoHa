@@ -3,6 +3,7 @@ package Servletit;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class KirjauduUlosServlet extends YleisServlet {
     
@@ -12,10 +13,9 @@ public class KirjauduUlosServlet extends YleisServlet {
         kirjauduUlos(request);
         PrintWriter out = luoPrintWriter(response);
 
-        asetaVirhe("Uloskirjautuminen onnistui.", request);
-        
         try {
-            naytaJSP("etusivu", request, response);
+            asetaIlmoitus("Uloskirjautuminen onnistui.", request);
+            ohjaaSivulle("etusivu", response);
         }
         
         finally {
@@ -23,6 +23,11 @@ public class KirjauduUlosServlet extends YleisServlet {
                 out.close();
             }
         }
+    }
+    
+    private void kirjauduUlos(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("kirjautunut");
     }
     
     @Override
@@ -37,6 +42,6 @@ public class KirjauduUlosServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Toteuttaa uloskirjautumisen.";
     }  
 }

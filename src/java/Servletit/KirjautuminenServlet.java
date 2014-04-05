@@ -22,10 +22,9 @@ public class KirjautuminenServlet extends YleisServlet {
         try {
             String tunnus = request.getParameter("tunnus");
             String salasana = request.getParameter("salasana");
-            
-            
+
             if (tunnus == null || tunnus.length() == 0) {
-                asetaVirhe("Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.", request);
+                asetaIlmoitus("Kirjautuminen epäonnistui! Et antanut käyttäjätunnusta.", request);
                 naytaJSP("kirjautuminen", request, response);
                 return;
             }
@@ -33,7 +32,7 @@ public class KirjautuminenServlet extends YleisServlet {
             request.setAttribute("kayttaja", tunnus);
             
             if (salasana == null || salasana.length() == 0) {
-                asetaVirhe("Kirjautuminen epäonnistui! Et antanut salasanaa.", request);
+                asetaIlmoitus("Kirjautuminen epäonnistui! Et antanut salasanaa.", request);
                 naytaJSP("kirjautuminen", request, response);
                 return;
             }
@@ -46,11 +45,10 @@ public class KirjautuminenServlet extends YleisServlet {
             }
             
             else {
-                asetaVirhe("Kirjautuminen epäonnistui! Antamasi tunnus tai salasana on väärä.", request);
+                asetaIlmoitus("Kirjautuminen epäonnistui! Antamasi tunnus tai salasana on väärä.", request);
                 naytaJSP("kirjautuminen", request, response);
             }
-            
-        } 
+        }
         
         finally {
             if (out != null) {
@@ -58,8 +56,11 @@ public class KirjautuminenServlet extends YleisServlet {
             }
         }
     }
-
     
+    private void talletaKirjautunut(HttpServletRequest request, Kayttaja kayttaja) {
+        request.getSession().setAttribute("kirjautunut", kayttaja);
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
@@ -72,6 +73,6 @@ public class KirjautuminenServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Kirjautumissivu.";
     }
 }

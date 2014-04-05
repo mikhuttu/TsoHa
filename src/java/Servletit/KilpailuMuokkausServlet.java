@@ -15,7 +15,7 @@ public class KilpailuMuokkausServlet extends YleisServlet {
         Kayttaja kirjautunut = onkoKirjautunut(request);
         
         if (kirjautunut == null) {
-            asetaVirhe("Sinun pitää ensin kirjautua sisään.", request);
+            asetaIlmoitus("Sinun pitää ensin kirjautua sisään.", request);
             naytaJSP("kirjautuminen", request, response);
             return;
         }
@@ -52,6 +52,6 @@ public class KilpailuMuokkausServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Vie käyttäjän kilpailun 'id' muokkaussivulle.";
     }  
 }

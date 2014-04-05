@@ -19,8 +19,8 @@
         </style>
 
         <c:if test="${virheViesti != null}">
-            <div class="alert alert-danger">${virheIlmoitus}</div>
-        </c:if> 
+            <div class="alert alert-info">${virheIlmoitus}</div>
+        </c:if>
         
     </head>
     

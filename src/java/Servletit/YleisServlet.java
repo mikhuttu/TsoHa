@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 public class YleisServlet extends HttpServlet {
     
-    protected void asetaVirhe(String ilmoitus, HttpServletRequest request) {
+    protected void asetaIlmoitus(String ilmoitus, HttpServletRequest request) {
         request.setAttribute("virheIlmoitus", ilmoitus);
     }
     
@@ -45,22 +45,11 @@ public class YleisServlet extends HttpServlet {
         }
     }
     
-    
-    
-    protected void talletaKirjautunut(HttpServletRequest request, Kayttaja kayttaja) {
-        request.getSession().setAttribute("kirjautunut", kayttaja);
-    }
-    
     protected Kayttaja onkoKirjautunut(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Kayttaja kayttaja = (Kayttaja) session.getAttribute("kirjautunut");
         
         return kayttaja;
-    }
-    
-    protected void kirjauduUlos(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.removeAttribute("kirjautunut");
     }
     
     protected PrintWriter luoPrintWriter(HttpServletResponse response) {
@@ -75,17 +64,24 @@ public class YleisServlet extends HttpServlet {
     }
     
     protected int haeId(HttpServletRequest request) {
-        String idParam = request.getParameter("id");
-        int id;
+        return palautaArvo(request.getParameter("id"), request);
+    }
+    
+    protected int haeIntArvo(String param, HttpServletRequest request) {
+        return palautaArvo(request.getParameter(param), request);
+    }
+    
+    private int palautaArvo(String param, HttpServletRequest request) {
+        int arvo;
         
         try {
-            id = Integer.parseInt(idParam);
+            arvo = Integer.parseInt(param);
         }
         catch(NumberFormatException e) {
-            id = 0;
-            asetaVirhe("ID haku epäonnistui!", request);
+            arvo = 0;
+            asetaIlmoitus("Haku epäonnistui!", request);
         }
         
-        return id;
+        return arvo;
     }
 }

@@ -26,6 +26,11 @@
         <servlet-class>Servletit.KirjautuminenServlet</servlet-class>
     </servlet>
     
+    <servlet>
+        <servlet-name>LisaaKilpailija</servlet-name>
+        <servlet-class>Servletit.LisaaKilpailijaServlet</servlet-class>
+    </servlet>
+    
     <servlet-mapping>
         <servlet-name>Etusivu</servlet-name>
         <url-pattern>/etusivu</url-pattern>
@@ -49,6 +54,11 @@
     <servlet-mapping>
         <servlet-name>Kirjautuminen</servlet-name>
         <url-pattern>/kirjautuminen</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>LisaaKilpailija</servlet-name>
+        <url-pattern>/lisaakilpailija</url-pattern>
     </servlet-mapping>
     
     <session-config>

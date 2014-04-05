@@ -1,16 +1,12 @@
 package Mallit;
 
-import Tietokanta.Tietokanta;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Kilpailu {
+public class Kilpailu extends KyselyToiminnot {
     private int id;
     private String nimi;
     private ArrayList<Kilpailija> kilpailijat;
@@ -71,34 +67,26 @@ public class Kilpailu {
         return haeTulokset(valiaikapisteet.size() - 1);
     }
     
-    public void lisaaKilpailija(Kilpailija kilpailija) {
-        kilpailijat.add(kilpailija);
-    }
-    
     public void lisaaValiaikapiste(Valiaikapiste valiaikapiste) {
-        valiaikapisteet.add(valiaikapiste);
+
     }
     
     
     public List<Kilpailu> haeKilpailut() {
-        Connection yhteys = null;
-        PreparedStatement kysely = null;
-        ResultSet tulokset = null;
-        
+
         try {
             String sql = "SELECT id, nimi FROM kilpailu";
             
-            yhteys = Tietokanta.getYhteys();
-            kysely = yhteys.prepareStatement(sql);
-            tulokset = kysely.executeQuery();
+            alustaKysely(sql);
+            suoritaKysely();
             
             ArrayList<Kilpailu> kilpailut = new ArrayList<Kilpailu>();
             
-            while (tulokset.next()) {
+            while (results.next()) {
                 
                 Kilpailu k = new Kilpailu();
-                k.setId(tulokset.getInt("id"));
-                k.setNimi(tulokset.getString("nimi"));
+                k.setId(results.getInt("id"));
+                k.setNimi(results.getString("nimi"));
                 k.setKilpailijat();
                 
                 kilpailut.add(k);
@@ -111,34 +99,29 @@ public class Kilpailu {
         }
         
         finally {
-            try { tulokset.close(); } catch (Exception e) {}
-            try { kysely.close(); } catch (Exception e) {}
-            try { yhteys.close(); } catch (Exception e) {}
+            lopeta();
         }
         
         return null;
     }
     
     public Kilpailu haeKilpailu(int id) {
-        Connection yhteys = null;
-        PreparedStatement kysely = null;
-        ResultSet tulokset = null;
-        
+
         try {
             String sql = "SELECT * FROM kilpailu WHERE id = ? LIMIT 1";
 
-            yhteys = Tietokanta.getYhteys();
-            kysely = yhteys.prepareStatement(sql);
-            kysely.setInt(1, id);
+            alustaKysely(sql);
+            statement.setInt(1, id);
             
-            tulokset = kysely.executeQuery();
+            suoritaKysely();
             
             Kilpailu kilpailu = null;
             
-            if (tulokset.next()) {
+            if (results.next()) {
                 kilpailu = new Kilpailu();
-                kilpailu.setId(tulokset.getInt("id"));
-                kilpailu.setNimi(tulokset.getString("nimi"));
+                
+                kilpailu.setId(results.getInt("id"));
+                kilpailu.setNimi(results.getString("nimi"));
                 kilpailu.setKilpailijat();
             }
             
@@ -149,9 +132,7 @@ public class Kilpailu {
         }
         
         finally {
-            try { tulokset.close(); } catch (Exception e) {}
-            try { kysely.close(); } catch (Exception e) {}
-            try { yhteys.close(); } catch (Exception e) {}
+            lopeta();
         }
         
         return null;

@@ -1,16 +1,11 @@
-
 package Mallit;
 
-import Tietokanta.Tietokanta;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Tulos {
+public class Tulos extends KyselyToiminnot {
     
     private int id;
     private String aika;
@@ -73,66 +68,43 @@ public class Tulos {
     
     public ArrayList<Tulos> haeValiaikapisteenTulokset(Valiaikapiste valiaikapiste) {
         
-        Connection yhteys = null;
-        PreparedStatement kysely = null;
-        ResultSet tulokset = null;
-        
         try {
-            
-            String sql = "SELECT DISTINCT tulos.id, tulos.aika, kilpailija.nimi, valiaikapiste.id as valiaika_id, valiaikapiste.numero "
-                    + "FROM tulos, kilpailija, valiaikapiste "
-                     + "WHERE tulos.kilpailija = kilpailija.id AND      AND tulos.valiaikapiste = ? ORDER BY tulos.aika";
-            
-            
-//            sql = "select tulos.id, tulos.aika, kilpailu.nimi, valiaikapiste.id as valiaika_id, valiaikapiste.numero"
-//                    + " from osallistuja JOIN kilpailija on kilpailija.id = osallistuja.kilpailija "
-//                    + "JOIN tulos on kilpailija.id = tulos.kilpailija  "
-//                    + "where osallistuja.kilpailu = ?";
-            
-            sql = "select tulos.id as tulos_id, aika, kilpailija.nimi, valiaikapiste.id as valiaika_id, numero from osallistuja "
+            String sql = "select tulos.id as tulos_id, aika, kilpailija.nimi, valiaikapiste.id as valiaika_id, numero from osallistuja "
                     + "JOIN kilpailija ON kilpailija.id = osallistuja.kilpailija JOIN tulos on kilpailija.id = tulos.kilpailija JOIN valiaikapiste ON tulos.valiaikapiste = valiaikapiste.id  "
                     + "where osallistuja.kilpailu = ?";
-            
-//            sql = "select tulos.id as tulos_id ,aika, nimi, numero "
-//                    + "from osallistuja JOIN kilpailija ON kilpailija.id = osallistuja.kilpailija JOIN tulos on kilpailija.id = tulos.kilpailija  "
-//                    + "where osallistuja.kilpailu = ?";
-            
-            
 
-            yhteys = Tietokanta.getYhteys();
-            kysely = yhteys.prepareStatement(sql);
+            alustaKysely(sql);
+            statement.setInt(1, valiaikapiste.getId());
             
-            kysely.setInt(1, valiaikapiste.getId());
+            suoritaKysely();
             
-            tulokset = kysely.executeQuery();
+            ArrayList<Tulos> tulokset = new ArrayList<Tulos>();
             
-            ArrayList<Tulos> tuloslista = new ArrayList<Tulos>();
-            
-            while (tulokset.next()) {
+            while (results.next()) {
 
                 Tulos tulos = new Tulos();
                 
-                tulos.setId(tulokset.getInt("tulos_id"));
-                tulos.setAika(tulokset.getString("aika"));
-                tulos.setKilpailija(tulokset.getString("nimi"));
-                tulos.setValiaikapiste(tulokset.getInt("valiaika_id"));
-                tulos.setValiaikapistenumero(tulokset.getInt("numero"));
+                tulos.setId(results.getInt("tulos_id"));
+                tulos.setAika(results.getString("aika"));
+                tulos.setKilpailija(results.getString("nimi"));
+                tulos.setValiaikapiste(results.getInt("valiaika_id"));
+                tulos.setValiaikapistenumero(results.getInt("numero"));
 
-                tuloslista.add(tulos);
+                tulokset.add(tulos);
             }
             
-            return tuloslista;
-            
-        } catch (SQLException ex) {
+            return tulokset;  
+        } 
+        
+        catch (SQLException ex) {
             Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         finally {
-            try { tulokset.close(); } catch (Exception e) {}
-            try { kysely.close(); } catch (Exception e) {}
-            try { yhteys.close(); } catch (Exception e) {}
+            lopeta();
         }
         
         return null;
     }
+
 }

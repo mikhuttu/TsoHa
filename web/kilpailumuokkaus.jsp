@@ -10,34 +10,37 @@
     
     <br><br>
             
-    <form action="lisaakilpailija" method="POST">
-        <label for="lisaa kilpailija">Lisää kilpailija</label>
+    <form action="lisaakilpailija?id=${kilpailu.id}" method="POST">
+        <div class="form group">
         
-        <select name="lisaa kilpailija">
-             <c:forEach var="kilpailija" items="${muutKilpailijat}">
-                <option value="${kilpailija.id}" name="kilpailija">${kilpailija.nimi}</option>
-             </c:forEach>   
-         </select>
+            <label for="lisaa kilpailija">Lisää kilpailija</label>
         
-         <button type="submit" class="btn-success">Lisää</button>
+            <select name="lisaa kilpailija">
+                <c:forEach var="kilpailija" items="${muutKilpailijat}">
+                    <option name="kilpailija" value="${kilpailija.id}">${kilpailija.nimi}</option>
+                </c:forEach>
+            </select>
+
+            <button type="submit" class="btn-success">Lisää</button>
+        </div>
     </form>
 
     <br><br>
     
-    <form action="lisaavaliaikapiste" method="POST">
+    <form action="lisaavaliaikapiste?id=${kilpailu.id}" method="POST">
         <button type="submit" class="btn-info">Lisää uusi väliaikapiste</button>
     </form>
 
     <br>
     
-    <form action="kirjaatulos" method="POST">
+    <form action="kirjaatulos?id=${kilpailu.id}" method="POST">
         <div class="form-group">
 
             <label for="valiaikapiste">Väliaikapiste</label>
             
             <select name="valiaikapiste">
                 <c:forEach var="valiaikapiste" items="${valiaikapisteet}">
-                    <option value="${valiaikapiste.id}" name="valiaikapiste">${valiaikapiste.numero}</option>
+                    <option name="valiaikapiste" value="${valiaikapiste.id}">${valiaikapiste.numero}</option>
                 </c:forEach>
             </select>
             
@@ -47,7 +50,7 @@
             
             <select name="osallistuja">
                 <c:forEach var="kilpailija" items="${osallistujat}">
-                    <option value="${kilpailija.id}" name="kilpailija">${kilpailija.nimi}</option>
+                    <option name="kilpailija" value="${kilpailija.id}">${kilpailija.nimi}</option>
                 </c:forEach>
             </select>
             
@@ -62,12 +65,12 @@
 
     <br><br>
     
-    <form action="poistakilpailija" method="POST">
+    <form action="poistakilpailija?id=${kilpailu.id}" method="POST">
         <label for="poista kilpaija">Poista kilpailija</label>
         
         <select name="poista kilpailija">
              <c:forEach var="kilpailija" items="${osallistujat}">
-                <option value="${kilpailija.id}" name="kilpailija">${kilpailija.nimi}</option>
+                <option name="kilpailija" value="${kilpailija.id}">${kilpailija.nimi}</option>
              </c:forEach>   
          </select>
         
@@ -76,12 +79,12 @@
 
     <br>
     
-    <form action="poistavaliaikapiste" method="POST">
+    <form action="poistavaliaikapiste?id=${kilpailu.id}" method="POST">
         <label for="poista valiaikapiste">Poista väliaikapiste</label>
         
         <select name="poista valiaikapiste">
              <c:forEach var="valiaikapiste" items="${valiaikapisteet}">
-                <option value="${valiaikapiste.id}" name="valiaikapiste">${valiaikapiste.numero}</option>
+                <option name="valiaikapiste" value="${valiaikapiste.id}">${valiaikapiste.numero}</option>
              </c:forEach>   
          </select>
         
@@ -95,7 +98,7 @@
     <p>HUOM!<br>
         "Poista kilpailu" nappia painamalla kilpailu poistetaan välittömästi ja sitä on mahdotonta enää saada käyttöön.</p>
     
-    <form action="poistakilpailu" method="POST">
+    <form action="poistakilpailu?id=${kilpailu.id}" method="POST">
         <button type="submit" class="btn-danger">Poista kilpailu</button>
     </form>
     
