@@ -19,7 +19,7 @@
         </style>
 
         <c:if test="${virheViesti != null}">
-            <div class="alert alert-info">${virheIlmoitus}</div>
+            <div class="alert alert-info">${ilmoitus}</div>
         </c:if>
         
     </head>
@@ -31,7 +31,7 @@
             <d:if test ="${kirjautunut == null}">
                 <li><a href="/HiihtoTulosPalvelu/kirjautuminen">Kirjaudu sisään</a></li>
             </d:if>
-                
+            
             <d:if test= "${kirjautunut!= null}">
                 <li><a href="/HiihtoTulosPalvelu/lisaakilpailu">Lisää kilpailu</a></li>
                 <li><a href="/HiihtoTulosPalvelu/lisaakilpailija">Lisää kilpailija</a></li>

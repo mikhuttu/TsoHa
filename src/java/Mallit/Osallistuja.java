@@ -26,4 +26,25 @@ public class Osallistuja extends KyselyToiminnot {
             lopeta();
         }
     }
+
+    public void poistaOsallistuja(int kilpailuId, int kilpailijaId) {
+        try {
+            String sql = "DELETE FROM osallistuja WHERE osallistuja.kilpailu = ? AND osallistuja.kilpailija = ?";
+            
+            alustaKysely(sql);
+
+            statement.setInt(1, kilpailuId);
+            statement.setInt(2, kilpailijaId);
+            
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        finally {
+            lopeta();
+        }
+    }
 }

@@ -14,8 +14,23 @@ import javax.servlet.http.HttpSession;
 
 public class YleisServlet extends HttpServlet {
     
+    protected void paivitaIlmoitus(HttpServletRequest request) {
+        asetaIlmoitus(haeJaTyhjennaIlmoitus(request), request);
+    }
+    
     protected void asetaIlmoitus(String ilmoitus, HttpServletRequest request) {
-        request.setAttribute("virheIlmoitus", ilmoitus);
+        request.setAttribute("ilmoitus", ilmoitus);
+    }
+    
+    protected void tallennaIlmoitus(String ilmoitus, HttpServletRequest request) {
+        request.getSession().setAttribute("ilmoitus", ilmoitus);
+    }
+    
+    protected String haeJaTyhjennaIlmoitus(HttpServletRequest request) {
+       String ilmoitus = (String) request.getSession().getAttribute("ilmoitus");
+       request.getSession().removeAttribute("ilmoitus");
+       
+       return ilmoitus;
     }
     
     protected void ohjaaSivulle(String sivu, HttpServletResponse response) {
@@ -52,6 +67,7 @@ public class YleisServlet extends HttpServlet {
         return kayttaja;
     }
     
+
     protected PrintWriter luoPrintWriter(HttpServletResponse response) {
         PrintWriter out = null;
         
@@ -63,8 +79,25 @@ public class YleisServlet extends HttpServlet {
         return out;
     }
     
-    protected int haeId(HttpServletRequest request) {
+    protected void talletaSessionId(HttpServletRequest request, int id) {
+        request.getSession().setAttribute("id", id);
+    }
+    
+    protected int haeIdSessionilta(HttpServletRequest request) {
+        return (Integer) request.getSession().getAttribute("id");
+    }
+    
+    protected int haeIdParametrina(HttpServletRequest request) {
         return palautaArvo(request.getParameter("id"), request);
+    }
+    
+    protected int haeId(HttpServletRequest request) {
+        int id = haeIdParametrina(request);
+        
+        if (id == 0) {
+            id = haeIdSessionilta(request);
+        }
+        return id;
     }
     
     protected int haeIntArvo(String param, HttpServletRequest request) {
@@ -79,7 +112,6 @@ public class YleisServlet extends HttpServlet {
         }
         catch(NumberFormatException e) {
             arvo = 0;
-            asetaIlmoitus("Haku epäonnistui!", request);
         }
         
         return arvo;

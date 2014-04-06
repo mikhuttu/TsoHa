@@ -15,13 +15,15 @@
         
             <label for="lisaa kilpailija">Lisää kilpailija</label>
         
-            <select name="lisaa kilpailija">
+            <select id="kilpailija" name="kilpailija" onchange="return setValue();">
                 <c:forEach var="kilpailija" items="${muutKilpailijat}">
-                    <option name="kilpailija" value="${kilpailija.id}">${kilpailija.nimi}</option>
+                    <option value="${kilpailija.id}">${kilpailija.nimi}</option>
                 </c:forEach>
             </select>
-
-            <button type="submit" class="btn-success">Lisää</button>
+            
+            <input type="hidden" name="lisaa" id="lisaa">
+            <input type="submit" class="btn-info" value="Lisää kilpailija" name="btn_lisaa">
+            
         </div>
     </form>
 
@@ -68,13 +70,15 @@
     <form action="poistakilpailija?id=${kilpailu.id}" method="POST">
         <label for="poista kilpaija">Poista kilpailija</label>
         
-        <select name="poista kilpailija">
+        <select id="kilpailija" name="kilpailija" onchange="return setValue();">
              <c:forEach var="kilpailija" items="${osallistujat}">
                 <option name="kilpailija" value="${kilpailija.id}">${kilpailija.nimi}</option>
              </c:forEach>   
          </select>
+
+         <input type="hidden" name="poista" id="poista">
+         <input type="submit" class="btn-warning" value="Poista kilpailija" name="btn_poista">
         
-         <button type="submit" class="btn-warning">Poista kilpailija</button>
     </form>
 
     <br>

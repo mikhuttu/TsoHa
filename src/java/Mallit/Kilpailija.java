@@ -123,10 +123,13 @@ public class Kilpailija extends KyselyToiminnot {
         return null;
     }
 
+    // SQL kyselyssä virhe
     public ArrayList<Kilpailija> haeKaikkiJotkaEivatOsallistu(Kilpailu kilpailu) {
         
         try {
             String sql = "SELECT kilpailija.id, kilpailija.nimi FROM kilpailija, osallistuja WHERE kilpailija.id = osallistuja.kilpailija AND osallistuja.kilpailu != ?";
+                   // + " AND osallistuja.kilpailija NOT IN"
+                   // + " SELECT osallistuja.kilpailija FROM kilpailu, osallistuja WHERE kilpailu.id = osallistuja.kilpailu";
             
             alustaKysely(sql);
             statement.setInt(1, kilpailu.getId());

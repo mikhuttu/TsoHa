@@ -14,7 +14,7 @@ public class KirjauduUlosServlet extends YleisServlet {
         PrintWriter out = luoPrintWriter(response);
 
         try {
-            asetaIlmoitus("Uloskirjautuminen onnistui.", request);
+            tallennaIlmoitus("Uloskirjautuminen onnistui.", request);
             ohjaaSivulle("etusivu", response);
         }
         

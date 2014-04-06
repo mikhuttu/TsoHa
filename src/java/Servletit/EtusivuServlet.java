@@ -22,6 +22,7 @@ public class EtusivuServlet extends YleisServlet {
         PrintWriter out = luoPrintWriter(response);
         
         try {
+            paivitaIlmoitus(request);
             naytaJSP("etusivu", request, response);
         }
         

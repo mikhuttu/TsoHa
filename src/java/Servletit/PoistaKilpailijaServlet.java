@@ -1,15 +1,14 @@
 package Servletit;
 
 import Mallit.Kilpailija;
-//import Mallit.Kilpailu;
 import Mallit.Osallistuja;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LisaaKilpailijaServlet extends YleisServlet {
+public class PoistaKilpailijaServlet extends YleisServlet {
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
         response.setContentType("text/html;charset=UTF-8");
         
         if (onkoKirjautunut(request) == null) {
@@ -27,9 +26,9 @@ public class LisaaKilpailijaServlet extends YleisServlet {
         PrintWriter out = luoPrintWriter(response);
         
         try {
-            new Osallistuja().lisaaOsallistuja(kilpailuId, kilpailijaId);
+            new Osallistuja().poistaOsallistuja(kilpailuId, kilpailijaId);
             
-            tallennaIlmoitus("Kilpailija '" + kilpailija.getNimi() + "' lisättiin kilpailuun onnistuneesti!", request);
+            tallennaIlmoitus("Kilpailija '" + kilpailija.getNimi() + "' poistettiin kilpailusta onnistuneesti!", request);
             talletaSessionId(request, kilpailuId);
             
             ohjaaSivulle("kilpailu", response);

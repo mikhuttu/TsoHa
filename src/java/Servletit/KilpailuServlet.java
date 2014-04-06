@@ -22,6 +22,7 @@ public class KilpailuServlet extends YleisServlet {
         PrintWriter out = luoPrintWriter(response);
         
         try {
+            paivitaIlmoitus(request);
             naytaJSP("kilpailu", request, response);
         }
         
