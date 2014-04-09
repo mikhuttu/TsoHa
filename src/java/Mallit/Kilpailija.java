@@ -60,7 +60,9 @@ public class Kilpailija extends KyselyToiminnot {
     public ArrayList<Kilpailija> haeKilpailunKilpailijat(Kilpailu kilpailu) {
 
         try {
-            String sql = "SELECT kilpailija.id, kilpailija.nimi FROM kilpailija, osallistuja WHERE kilpailija.id = osallistuja.kilpailija AND osallistuja.kilpailu = ?";
+            String sql = "SELECT kilpailija.id, kilpailija.nimi "
+                       + "FROM kilpailija, osallistuja WHERE kilpailija.id = osallistuja.kilpailija AND osallistuja.kilpailu = ? "
+                       + "ORDER BY nimi asc";
             
             alustaKysely(sql);
             statement.setInt(1, kilpailu.getId());

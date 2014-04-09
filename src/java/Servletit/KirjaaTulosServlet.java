@@ -33,8 +33,8 @@ public class KirjaaTulosServlet extends YleisServlet {
             String paivitys = "Valittu aika ei ollut muotoa 'hours:minutes:seconds'";
             ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
             return;
-            
         }
+        String aikaIlmanPisteita = poistaKaksoisPisteet(aika);
         
         Kilpailija kilpailija = new Kilpailija().haeKilpailija(osallistujaId);
         
@@ -43,7 +43,7 @@ public class KirjaaTulosServlet extends YleisServlet {
         try {
             Tulos tulos = new Tulos().haeTulosKorkeimmallaIdlla();
             
-            new Tulos().kirjaaTulos(getId(tulos) + 1, aika, osallistujaId, valiaikapisteId);
+            new Tulos().kirjaaTulos(getId(tulos) + 1, aikaIlmanPisteita, osallistujaId, valiaikapisteId);
             
             String paivitys = "Kilpailijan " + kilpailija.getNimi() + " aika (" + aika + ") kirjattiin onnistuneesti!";
             ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
@@ -69,6 +69,18 @@ public class KirjaaTulosServlet extends YleisServlet {
     @Override
     public String getServletInfo() {
         return "Kilpailijan tuloksen lisäämisen kilpailuun.";
+    }
+    
+    private String poistaKaksoisPisteet(String aika) {
+        String palautettava = "";
+        int i = 0;
+        while (i < aika.length()) {
+            if (aika.charAt(i) != ':') {
+                palautettava += aika.charAt(i);
+            }
+            i++;
+        }
+        return palautettava;
     }
     
     private boolean aikaOnValidi(String aika) {

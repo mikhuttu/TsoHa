@@ -111,9 +111,7 @@ public class Tulos extends KyselyToiminnot {
         
         try {
             
-            String sql = "SELECT tulos.id as tulosId, aika, kilpailija, valiaikapiste, kilpailija.nimi "
-                       + "FROM tulos, kilpailija "
-                       + "WHERE tulos.valiaikapiste = ? AND tulos.kilpailija = kilpailija.id";
+            String sql = "SELECT tulos.id, aika, kilpailija, valiaikapiste FROM tulos, kilpailija WHERE tulos.valiaikapiste = ? AND kilpailija = kilpailija.id ORDER BY aika";
             
 //            String sql = "select tulos.id as tulos_id, aika, kilpailija.nimi, valiaikapiste.id as valiaika_id, numero from osallistuja "
 //                    + "JOIN kilpailija ON kilpailija.id = osallistuja.kilpailija JOIN tulos on kilpailija.id = tulos.kilpailija JOIN valiaikapiste ON tulos.valiaikapiste = valiaikapiste.id  "
@@ -144,7 +142,7 @@ public class Tulos extends KyselyToiminnot {
         return null;
     }
 
-    public void kirjaaTulos(int tulosId, String aika, int osallistujaId, int valiaikapisteId) {
+    public void kirjaaTulos(int tulosId, String aika, int kilpailijaId, int valiaikapisteId) {
         
         try {
             String sql = "INSERT INTO tulos VALUES (?, ?, ?, ?)";
@@ -153,7 +151,7 @@ public class Tulos extends KyselyToiminnot {
 
             statement.setInt(1, tulosId);
             statement.setString(2, aika);
-            statement.setInt(3, osallistujaId);
+            statement.setInt(3, kilpailijaId);
             statement.setInt(4, valiaikapisteId);
             
             suoritaKysely();

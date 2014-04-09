@@ -12,7 +12,7 @@
         <li><a href="/HiihtoTulosPalvelu/kilpailumuokkaus?id=${kilpailu.id}">Muokkaa kilpailua</a></li>
         <br>
     </c:if>
-        
+
     <div class="panel-group" id="accordion">
     <div class="panel panel-default">
     <div class="panel-heading">
@@ -46,7 +46,7 @@
         <div class="panel-body">
             <ul>
                 <c:forEach var="tulos" items="${kilpailutulokset}">
-                    <li><div class="${tulos.id}">Kilpailija: ${tulos.nimi}, Aika: ${tulos.aika}</div></li>
+                    <li><div class="${tulos.id}">Kilpailija: ${tulos.kilpailija}, Aika: ${tulos.aika}</div></li>
                 </c:forEach>
             </ul>
         </div>
