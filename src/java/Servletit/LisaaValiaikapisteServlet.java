@@ -1,14 +1,14 @@
 package Servletit;
 
-import Mallit.Kilpailija;
-import Mallit.Osallistuja;
+import Mallit.Kilpailu;
+import Mallit.Valiaikapiste;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class PoistaKilpailijaServlet extends YleisServlet {
+public class LisaaValiaikapisteServlet extends YleisServlet {
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         
         if (onkoKirjautunut(request) == null) {
@@ -18,25 +18,32 @@ public class PoistaKilpailijaServlet extends YleisServlet {
         }
         
         int kilpailuId = haeId(request);
-        
-        int kilpailijaId = haeIntArvo("kilpailija", request);
-        
-        if (kilpailijaId == 0) {
-            tallennaIlmoitus("Kilpailijaa ei ollut valittu.", request);
-            talletaSessionId(request, kilpailuId);
-            
-            ohjaaSivulle("kilpailu", response);
-            return;
-        }
-        
-        Kilpailija kilpailija = new Kilpailija().haeKilpailija(kilpailijaId);
+        Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
         
         PrintWriter out = luoPrintWriter(response);
-        
+
         try {
-            new Osallistuja().poistaOsallistuja(kilpailuId, kilpailijaId);
+            Valiaikapiste piste = new Valiaikapiste().haeValiaikapisteKorkeimmallaIdlla();
+            Valiaikapiste piste2 = new Valiaikapiste().haeValiaikapisteKorkeimmallaNumerolla(kilpailu);
             
-            tallennaIlmoitus("Kilpailija '" + kilpailija.getNimi() + "' poistettiin kilpailusta onnistuneesti!", request);
+            int pisteId;
+            int numero;
+            
+            try {
+                pisteId = piste.getId();
+            } catch (NullPointerException e) {
+                pisteId = 0;
+            }
+                
+            try {
+                numero = piste2.getNumero();
+            } catch(NullPointerException e) {
+                numero = 0;
+            }
+            
+            new Valiaikapiste().lisaaValiaikapisteKilpailuun(pisteId + 1, numero + 1, kilpailuId);
+            
+            tallennaIlmoitus("Uusi väliaikapiste lisätty kilpailuun.", request);
             talletaSessionId(request, kilpailuId);
             
             ohjaaSivulle("kilpailu", response);
@@ -48,7 +55,7 @@ public class PoistaKilpailijaServlet extends YleisServlet {
             }
         }
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
@@ -61,6 +68,8 @@ public class PoistaKilpailijaServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Poistaa kilpailijan kilpailusta.";
-    }
+        return "Lisää väliaikapisteen kilpailuun.";
+    }  
+
+
 }

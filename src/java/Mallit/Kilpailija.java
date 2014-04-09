@@ -123,7 +123,6 @@ public class Kilpailija extends KyselyToiminnot {
         return null;
     }
 
-    // SQL kyselyssä virhe
     public ArrayList<Kilpailija> haeKaikkiJotkaEivatOsallistu(Kilpailu kilpailu) {
         
         try {

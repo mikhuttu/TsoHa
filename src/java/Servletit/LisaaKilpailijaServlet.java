@@ -1,7 +1,6 @@
 package Servletit;
 
 import Mallit.Kilpailija;
-//import Mallit.Kilpailu;
 import Mallit.Osallistuja;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +17,19 @@ public class LisaaKilpailijaServlet extends YleisServlet {
             return;
         }
         
-        int kilpailijaId = haeIntArvo("kilpailija", request);
-        Kilpailija kilpailija = new Kilpailija().haeKilpailija(kilpailijaId);
-        
         int kilpailuId = haeId(request);
-//        Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
+        
+        int kilpailijaId = haeIntArvo("kilpailija", request);
+        
+        if (kilpailijaId == 0) {
+            tallennaIlmoitus("Kilpailijaa ei ollut valittu.", request);
+            talletaSessionId(request, kilpailuId);
+            
+            ohjaaSivulle("kilpailu", response);
+            return;
+        }
+        
+        Kilpailija kilpailija = new Kilpailija().haeKilpailija(kilpailijaId);
         
         PrintWriter out = luoPrintWriter(response);
         

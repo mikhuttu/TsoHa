@@ -86,18 +86,19 @@
     <form action="poistavaliaikapiste?id=${kilpailu.id}" method="POST">
         <label for="poista valiaikapiste">Poista väliaikapiste</label>
         
-        <select name="poista valiaikapiste">
+        <select id="valiaikapiste" name="valiaikapiste" onchange="return setValue();">
              <c:forEach var="valiaikapiste" items="${valiaikapisteet}">
                 <option name="valiaikapiste" value="${valiaikapiste.id}">${valiaikapiste.numero}</option>
              </c:forEach>   
          </select>
+
+         <input type="hidden" name="poista" id="poista">
+         <input type="submit" class="btn-warning" value="Poista valiaikapiste" name="btn_poista">
         
-         <button type="submit" class="btn-warning">Poista väliaikapiste</button>
     </form>
 
+        
     <br><br>
-    
-
     
     <p>HUOM!<br>
         "Poista kilpailu" nappia painamalla kilpailu poistetaan välittömästi ja sitä on mahdotonta enää saada käyttöön.</p>

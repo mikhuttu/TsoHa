@@ -32,8 +32,18 @@
     </servlet>
     
     <servlet>
+        <servlet-name>LisaaValiaikapiste</servlet-name>
+        <servlet-class>Servletit.LisaaValiaikapisteServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
         <servlet-name>PoistaKilpailija</servlet-name>
         <servlet-class>Servletit.PoistaKilpailijaServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>PoistaValiaikapiste</servlet-name>
+        <servlet-class>Servletit.PoistaValiaikapisteServlet</servlet-class>
     </servlet>
     
     <servlet-mapping>
@@ -67,9 +77,19 @@
     </servlet-mapping>
     
     <servlet-mapping>
+        <servlet-name>LisaaValiaikapiste</servlet-name>
+        <url-pattern>/lisaavaliaikapiste</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
         <servlet-name>PoistaKilpailija</servlet-name>
         <url-pattern>/poistakilpailija</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>   
+    
+    <servlet-mapping>
+        <servlet-name>PoistaValiaikapiste</servlet-name>
+        <url-pattern>/poistavaliaikapiste</url-pattern>
+    </servlet-mapping> 
     
     <session-config>
         <session-timeout>

@@ -1,12 +1,11 @@
 package Servletit;
 
-import Mallit.Kilpailija;
-import Mallit.Osallistuja;
+import Mallit.Valiaikapiste;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class PoistaKilpailijaServlet extends YleisServlet {
+public class PoistaValiaikapisteServlet extends YleisServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
         response.setContentType("text/html;charset=UTF-8");
@@ -19,24 +18,24 @@ public class PoistaKilpailijaServlet extends YleisServlet {
         
         int kilpailuId = haeId(request);
         
-        int kilpailijaId = haeIntArvo("kilpailija", request);
+        int valiaikapisteId = haeIntArvo("valiaikapiste", request);
         
-        if (kilpailijaId == 0) {
-            tallennaIlmoitus("Kilpailijaa ei ollut valittu.", request);
+        if (valiaikapisteId == 0) {
+            tallennaIlmoitus("Väliaikapistettä ei ollut valittu.", request);
             talletaSessionId(request, kilpailuId);
             
             ohjaaSivulle("kilpailu", response);
             return;
         }
         
-        Kilpailija kilpailija = new Kilpailija().haeKilpailija(kilpailijaId);
+        Valiaikapiste piste = new Valiaikapiste().haeValiaikapiste(valiaikapisteId);
         
         PrintWriter out = luoPrintWriter(response);
         
         try {
-            new Osallistuja().poistaOsallistuja(kilpailuId, kilpailijaId);
+            new Valiaikapiste().poistaValiaikapiste(valiaikapisteId);
             
-            tallennaIlmoitus("Kilpailija '" + kilpailija.getNimi() + "' poistettiin kilpailusta onnistuneesti!", request);
+            tallennaIlmoitus("Väliaikapiste " + piste.getNumero() + " poistettiin kilpailusta onnistuneesti!", request);
             talletaSessionId(request, kilpailuId);
             
             ohjaaSivulle("kilpailu", response);
@@ -61,6 +60,6 @@ public class PoistaKilpailijaServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Poistaa kilpailijan kilpailusta.";
+        return "Poistaa kilpailusta väliaikapisteen.";
     }
 }

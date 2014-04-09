@@ -11,19 +11,19 @@ create table kilpailija (
 create table valiaikapiste (
 	id		SERIAL		PRIMARY KEY,
 	numero		int						NOT NULL,
-	kilpailu	int references kilpailu(ID)			NOT NULL
+	kilpailu	int references kilpailu(ID)			ON DELETE CASCADE NOT NULL
 );
 
 create table tulos (
 	id		SERIAL		PRIMARY KEY,
 	aika		varchar(10)					NOT NULL,
-	kilpailija	int references kilpailija(ID)			NOT NULL,
-	valiaikapiste	int references valiaikapiste(ID)		NOT NULL
+	kilpailija	int references kilpailija(ID)			ON DELETE CASCADE NOT NULL,
+	valiaikapiste	int references valiaikapiste(ID)		ON DELETE CASCADE NOT NULL
 );
 
 create table osallistuja (
-	kilpailu	int references kilpailu(ID)			NOT NULL,
-	kilpailija	int references kilpailija(ID)			NOT NULL
+	kilpailu	int references kilpailu(ID)			ON DELETE CASCADE NOT NULL,
+	kilpailija	int references kilpailija(ID)			ON DELETE CASCADE NOT NULL
 );
 
 create table kayttaja (

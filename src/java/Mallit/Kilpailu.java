@@ -67,11 +67,6 @@ public class Kilpailu extends KyselyToiminnot {
         return haeTulokset(valiaikapisteet.size() - 1);
     }
     
-    public void lisaaValiaikapiste(Valiaikapiste valiaikapiste) {
-
-    }
-    
-    
     public List<Kilpailu> haeKilpailut() {
 
         try {

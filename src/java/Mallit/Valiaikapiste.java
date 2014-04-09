@@ -41,23 +41,15 @@ public class Valiaikapiste extends KyselyToiminnot {
     public Valiaikapiste haeValiaikapisteTulosTaulunKautta() {
 
         try {
-            String sql = "SELECT id, kilpailu FROM valiaikapiste WHERE valiaikapiste.id = ? LIMIT 1";
-            
+            String sql = "SELECT id, kilpailu FROM valiaikapiste WHERE valiaikapiste.id = ? LIMIT 1"; 
             alustaKysely(sql);
+            
             statement.setString(1, "tulos.valiaikapiste");
-
             suoritaKysely();
+            return palautaValiaikapiste();
             
-            Valiaikapiste piste = null;
-            
-            if (results.next()) {
-                piste = new Valiaikapiste();
-                piste.setId(results.getInt("id"));
-                piste.setKilpailu(results.getInt("kilpailu"));
-            }
-            
-            return piste;
         }
+        
         catch (SQLException ex) {
             Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -72,33 +64,170 @@ public class Valiaikapiste extends KyselyToiminnot {
     public ArrayList<Valiaikapiste> haeKilpailunValiaikapisteet(Kilpailu kilpailu) {
         
         try {
-            String sql = "SELECT DISTINCT id, numero, kilpailu FROM valiaikapiste WHERE valiaikapiste.kilpailu = ?";
-            
+            String sql = "SELECT * FROM valiaikapiste WHERE valiaikapiste.kilpailu = ? ORDER BY valiaikapiste.numero";
             alustaKysely(sql);
+            
             statement.setInt(1, kilpailu.getId());
-
             suoritaKysely();
-            
-            ArrayList<Valiaikapiste> valiaikapisteet = new ArrayList<Valiaikapiste>();
-            
-            while (results.next()) {
-                
-                Valiaikapiste piste = new Valiaikapiste();
-                piste.setId(results.getInt("id"));
-                piste.setNumero(results.getInt("numero"));
-                piste.setKilpailu(results.getInt("kilpailu"));
-                
-                valiaikapisteet.add(piste);
-            }
-            
-            return valiaikapisteet;
+            return palautaListaValiaikapisteista();
         }
+
         catch (SQLException ex) {
             Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         finally {
             lopeta();
+        }
+        return null;
+    }
+
+    
+    public Valiaikapiste haeValiaikapisteKorkeimmallaIdlla() {
+        
+        try {
+            String sql = "SELECT * FROM valiaikapiste ORDER BY id desc LIMIT 1";
+            alustaKysely(sql);
+
+            suoritaKysely();
+            return palautaValiaikapiste();
+        }
+
+        finally {
+            lopeta();
+        }
+    }
+    
+    public Valiaikapiste haeValiaikapisteKorkeimmallaNumerolla(Kilpailu kilpailu) {
+        
+        try {
+            String sql = "SELECT * FROM valiaikapiste WHERE valiaikapiste.kilpailu = ? ORDER BY numero desc LIMIT 1";
+            alustaKysely(sql);
+
+            statement.setInt(1, kilpailu.getId());
+            suoritaKysely();
+            return palautaValiaikapiste();
+        }
+        
+        catch (SQLException ex) {
+            Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        finally {
+            lopeta();
+        }
+        return null;
+    }
+    
+
+    public Valiaikapiste haeValiaikapiste (int valiaikapisteId) {
+        try {
+            
+            String sql = "SELECT * FROM valiaikapiste WHERE valiaikapiste.id = ? LIMIT 1";
+            alustaKysely(sql);
+            
+            statement.setInt(1, valiaikapisteId);
+            suoritaKysely();
+            
+            return palautaValiaikapiste();
+        }
+        
+        catch (SQLException ex) {
+            Logger.getLogger(Valiaikapiste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        finally {
+            lopeta();
+        }
+        
+        return null;
+    }
+
+    public void lisaaValiaikapisteKilpailuun(int maxId, int kilpailunPisteita, int kilpailuId) {
+        try {
+            String sql = "INSERT INTO valiaikapiste VALUES (?, ?, ?)";
+            alustaKysely(sql);
+            
+            statement.setInt(1, maxId);
+            statement.setInt(2, kilpailunPisteita);
+            statement.setInt(3, kilpailuId);
+            suoritaKysely();
+        } 
+        
+        catch (SQLException ex) {
+            Logger.getLogger(Valiaikapiste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        finally {
+            lopeta();
+        }
+    }
+
+    public void poistaValiaikapiste(int valiaikapisteId) {
+        try {
+            String sql = "DELETE FROM valiaikapiste WHERE valiaikapiste.id = ?";  // kysely väärin --> suoritakysely palauttaa null
+            
+            alustaKysely(sql);
+
+            statement.setInt(1, valiaikapisteId);
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        finally {
+            lopeta();
+        }
+    }
+    
+    private Valiaikapiste palautaValiaikapiste() {
+        try {
+            
+            if (results.next ()) {
+                return palautaPiste();
+            }
+            
+            return null;
+        }
+
+        catch (SQLException e) {}
+        
+        return null;
+    }
+    
+    private ArrayList<Valiaikapiste> palautaListaValiaikapisteista() {
+        try {
+            ArrayList<Valiaikapiste> pisteet = new ArrayList<Valiaikapiste>();
+            
+            while (results.next()) {
+                pisteet.add(palautaPiste());
+            }
+            return pisteet;
+        } 
+        
+        catch (SQLException ex) {
+            Logger.getLogger(Valiaikapiste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+    
+    private Valiaikapiste palautaPiste() {
+        
+        try {
+            Valiaikapiste piste = new Valiaikapiste();
+            
+            piste.setId(results.getInt("id"));
+            piste.setNumero(results.getInt("numero"));
+            piste.setKilpailu(results.getInt("kilpailu"));
+            
+            return piste;
+        } 
+        
+        catch (SQLException ex) {
+            Logger.getLogger(Valiaikapiste.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return null;

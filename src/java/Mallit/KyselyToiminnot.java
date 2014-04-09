@@ -47,7 +47,7 @@ public class KyselyToiminnot {
             results = statement.executeQuery();
         }   
         catch (SQLException ex) {
-            Logger.getLogger(KyselyToiminnot.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(KyselyToiminnot.class.getName()).log(Level.SEVERE, "Kyselyssä on virhe. Palauttaa null-arvon.", ex);
             results = null;
         }
     }
