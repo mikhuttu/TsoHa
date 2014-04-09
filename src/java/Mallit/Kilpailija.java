@@ -127,12 +127,13 @@ public class Kilpailija extends KyselyToiminnot {
     public ArrayList<Kilpailija> haeKaikkiJotkaEivatOsallistu(Kilpailu kilpailu) {
         
         try {
-            String sql = "SELECT kilpailija.id, kilpailija.nimi FROM kilpailija, osallistuja WHERE kilpailija.id = osallistuja.kilpailija AND osallistuja.kilpailu != ?";
-                   // + " AND osallistuja.kilpailija NOT IN"
-                   // + " SELECT osallistuja.kilpailija FROM kilpailu, osallistuja WHERE kilpailu.id = osallistuja.kilpailu";
+            String sql = "SELECT kilpailija.id, kilpailija.nimi FROM kilpailija WHERE"
+                   + " kilpailija.id NOT IN"
+                   + " (SELECT osallistuja.kilpailija FROM osallistuja WHERE osallistuja.kilpailu = ?)";
             
             alustaKysely(sql);
             statement.setInt(1, kilpailu.getId());
+            //statement.setInt(2, kilpailu.getId());
 
             suoritaKysely();
             
