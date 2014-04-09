@@ -1,32 +1,29 @@
 package Servletit;
 
-import Mallit.Kilpailija;
 import Mallit.Kilpailu;
-import Mallit.Valiaikapiste;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class KilpailuMuokkausServlet extends YleisServlet {
+public class PoistaKilpailuServlet extends YleisServlet {
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = luoPrintWriter(response);
         
         if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
             return;
         }
         
-        int id = haeId(request);
-        Kilpailu kilpailu = new Kilpailu().haeKilpailu(id);
+        int kilpailuId = haeId(request);
+        Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
         
-        request.setAttribute("kilpailu", kilpailu);
-        request.setAttribute("osallistujat",new Kilpailija().haeKilpailunKilpailijat(kilpailu));
-        request.setAttribute("muutKilpailijat", new Kilpailija().haeKaikkiJotkaEivatOsallistu(kilpailu));
-        request.setAttribute("valiaikapisteet", new Valiaikapiste().haeKilpailunValiaikapisteet(kilpailu));
+        PrintWriter out = luoPrintWriter(response);
         
         try {
-            naytaJSP("kilpailumuokkaus", request, response);
+            new Kilpailu().poistaKilpailu(kilpailuId);
+            
+            tallennaIlmoitus("Kilpailu '" + kilpailu.getNimi() + "' poistettiin onnistuneesti!", request);
+            ohjaaSivulle("etusivu", response);
         }
         
         finally {
@@ -34,7 +31,6 @@ public class KilpailuMuokkausServlet extends YleisServlet {
                 out.close();
             }
         }
-        
     }
     
     @Override
@@ -49,6 +45,6 @@ public class KilpailuMuokkausServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Vie käyttäjän kilpailun 'id' muokkaussivulle.";
-    }  
+        return "Poistaa kilpailun tietokannasta.";
+    }
 }

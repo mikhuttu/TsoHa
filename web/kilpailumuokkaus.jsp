@@ -2,6 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <t:pohja pageTitle="Kilpailun muokkaussivu">
 
+<div class="container">
     <h1>Muokkaa kilpailua: ${kilpailu.nimi}</h1>
 
     <br>
@@ -40,20 +41,20 @@
 
             <label for="valiaikapiste">Väliaikapiste</label>
             
-            <select name="valiaikapiste">
+            <select id="valiaikapiste" name="valiaikapiste" onchange="return setValue();">
                 <c:forEach var="valiaikapiste" items="${valiaikapisteet}">
                     <option name="valiaikapiste" value="${valiaikapiste.id}">${valiaikapiste.numero}</option>
-                </c:forEach>
+                </c:forEach>   
             </select>
             
             <br>
             
-            <label for="osallistuja">Osallistuja</label>
+            <label for="kilpailija">Kilpailija</label>
             
-            <select name="osallistuja">
+            <select id="kilpailija" name="kilpailija" onchange="return setValue();">
                 <c:forEach var="kilpailija" items="${osallistujat}">
                     <option name="kilpailija" value="${kilpailija.id}">${kilpailija.nimi}</option>
-                </c:forEach>
+                 </c:forEach>   
             </select>
             
             <br>
@@ -61,7 +62,7 @@
             <label for="aika">Aika</label>
             <input type="text" name="aika" placeholder="00:00:00">
         
-            <button type="submit" class="btn-primary">Kirjaa tulos</button>    
+            <input type="submit" class="btn-primary" value="Kirjaa tulos" name="btn_kirjaa">
         </div>
     </form>
 
@@ -96,15 +97,15 @@
          <input type="submit" class="btn-warning" value="Poista valiaikapiste" name="btn_poista">
         
     </form>
-
         
     <br><br>
     
     <p>HUOM!<br>
         "Poista kilpailu" nappia painamalla kilpailu poistetaan välittömästi ja sitä on mahdotonta enää saada käyttöön.</p>
-    
+
     <form action="poistakilpailu?id=${kilpailu.id}" method="POST">
         <button type="submit" class="btn-danger">Poista kilpailu</button>
     </form>
+</div>
     
 </t:pohja>

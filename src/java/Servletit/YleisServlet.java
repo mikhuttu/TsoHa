@@ -1,6 +1,8 @@
 package Servletit;
 
 import Mallit.Kayttaja;
+import Mallit.Tulos;
+import Mallit.Valiaikapiste;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -13,6 +15,45 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class YleisServlet extends HttpServlet {
+    
+    protected boolean ohjaaKirjautumisSivulleJosEiKirjautunut(HttpServletRequest request, HttpServletResponse response) {
+        
+        if (onkoKirjautunut(request) == null) {
+            asetaIlmoitus("Sinun pitää ensin kirjautua sisään.", request);
+            naytaJSP("kirjautuminen", request, response);
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean ohjaaKilpailuSivulleJosArvoaEiValittu(HttpServletRequest request, HttpServletResponse response, int arvoId, int kilpailuId) {
+        
+        if (arvoId == 0) {
+            talletaSessionId(request, kilpailuId);
+            
+            ohjaaSivulle("kilpailu", response);
+            return true;
+        }
+        return false;
+    }
+    
+    protected boolean ohjaaKilpailuSivulleJosArvoaEiValittu(HttpServletRequest request, HttpServletResponse response, String arvo, int kilpailuId) {
+        
+        if (arvo == null || arvo.isEmpty()) {
+            talletaSessionId(request, kilpailuId);
+            
+            ohjaaSivulle("kilpailu", response);
+            return true;
+        }
+        return false;
+    }
+    
+    protected void ohjaaKilpailuSivulle(String paivitys, HttpServletRequest request, HttpServletResponse response, int kilpailuId) {
+        tallennaIlmoitus(paivitys, request);
+        talletaSessionId(request, kilpailuId);
+            
+        ohjaaSivulle("kilpailu", response);
+    }
     
     protected void paivitaIlmoitus(HttpServletRequest request) {
         asetaIlmoitus(haeJaTyhjennaIlmoitus(request), request);
@@ -115,5 +156,30 @@ public class YleisServlet extends HttpServlet {
         }
         
         return arvo;
+    }
+    
+    protected String haeStringArvo(String param, HttpServletRequest request) {
+        return request.getParameter(param);
+    }
+    
+    protected int getId (Valiaikapiste piste) {
+        if (piste == null) {
+            return 0;
+        }
+        return piste.getId();
+    }
+    
+    protected int getId (Tulos tulos) {
+        if (tulos == null) {
+            return 0;
+        }
+        return tulos.getId();
+    }    
+    
+    protected int getNumero (Valiaikapiste piste) {
+        if (piste == null) {
+            return 0;
+        }
+        return piste.getNumero();
     }
 }

@@ -9,8 +9,6 @@ import java.util.logging.Logger;
 public class Kilpailu extends KyselyToiminnot {
     private int id;
     private String nimi;
-    private ArrayList<Kilpailija> kilpailijat;
-    private ArrayList<Valiaikapiste> valiaikapisteet;
     
     public int getId() {
         return this.id;
@@ -28,45 +26,6 @@ public class Kilpailu extends KyselyToiminnot {
         this.nimi = nimi;
     }
     
-    public void setKilpailijat() {
-        this.kilpailijat = new Kilpailija().haeKilpailunKilpailijat(this);
-    }
-    
-    public void setValiaikapisteet() {
-        this.valiaikapisteet = new Valiaikapiste().haeKilpailunValiaikapisteet(this);
-    }
-    
-    public List<Kilpailija> haeOsallistujat() {
-        return new Kilpailija().haeKilpailunKilpailijat(this);
-    }
-    
-    public List<Kilpailija> haeKilpailijatJotkaEivatOsallistu() {
-       return new Kilpailija().haeKaikkiJotkaEivatOsallistu(this);
-    }
-    
-    public List<Valiaikapiste> haeValiaikapisteet() {
-        return new Valiaikapiste().haeKilpailunValiaikapisteet(this);
-    }
-    
-    public List<Tulos> haeTulokset(int valiaikapiste) {
-        if (valiaikapisteet == null) {
-            setValiaikapisteet();
-        }
-
-        return valiaikapisteet.get(valiaikapiste).haeTulokset();
-    }
-    
-    public List<Tulos> haeLoppuTulokset() {
-        if (valiaikapisteet == null) {
-            setValiaikapisteet();
-        }
-        
-        if (valiaikapisteet.isEmpty()) {
-            return null;
-        }
-        return haeTulokset(valiaikapisteet.size() - 1);
-    }
-    
     public List<Kilpailu> haeKilpailut() {
 
         try {
@@ -78,13 +37,7 @@ public class Kilpailu extends KyselyToiminnot {
             ArrayList<Kilpailu> kilpailut = new ArrayList<Kilpailu>();
             
             while (results.next()) {
-                
-                Kilpailu k = new Kilpailu();
-                k.setId(results.getInt("id"));
-                k.setNimi(results.getString("nimi"));
-                k.setKilpailijat();
-                
-                kilpailut.add(k);
+                kilpailut.add(palautaKilpailu());
             }
             
             return kilpailut;
@@ -110,17 +63,9 @@ public class Kilpailu extends KyselyToiminnot {
             
             suoritaKysely();
             
-            Kilpailu kilpailu = null;
-            
             if (results.next()) {
-                kilpailu = new Kilpailu();
-                
-                kilpailu.setId(results.getInt("id"));
-                kilpailu.setNimi(results.getString("nimi"));
-                kilpailu.setKilpailijat();
+                return palautaKilpailu();
             }
-            
-            return kilpailu;
             
         } catch (SQLException ex) {
             Logger.getLogger(Kilpailu.class.getName()).log(Level.SEVERE, null, ex);
@@ -131,5 +76,41 @@ public class Kilpailu extends KyselyToiminnot {
         }
         
         return null;
+    }
+    
+    private Kilpailu palautaKilpailu() {
+        try {
+            Kilpailu kilpailu = new Kilpailu();
+            
+            kilpailu.setId(results.getInt("id"));
+            kilpailu.setNimi(results.getString("nimi"));
+            
+            return kilpailu;
+        }
+        
+        catch (SQLException ex) {
+            Logger.getLogger(Valiaikapiste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
+    }
+
+    public void poistaKilpailu(int kilpailuId) {
+        
+        try {
+            String sql = "DELETE FROM kilpailu WHERE kilpailu.id = ?";
+            alustaKysely(sql);
+            
+            statement.setInt(1, kilpailuId);
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        finally {
+            lopeta();
+        }
     }
 }

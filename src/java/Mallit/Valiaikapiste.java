@@ -9,17 +9,25 @@ public class Valiaikapiste extends KyselyToiminnot {
     private int id;
     private int numero;
     private int kilpailu;
-    
+
+
     public int getId() {
-        return this.id;
+        return this.getValue(this.id);
     }
     
     public int getKilpailu() {
-        return this.kilpailu;
+        return this.getValue(this.kilpailu);
     }
     
     public int getNumero() {
-        return this.numero;
+        return this.getValue(this.numero);
+    }
+    
+    public int getValue(int value) {
+        if (this == null) {
+            return 0;
+        }
+        return value;
     }
     
     public void setId(int id) {
@@ -183,6 +191,7 @@ public class Valiaikapiste extends KyselyToiminnot {
     }
     
     private Valiaikapiste palautaValiaikapiste() {
+        
         try {
             
             if (results.next ()) {

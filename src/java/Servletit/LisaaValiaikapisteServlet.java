@@ -11,9 +11,7 @@ public class LisaaValiaikapisteServlet extends YleisServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         
-        if (onkoKirjautunut(request) == null) {
-            asetaIlmoitus("Sinun pitää ensin kirjautua sisään.", request);
-            naytaJSP("kirjautuminen", request, response);
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
             return;
         }
         
@@ -26,27 +24,10 @@ public class LisaaValiaikapisteServlet extends YleisServlet {
             Valiaikapiste piste = new Valiaikapiste().haeValiaikapisteKorkeimmallaIdlla();
             Valiaikapiste piste2 = new Valiaikapiste().haeValiaikapisteKorkeimmallaNumerolla(kilpailu);
             
-            int pisteId;
-            int numero;
+            new Valiaikapiste().lisaaValiaikapisteKilpailuun(getId(piste) + 1, getNumero(piste) + 1, kilpailuId);
             
-            try {
-                pisteId = piste.getId();
-            } catch (NullPointerException e) {
-                pisteId = 0;
-            }
-                
-            try {
-                numero = piste2.getNumero();
-            } catch(NullPointerException e) {
-                numero = 0;
-            }
-            
-            new Valiaikapiste().lisaaValiaikapisteKilpailuun(pisteId + 1, numero + 1, kilpailuId);
-            
-            tallennaIlmoitus("Uusi väliaikapiste lisätty kilpailuun.", request);
-            talletaSessionId(request, kilpailuId);
-            
-            ohjaaSivulle("kilpailu", response);
+            String paivitys = "Uusi väliaikapiste lisätty kilpailuun.";
+            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
         }
         
         finally {

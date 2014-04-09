@@ -11,21 +11,15 @@ public class PoistaKilpailijaServlet extends YleisServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
         response.setContentType("text/html;charset=UTF-8");
         
-        if (onkoKirjautunut(request) == null) {
-            asetaIlmoitus("Sinun pitää ensin kirjautua sisään.", request);
-            naytaJSP("kirjautuminen", request, response);
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
             return;
         }
         
         int kilpailuId = haeId(request);
-        
         int kilpailijaId = haeIntArvo("kilpailija", request);
         
-        if (kilpailijaId == 0) {
+        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, kilpailijaId, kilpailuId)) {
             tallennaIlmoitus("Kilpailijaa ei ollut valittu.", request);
-            talletaSessionId(request, kilpailuId);
-            
-            ohjaaSivulle("kilpailu", response);
             return;
         }
         
@@ -36,10 +30,8 @@ public class PoistaKilpailijaServlet extends YleisServlet {
         try {
             new Osallistuja().poistaOsallistuja(kilpailuId, kilpailijaId);
             
-            tallennaIlmoitus("Kilpailija '" + kilpailija.getNimi() + "' poistettiin kilpailusta onnistuneesti!", request);
-            talletaSessionId(request, kilpailuId);
-            
-            ohjaaSivulle("kilpailu", response);
+            String paivitys = "Kilpailija '" + kilpailija.getNimi() + "' poistettiin kilpailusta onnistuneesti!";
+            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
         }
         
         finally {

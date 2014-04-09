@@ -10,9 +10,7 @@ public class PoistaValiaikapisteServlet extends YleisServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
         response.setContentType("text/html;charset=UTF-8");
         
-        if (onkoKirjautunut(request) == null) {
-            asetaIlmoitus("Sinun pitää ensin kirjautua sisään.", request);
-            naytaJSP("kirjautuminen", request, response);
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
             return;
         }
         
@@ -20,11 +18,8 @@ public class PoistaValiaikapisteServlet extends YleisServlet {
         
         int valiaikapisteId = haeIntArvo("valiaikapiste", request);
         
-        if (valiaikapisteId == 0) {
+        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, valiaikapisteId, kilpailuId)) {
             tallennaIlmoitus("Väliaikapistettä ei ollut valittu.", request);
-            talletaSessionId(request, kilpailuId);
-            
-            ohjaaSivulle("kilpailu", response);
             return;
         }
         
@@ -35,10 +30,8 @@ public class PoistaValiaikapisteServlet extends YleisServlet {
         try {
             new Valiaikapiste().poistaValiaikapiste(valiaikapisteId);
             
-            tallennaIlmoitus("Väliaikapiste " + piste.getNumero() + " poistettiin kilpailusta onnistuneesti!", request);
-            talletaSessionId(request, kilpailuId);
-            
-            ohjaaSivulle("kilpailu", response);
+            String paivitys = "Väliaikapiste " + piste.getNumero() + " poistettiin kilpailusta onnistuneesti!";
+            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
         }
         
         finally {

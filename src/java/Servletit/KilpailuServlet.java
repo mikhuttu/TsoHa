@@ -1,6 +1,9 @@
 package Servletit;
 
+import Mallit.Kilpailija;
 import Mallit.Kilpailu;
+import Mallit.Tulos;
+import Mallit.Valiaikapiste;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,10 +17,16 @@ public class KilpailuServlet extends YleisServlet {
         
         Kilpailu kilpailu = new Kilpailu().haeKilpailu(id);
         request.setAttribute("kilpailu", kilpailu);
-        request.setAttribute("kilpailijat", kilpailu.haeOsallistujat());
+        request.setAttribute("kilpailijat", new Kilpailija().haeKilpailunKilpailijat(kilpailu));
         
-        request.setAttribute("kilpailutulokset", kilpailu.haeLoppuTulokset());
-        request.setAttribute("valiaikapisteet", kilpailu.haeValiaikapisteet());
+        Valiaikapiste piste = new Valiaikapiste().haeValiaikapisteKorkeimmallaNumerolla(kilpailu);
+        
+        if (piste != null) {
+            request.setAttribute("kilpailutulokset", new Tulos().haeValiaikapisteenTulokset(piste));
+        }
+        
+        
+        request.setAttribute("valiaikapisteet", new Valiaikapiste().haeKilpailunValiaikapisteet(kilpailu));
         
         PrintWriter out = luoPrintWriter(response);
         

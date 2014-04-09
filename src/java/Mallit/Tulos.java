@@ -9,9 +9,8 @@ public class Tulos extends KyselyToiminnot {
     
     private int id;
     private String aika;
-    private String kilpailija;
+    private int kilpailija;
     private int valiaikapiste;
-    private int valiaikapistenumero;
     
     public void setId(int id) {
         this.id = id;
@@ -33,16 +32,12 @@ public class Tulos extends KyselyToiminnot {
         }
     }
     
-    public void setKilpailija(String kilpailija) {
+    public void setKilpailija(int kilpailija) {
         this.kilpailija = kilpailija;
     }
     
     public void setValiaikapiste(int valiaikapiste) {
         this.valiaikapiste = valiaikapiste;
-    }
-    
-    public void setValiaikapistenumero(int valiaikapistenumero) {
-        this.valiaikapistenumero = valiaikapistenumero;
     }
     
     public int getId() {
@@ -53,7 +48,7 @@ public class Tulos extends KyselyToiminnot {
         return this.aika;
     }
     
-    public String getKilpailija() {
+    public int getKilpailija() {
         return this.kilpailija;
     }
     
@@ -61,17 +56,68 @@ public class Tulos extends KyselyToiminnot {
         return this.valiaikapiste;
     }
     
-    public int getValiaikapistenumero() {
-        return this.valiaikapistenumero;
+    public Tulos haeTulosKorkeimmallaIdlla() {
+        
+        try {
+            String sql = "SELECT * FROM tulos ORDER BY id desc LIMIT 1";
+            alustaKysely(sql);
+
+            suoritaKysely();
+            return palautaTulos();
+        }
+
+        finally {
+            lopeta();
+        }
+    }
+    
+    private Tulos palautaTulos() {
+        try {
+            
+            if (results.next ()) {
+                return palauta();
+            }
+            
+            return null;
+        }
+
+        catch (SQLException e) {}
+        
+        return null;
+    }
+    
+    private Tulos palauta() {
+        
+        try {
+            Tulos tulos = new Tulos();
+            
+            tulos.setId(results.getInt("id"));
+            tulos.setAika(results.getString("aika"));
+            tulos.setKilpailija(results.getInt("kilpailija"));
+            tulos.setValiaikapiste(results.getInt("valiaikapiste"));
+            
+            return tulos;
+        } 
+        
+        catch (SQLException ex) {
+            Logger.getLogger(Valiaikapiste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return null;
     }
     
     
     public ArrayList<Tulos> haeValiaikapisteenTulokset(Valiaikapiste valiaikapiste) {
         
         try {
-            String sql = "select tulos.id as tulos_id, aika, kilpailija.nimi, valiaikapiste.id as valiaika_id, numero from osallistuja "
-                    + "JOIN kilpailija ON kilpailija.id = osallistuja.kilpailija JOIN tulos on kilpailija.id = tulos.kilpailija JOIN valiaikapiste ON tulos.valiaikapiste = valiaikapiste.id  "
-                    + "where osallistuja.kilpailu = ?";
+            
+            String sql = "SELECT tulos.id as tulosId, aika, kilpailija, valiaikapiste, kilpailija.nimi "
+                       + "FROM tulos, kilpailija "
+                       + "WHERE tulos.valiaikapiste = ? AND tulos.kilpailija = kilpailija.id";
+            
+//            String sql = "select tulos.id as tulos_id, aika, kilpailija.nimi, valiaikapiste.id as valiaika_id, numero from osallistuja "
+//                    + "JOIN kilpailija ON kilpailija.id = osallistuja.kilpailija JOIN tulos on kilpailija.id = tulos.kilpailija JOIN valiaikapiste ON tulos.valiaikapiste = valiaikapiste.id  "
+//                    + "where osallistuja.kilpailu = ?";
 
             alustaKysely(sql);
             statement.setInt(1, valiaikapiste.getId());
@@ -81,19 +127,10 @@ public class Tulos extends KyselyToiminnot {
             ArrayList<Tulos> tulokset = new ArrayList<Tulos>();
             
             while (results.next()) {
-
-                Tulos tulos = new Tulos();
-                
-                tulos.setId(results.getInt("tulos_id"));
-                tulos.setAika(results.getString("aika"));
-                tulos.setKilpailija(results.getString("nimi"));
-                tulos.setValiaikapiste(results.getInt("valiaika_id"));
-                tulos.setValiaikapistenumero(results.getInt("numero"));
-
-                tulokset.add(tulos);
+                tulokset.add(palauta());
             }
             
-            return tulokset;  
+            return tulokset;
         } 
         
         catch (SQLException ex) {
@@ -105,6 +142,30 @@ public class Tulos extends KyselyToiminnot {
         }
         
         return null;
+    }
+
+    public void kirjaaTulos(int tulosId, String aika, int osallistujaId, int valiaikapisteId) {
+        
+        try {
+            String sql = "INSERT INTO tulos VALUES (?, ?, ?, ?)";
+            
+            alustaKysely(sql);
+
+            statement.setInt(1, tulosId);
+            statement.setString(2, aika);
+            statement.setInt(3, osallistujaId);
+            statement.setInt(4, valiaikapisteId);
+            
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        finally {
+            lopeta();
+        }
     }
 
 }

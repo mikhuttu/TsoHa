@@ -17,6 +17,11 @@
     </servlet>
     
     <servlet>
+        <servlet-name>KirjaaTulos</servlet-name>
+        <servlet-class>Servletit.KirjaaTulosServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
         <servlet-name>KirjauduUlos</servlet-name>
         <servlet-class>Servletit.KirjauduUlosServlet</servlet-class>
     </servlet>
@@ -42,6 +47,11 @@
     </servlet>
     
     <servlet>
+        <servlet-name>PoistaKilpailu</servlet-name>
+        <servlet-class>Servletit.PoistaKilpailuServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
         <servlet-name>PoistaValiaikapiste</servlet-name>
         <servlet-class>Servletit.PoistaValiaikapisteServlet</servlet-class>
     </servlet>
@@ -59,6 +69,11 @@
     <servlet-mapping>
         <servlet-name>KilpailuMuokkaus</servlet-name>
         <url-pattern>/kilpailumuokkaus</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>KirjaaTulos</servlet-name>
+        <url-pattern>/kirjaatulos</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
@@ -85,6 +100,11 @@
         <servlet-name>PoistaKilpailija</servlet-name>
         <url-pattern>/poistakilpailija</url-pattern>
     </servlet-mapping>   
+    
+    <servlet-mapping>
+        <servlet-name>PoistaKilpailu</servlet-name>
+        <url-pattern>/poistakilpailu</url-pattern>
+    </servlet-mapping>  
     
     <servlet-mapping>
         <servlet-name>PoistaValiaikapiste</servlet-name>
