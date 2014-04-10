@@ -1,12 +1,12 @@
-package Servletit;
+package Servletit.muokkaus;
 
 import Mallit.Kilpailu;
-import Mallit.Valiaikapiste;
+import Servletit.YleisServlet;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LisaaValiaikapisteServlet extends YleisServlet {
+public class MuutaKilpailunNimiServlet extends YleisServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
@@ -15,19 +15,16 @@ public class LisaaValiaikapisteServlet extends YleisServlet {
             return;
         }
         
-        int kilpailuId = haeId(request);
-        Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
-        
         PrintWriter out = luoPrintWriter(response);
-
+        
         try {
-            Valiaikapiste piste = new Valiaikapiste().haeValiaikapisteKorkeimmallaIdlla();
-            Valiaikapiste piste2 = new Valiaikapiste().haeValiaikapisteKorkeimmallaNumerolla(kilpailu);
             
-            new Valiaikapiste().lisaaValiaikapisteKilpailuun(getId(piste) + 1, getNumero(piste) + 1, kilpailuId);
-            
-            String paivitys = "Uusi väliaikapiste lisätty kilpailuun.";
-            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
+            int kilpailuId = haeId(request);
+            Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
+
+            paivitaIlmoitus(request);
+            request.setAttribute("kilpailu", kilpailu);
+            naytaJSP("muutakilpailunnimi", request, response);
         }
         
         finally {
@@ -46,11 +43,9 @@ public class LisaaValiaikapisteServlet extends YleisServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
     }
-
+    
     @Override
     public String getServletInfo() {
-        return "Lisää väliaikapisteen kilpailuun.";
-    }  
-
-
+        return "Lisää kantaan uuden kilpailun.";
+    }
 }

@@ -1,14 +1,14 @@
-package Servletit;
+package Servletit.poisto;
 
-import Mallit.Kilpailija;
-import Mallit.Osallistuja;
+import Mallit.Kilpailu;
+import Servletit.YleisServlet;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LisaaKilpailijaServlet extends YleisServlet {
+public class PoistaKilpailuServlet extends YleisServlet {
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
         response.setContentType("text/html;charset=UTF-8");
         
         if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
@@ -16,22 +16,15 @@ public class LisaaKilpailijaServlet extends YleisServlet {
         }
         
         int kilpailuId = haeId(request);
-        int kilpailijaId = haeIntArvo("kilpailija", request);
-        
-        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, kilpailijaId, kilpailuId)) {
-            tallennaIlmoitus("Kilpailijaa ei ollut valittu.", request);
-            return;
-        }
-        
-        Kilpailija kilpailija = new Kilpailija().haeKilpailija(kilpailijaId);
+        Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
         
         PrintWriter out = luoPrintWriter(response);
         
         try {
-            new Osallistuja().lisaaOsallistuja(kilpailuId, kilpailijaId);
+            new Kilpailu().poistaKilpailu(kilpailuId);
             
-            String paivitys = "Kilpailija '" + kilpailija.getNimi() + "' lisättiin kilpailuun onnistuneesti!";
-            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
+            tallennaIlmoitus("Kilpailu '" + kilpailu.getNimi() + "' poistettiin onnistuneesti!", request);
+            ohjaaSivulle("etusivu", response);
         }
         
         finally {
@@ -40,7 +33,7 @@ public class LisaaKilpailijaServlet extends YleisServlet {
             }
         }
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
@@ -53,6 +46,6 @@ public class LisaaKilpailijaServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Vie käyttäjän etusivulle.";
+        return "Poistaa kilpailun tietokannasta.";
     }
 }

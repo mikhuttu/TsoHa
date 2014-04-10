@@ -20,8 +20,8 @@ public class KirjautuminenServlet extends YleisServlet {
         PrintWriter out = luoPrintWriter(response);
         
         try {
-            String tunnus = request.getParameter("tunnus");
-            String salasana = request.getParameter("salasana");
+            String tunnus = haeStringArvo("tunnus", request);
+            String salasana = haeStringArvo("salasana", request);
 
             if (tunnus == null || tunnus.length() == 0) {
                 naytaJSP("kirjautuminen", request, response);
@@ -57,17 +57,8 @@ public class KirjautuminenServlet extends YleisServlet {
     }
     
     private void kirjauduSisaan(HttpServletRequest request, Kayttaja kayttaja) {
-//        request.getSession().removeAttribute("yritetty");
         request.getSession().setAttribute("kirjautunut", kayttaja);
     }
-    
-//    private boolean kirjautumistaYritetty(HttpServletRequest request) {
-//       return request.getSession().getAttribute("yritetty") != null;
-//    }
-//
-//    private void yritettyKirjautua(HttpServletRequest request) {
-//        request.getSession().setAttribute("yritetty", true);
-//    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {

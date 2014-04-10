@@ -8,7 +8,7 @@ public class Osallistuja extends KyselyToiminnot {
 
     public void lisaaOsallistuja(int kilpailuId, int kilpailijaId) {
         try {
-            String sql = "INSERT INTO osallistuja VALUES (?, ?)";
+            String sql = "INSERT INTO osallistuja (kilpailu, kilpailija) VALUES (?, ?)";
             
             alustaKysely(sql);
 

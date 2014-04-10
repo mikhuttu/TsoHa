@@ -1,7 +1,8 @@
-package Servletit;
+package Servletit.muokkaus;
 
 import Mallit.Kilpailija;
 import Mallit.Tulos;
+import Servletit.YleisServlet;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,9 +42,7 @@ public class KirjaaTulosServlet extends YleisServlet {
         PrintWriter out = luoPrintWriter(response);
 
         try {
-            Tulos tulos = new Tulos().haeTulosKorkeimmallaIdlla();
-            
-            new Tulos().kirjaaTulos(getId(tulos) + 1, aikaIlmanPisteita, osallistujaId, valiaikapisteId);
+            new Tulos().kirjaaTulos(aikaIlmanPisteita, osallistujaId, valiaikapisteId);
             
             String paivitys = "Kilpailijan " + kilpailija.getNimi() + " aika (" + aika + ") kirjattiin onnistuneesti!";
             ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);

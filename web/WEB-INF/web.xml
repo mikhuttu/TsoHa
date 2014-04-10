@@ -1,122 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-    
     <servlet>
         <servlet-name>Etusivu</servlet-name>
         <servlet-class>Servletit.EtusivuServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>Kilpailu</servlet-name>
         <servlet-class>Servletit.KilpailuServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>KilpailuMuokkaus</servlet-name>
-        <servlet-class>Servletit.KilpailuMuokkausServlet</servlet-class>
+        <servlet-class>Servletit.muokkaus.KilpailuMuokkausServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>KirjaaTulos</servlet-name>
-        <servlet-class>Servletit.KirjaaTulosServlet</servlet-class>
+        <servlet-class>Servletit.muokkaus.KirjaaTulosServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>KirjauduUlos</servlet-name>
         <servlet-class>Servletit.KirjauduUlosServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>Kirjautuminen</servlet-name>
         <servlet-class>Servletit.KirjautuminenServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>LisaaKilpailija</servlet-name>
-        <servlet-class>Servletit.LisaaKilpailijaServlet</servlet-class>
+        <servlet-class>Servletit.lisays.LisaaKilpailijaServlet</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>LisaaKilpailu</servlet-name>
+        <servlet-class>Servletit.lisays.LisaaKilpailuServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LisaaKilpailulleNimi</servlet-name>
+        <servlet-class>Servletit.lisays.LisaaKilpailulleNimiServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>LisaaValiaikapiste</servlet-name>
-        <servlet-class>Servletit.LisaaValiaikapisteServlet</servlet-class>
+        <servlet-class>Servletit.lisays.LisaaValiaikapisteServlet</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>MuutaKilpailunNimi</servlet-name>
+        <servlet-class>Servletit.muokkaus.MuutaKilpailunNimiServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MuutaKilpailunNimea</servlet-name>
+        <servlet-class>Servletit.muokkaus.MuutaKilpailunNimeaServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>PoistaKilpailija</servlet-name>
-        <servlet-class>Servletit.PoistaKilpailijaServlet</servlet-class>
+        <servlet-class>Servletit.poisto.PoistaKilpailijaServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>PoistaKilpailu</servlet-name>
-        <servlet-class>Servletit.PoistaKilpailuServlet</servlet-class>
+        <servlet-class>Servletit.poisto.PoistaKilpailuServlet</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>PoistaValiaikapiste</servlet-name>
-        <servlet-class>Servletit.PoistaValiaikapisteServlet</servlet-class>
+        <servlet-class>Servletit.poisto.PoistaValiaikapisteServlet</servlet-class>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>Etusivu</servlet-name>
         <url-pattern>/etusivu</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>Kilpailu</servlet-name>
         <url-pattern>/kilpailu</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>KilpailuMuokkaus</servlet-name>
         <url-pattern>/kilpailumuokkaus</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>KirjaaTulos</servlet-name>
         <url-pattern>/kirjaatulos</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>KirjauduUlos</servlet-name>
         <url-pattern>/kirjauduulos</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>Kirjautuminen</servlet-name>
         <url-pattern>/kirjautuminen</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>LisaaKilpailija</servlet-name>
         <url-pattern>/lisaakilpailija</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>LisaaKilpailu</servlet-name>
+        <url-pattern>/lisaakilpailu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LisaaKilpailulleNimi</servlet-name>
+        <url-pattern>/lisaakilpailullenimi</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LisaaValiaikapiste</servlet-name>
         <url-pattern>/lisaavaliaikapiste</url-pattern>
     </servlet-mapping>
-    
+    <servlet-mapping>
+        <servlet-name>MuutaKilpailunNimi</servlet-name>
+        <url-pattern>/muutakilpailunnimi</url-pattern>
+    </servlet-mapping>    
+    <servlet-mapping>
+        <servlet-name>MuutaKilpailunNimea</servlet-name>
+        <url-pattern>/muutakilpailunnimea</url-pattern>
+    </servlet-mapping>   
     <servlet-mapping>
         <servlet-name>PoistaKilpailija</servlet-name>
         <url-pattern>/poistakilpailija</url-pattern>
-    </servlet-mapping>   
-    
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PoistaKilpailu</servlet-name>
         <url-pattern>/poistakilpailu</url-pattern>
-    </servlet-mapping>  
-    
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PoistaValiaikapiste</servlet-name>
         <url-pattern>/poistavaliaikapiste</url-pattern>
-    </servlet-mapping> 
-    
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-    
     <welcome-file-list>
         <welcome-file>esittelysivu.html</welcome-file>
     </welcome-file-list>

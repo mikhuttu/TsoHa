@@ -9,6 +9,14 @@ public class Kilpailija extends KyselyToiminnot {
     private int id;
     private String nimi;
     
+    public Kilpailija() {
+    }
+    
+    public Kilpailija(int id, String nimi) {
+        this.id = id;
+        this.nimi = nimi;
+    }
+    
     public int getId() {
         return this.id;
     }
@@ -130,7 +138,7 @@ public class Kilpailija extends KyselyToiminnot {
         try {
             String sql = "SELECT kilpailija.id, kilpailija.nimi FROM kilpailija WHERE"
                    + " kilpailija.id NOT IN"
-                   + " (SELECT osallistuja.kilpailija FROM osallistuja WHERE osallistuja.kilpailu = ?)";
+                   + " (SELECT osallistuja.kilpailija FROM osallistuja WHERE osallistuja.kilpailu = ?) ORDER BY nimi asc";
             
             alustaKysely(sql);
             statement.setInt(1, kilpailu.getId());

@@ -29,7 +29,7 @@ public class Kilpailu extends KyselyToiminnot {
     public List<Kilpailu> haeKilpailut() {
 
         try {
-            String sql = "SELECT id, nimi FROM kilpailu";
+            String sql = "SELECT id, nimi FROM kilpailu ORDER BY nimi";
             
             alustaKysely(sql);
             suoritaKysely();
@@ -60,6 +60,31 @@ public class Kilpailu extends KyselyToiminnot {
 
             alustaKysely(sql);
             statement.setInt(1, id);
+            
+            suoritaKysely();
+            
+            if (results.next()) {
+                return palautaKilpailu();
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Kilpailu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        finally {
+            lopeta();
+        }
+        
+        return null;
+    }
+    
+    public Kilpailu haeKilpailu(String nimi) {
+
+        try {
+            String sql = "SELECT * FROM kilpailu WHERE nimi = ? LIMIT 1";
+
+            alustaKysely(sql);
+            statement.setString(1, nimi);
             
             suoritaKysely();
             
@@ -111,6 +136,82 @@ public class Kilpailu extends KyselyToiminnot {
         
         finally {
             lopeta();
+        }
+    }
+
+    public boolean lisaaKilpailu(String nimi) {
+        
+        try {
+            if (onkoKilpailuJoOlemassa(nimi)) {
+                return true;
+            }
+            
+            luoUusiKilpailu(nimi);
+            return false;
+        }
+        
+        finally {
+            lopeta();
+        }
+    }
+    
+    public boolean onOlemassa(String nimi) {
+        try {
+            return onkoKilpailuJoOlemassa(nimi);
+        }
+        finally {
+            lopeta();
+        }
+    }
+    
+    private boolean onkoKilpailuJoOlemassa(String nimi) {
+        
+        try {
+            String sql = "SELECT * FROM kilpailu WHERE nimi = ?";
+            
+            alustaKysely(sql);
+
+            statement.setString(1, nimi);
+            
+            suoritaKysely();
+            return results.next();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return true;
+    }
+    
+    private void luoUusiKilpailu(String nimi) {
+        try {
+            String sql = "INSERT INTO kilpailu (nimi) VALUES (?)";
+            
+            alustaKysely(sql);
+
+            statement.setString(1, nimi);
+            
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void paivitaNimi(int id, String nimi) {
+        try {
+            String sql = "UPDATE kilpailu SET nimi = ? WHERE id = ?";
+            alustaKysely(sql);
+
+            statement.setString(1, nimi);
+            statement.setInt(2, id);
+            
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 }

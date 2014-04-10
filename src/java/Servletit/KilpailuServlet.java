@@ -25,7 +25,6 @@ public class KilpailuServlet extends YleisServlet {
             request.setAttribute("kilpailutulokset", new Tulos().haeValiaikapisteenTulokset(piste));
         }
         
-        
         request.setAttribute("valiaikapisteet", new Valiaikapiste().haeKilpailunValiaikapisteet(kilpailu));
         
         PrintWriter out = luoPrintWriter(response);

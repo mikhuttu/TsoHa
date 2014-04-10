@@ -1,11 +1,12 @@
-package Servletit;
+package Servletit.poisto;
 
-import Mallit.Kilpailu;
+import Mallit.Valiaikapiste;
+import Servletit.YleisServlet;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class PoistaKilpailuServlet extends YleisServlet {
+public class PoistaValiaikapisteServlet extends YleisServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
         response.setContentType("text/html;charset=UTF-8");
@@ -15,15 +16,23 @@ public class PoistaKilpailuServlet extends YleisServlet {
         }
         
         int kilpailuId = haeId(request);
-        Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
+        
+        int valiaikapisteId = haeIntArvo("valiaikapiste", request);
+        
+        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, valiaikapisteId, kilpailuId)) {
+            tallennaIlmoitus("Väliaikapistettä ei ollut valittu.", request);
+            return;
+        }
+        
+        Valiaikapiste piste = new Valiaikapiste().haeValiaikapiste(valiaikapisteId);
         
         PrintWriter out = luoPrintWriter(response);
         
         try {
-            new Kilpailu().poistaKilpailu(kilpailuId);
+            new Valiaikapiste().poistaValiaikapiste(valiaikapisteId);
             
-            tallennaIlmoitus("Kilpailu '" + kilpailu.getNimi() + "' poistettiin onnistuneesti!", request);
-            ohjaaSivulle("etusivu", response);
+            String paivitys = "Väliaikapiste " + piste.getNumero() + " poistettiin kilpailusta onnistuneesti!";
+            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
         }
         
         finally {
@@ -32,7 +41,7 @@ public class PoistaKilpailuServlet extends YleisServlet {
             }
         }
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
@@ -45,6 +54,6 @@ public class PoistaKilpailuServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Poistaa kilpailun tietokannasta.";
+        return "Poistaa kilpailusta väliaikapisteen.";
     }
 }

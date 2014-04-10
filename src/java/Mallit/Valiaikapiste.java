@@ -89,22 +89,6 @@ public class Valiaikapiste extends KyselyToiminnot {
         }
         return null;
     }
-
-    
-    public Valiaikapiste haeValiaikapisteKorkeimmallaIdlla() {
-        
-        try {
-            String sql = "SELECT * FROM valiaikapiste ORDER BY id desc LIMIT 1";
-            alustaKysely(sql);
-
-            suoritaKysely();
-            return palautaValiaikapiste();
-        }
-
-        finally {
-            lopeta();
-        }
-    }
     
     public Valiaikapiste haeValiaikapisteKorkeimmallaNumerolla(Kilpailu kilpailu) {
         
@@ -151,14 +135,13 @@ public class Valiaikapiste extends KyselyToiminnot {
         return null;
     }
 
-    public void lisaaValiaikapisteKilpailuun(int maxId, int kilpailunPisteita, int kilpailuId) {
+    public void lisaaValiaikapisteKilpailuun(int valiaikaPisteita, int kilpailuId) {
         try {
-            String sql = "INSERT INTO valiaikapiste VALUES (?, ?, ?)";
+            String sql = "INSERT INTO valiaikapiste (numero, kilpailu) VALUES (?, ?)";
             alustaKysely(sql);
             
-            statement.setInt(1, maxId);
-            statement.setInt(2, kilpailunPisteita);
-            statement.setInt(3, kilpailuId);
+            statement.setInt(1, valiaikaPisteita + 1);
+            statement.setInt(2, kilpailuId);
             suoritaKysely();
         } 
         
@@ -173,7 +156,7 @@ public class Valiaikapiste extends KyselyToiminnot {
 
     public void poistaValiaikapiste(int valiaikapisteId) {
         try {
-            String sql = "DELETE FROM valiaikapiste WHERE valiaikapiste.id = ?";  // kysely väärin --> suoritakysely palauttaa null
+            String sql = "DELETE FROM valiaikapiste WHERE valiaikapiste.id = ?";
             
             alustaKysely(sql);
 

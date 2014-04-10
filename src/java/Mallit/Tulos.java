@@ -56,37 +56,29 @@ public class Tulos extends KyselyToiminnot {
         return this.valiaikapiste;
     }
     
-    public Tulos haeTulosKorkeimmallaIdlla() {
-        
+    public String getKilpailijaNimi() {
         try {
-            String sql = "SELECT * FROM tulos ORDER BY id desc LIMIT 1";
+            String sql = "SELECT * FROM kilpailija WHERE kilpailija.id = ? LIMIT 1";
             alustaKysely(sql);
-
+            
+            statement.setInt(1, this.kilpailija);
             suoritaKysely();
-            return palautaTulos();
+            
+            if (results.next()) {
+                return results.getString("nimi");
+            }
+            return null;
         }
-
+        catch (SQLException e) {}
+        
         finally {
             lopeta();
         }
-    }
-    
-    private Tulos palautaTulos() {
-        try {
-            
-            if (results.next ()) {
-                return palauta();
-            }
-            
-            return null;
-        }
-
-        catch (SQLException e) {}
         
         return null;
     }
     
-    private Tulos palauta() {
+    private Tulos palautaTulos() {
         
         try {
             Tulos tulos = new Tulos();
@@ -125,7 +117,7 @@ public class Tulos extends KyselyToiminnot {
             ArrayList<Tulos> tulokset = new ArrayList<Tulos>();
             
             while (results.next()) {
-                tulokset.add(palauta());
+                tulokset.add(palautaTulos());
             }
             
             return tulokset;
@@ -142,17 +134,73 @@ public class Tulos extends KyselyToiminnot {
         return null;
     }
 
-    public void kirjaaTulos(int tulosId, String aika, int kilpailijaId, int valiaikapisteId) {
+    public void kirjaaTulos(String aika, int kilpailijaId, int valiaikapisteId) {
         
         try {
-            String sql = "INSERT INTO tulos VALUES (?, ?, ?, ?)";
+            int tulosId = paivitetaankoVanhaTulos(kilpailijaId, valiaikapisteId);
+            
+            if (tulosId != 0) {
+                paivitaVanhaTulos(tulosId, aika, kilpailijaId, valiaikapisteId);
+            }
+
+            else {
+                kirjaaUusiTulos(aika, kilpailijaId, valiaikapisteId);
+            }
+        }
+        finally {
+            lopeta();
+        }
+    }
+        
+    private int paivitetaankoVanhaTulos(int kilpailijaId, int valiaikapisteId) {
+        try {
+            String sql = "SELECT * FROM tulos WHERE kilpailija = ? AND valiaikapiste = ? LIMIT 1";
+            alustaKysely(sql);
+
+            statement.setInt(1, kilpailijaId);
+            statement.setInt(2, valiaikapisteId);
+            suoritaKysely();
+            
+            if (results.next()) {
+                return results.getInt("id");
+            }
+        }
+        catch (SQLException e) {
+            Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        return 0;
+    }
+    
+    private void paivitaVanhaTulos(int tulosId, String aika, int kilpailijaId, int valiaikapisteId) {
+        try {
+            String sql = "UPDATE tulos SET aika = ?, kilpailija = ?, valiaikapiste = ? WHERE id = ?";
             
             alustaKysely(sql);
 
-            statement.setInt(1, tulosId);
-            statement.setString(2, aika);
-            statement.setInt(3, kilpailijaId);
-            statement.setInt(4, valiaikapisteId);
+            statement.setString(1, aika);
+            statement.setInt(2, kilpailijaId);
+            statement.setInt(3, valiaikapisteId);
+            statement.setInt(4, tulosId);
+            
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    private void kirjaaUusiTulos(String aika, int kilpailijaId, int valiaikapisteId) {
+        
+        try {
+            String sql = "INSERT INTO tulos (aika, kilpailija, valiaikapiste) VALUES (?, ?, ?)";
+            
+            alustaKysely(sql);
+
+            statement.setString(1, aika);
+            statement.setInt(2, kilpailijaId);
+            statement.setInt(3, valiaikapisteId);
             
             suoritaKysely();
         }
@@ -160,10 +208,5 @@ public class Tulos extends KyselyToiminnot {
         catch (SQLException e) {
             Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
         }
-        
-        finally {
-            lopeta();
-        }
-    }
-
+    }    
 }

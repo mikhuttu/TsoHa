@@ -162,20 +162,6 @@ public class YleisServlet extends HttpServlet {
         return request.getParameter(param);
     }
     
-    protected int getId (Valiaikapiste piste) {
-        if (piste == null) {
-            return 0;
-        }
-        return piste.getId();
-    }
-    
-    protected int getId (Tulos tulos) {
-        if (tulos == null) {
-            return 0;
-        }
-        return tulos.getId();
-    }    
-    
     protected int getNumero (Valiaikapiste piste) {
         if (piste == null) {
             return 0;

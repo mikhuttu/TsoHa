@@ -7,8 +7,9 @@
     <head>
         <link href="css/bootstrap.css" rel="stylesheet">
         <link href="css/bootstrap-theme.css" rel="stylesheet">
-        <link href="css/main.css" rel="stylesheet">
-        
+
+        <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
         <meta charset="utf-8" />
         
         <title>${pageTitle}</title>
@@ -33,8 +34,8 @@
             </d:if>
             
             <d:if test= "${kirjautunut!= null}">
-                <li><a href="/HiihtoTulosPalvelu/lisaakilpailu">Lisää kilpailu</a></li>
-                <li><a href="/HiihtoTulosPalvelu/lisaakilpailija">Lisää kilpailija</a></li>
+                <li><a href="/HiihtoTulosPalvelu/lisaakilpailullenimi">Lisää kilpailu</a></li>
+                <li><a href="/HiihtoTulosPalvelu/lisaakilpailijajarjestelmaan">Lisää kilpailija</a></li>
                 <li><a href="/HiihtoTulosPalvelu/tuhoakilpailija">Poista kilpailija</a></li>
                 <li><a href="/HiihtoTulosPalvelu/kirjauduulos">Kirjaudu ulos</a></li>
             </d:if>
