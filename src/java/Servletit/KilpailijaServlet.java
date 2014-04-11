@@ -1,28 +1,31 @@
 package Servletit;
 
-import Mallit.Kayttaja;
 import Mallit.Kilpailija;
 import Mallit.Kilpailu;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
     
-public class EtusivuServlet extends YleisServlet {
+public class KilpailijaServlet extends YleisServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
         response.setContentType("text/html;charset=UTF-8");
         
-        Kayttaja kirjautunut = onkoKirjautunut(request);
-        request.setAttribute("kirjautunut", kirjautunut);
+        int kilpailijaId = haeIntArvo("kilpailija", request);
         
-        request.setAttribute("kilpailijat", new Kilpailija().haeKilpailijat());
-        request.setAttribute("kilpailut", new Kilpailu().haeKilpailut());
+        if (kilpailijaId == 0) {
+            kilpailijaId = haeId(request);
+        }
 
+        
+        request.setAttribute("kilpailija", new Kilpailija().haeKilpailija(kilpailijaId));
+        request.setAttribute("kilpailut", new Kilpailu().haeKilpailut(kilpailijaId));
+        
         PrintWriter out = luoPrintWriter(response);
         
         try {
             paivitaIlmoitus(request);
-            naytaJSP("etusivu", request, response);
+            naytaJSP("kilpailija", request, response);
         }
         
         finally {
@@ -31,6 +34,7 @@ public class EtusivuServlet extends YleisServlet {
             }
         }
     }
+    
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -44,6 +48,6 @@ public class EtusivuServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Vie käyttäjän etusivulle.";
+        return "Näyttää kilpailijanpoistosivun.";
     }
 }

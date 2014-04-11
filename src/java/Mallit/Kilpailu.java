@@ -28,29 +28,18 @@ public class Kilpailu extends KyselyToiminnot {
     
     public List<Kilpailu> haeKilpailut() {
 
-        try {
-            String sql = "SELECT id, nimi FROM kilpailu ORDER BY nimi";
+       try {
+           String sql = "SELECT id, nimi FROM kilpailu ORDER BY nimi";
+           alustaKysely(sql);
             
-            alustaKysely(sql);
-            suoritaKysely();
-            
-            ArrayList<Kilpailu> kilpailut = new ArrayList<Kilpailu>();
-            
-            while (results.next()) {
-                kilpailut.add(palautaKilpailu());
-            }
-            
-            return kilpailut;
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, ex);
-        }
+           suoritaKysely();
         
-        finally {
-            lopeta();
-        }
-        
-        return null;
+           return palautaKaikki();
+       }
+
+       finally {
+          lopeta();
+       }
     }
     
     public Kilpailu haeKilpailu(int id) {
@@ -64,11 +53,11 @@ public class Kilpailu extends KyselyToiminnot {
             suoritaKysely();
             
             if (results.next()) {
-                return palautaKilpailu();
+                return palauta();
             }
             
-        } catch (SQLException ex) {
-            Logger.getLogger(Kilpailu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            Logger.getLogger(Kilpailu.class.getName()).log(Level.SEVERE, null, e);
         }
         
         finally {
@@ -89,7 +78,7 @@ public class Kilpailu extends KyselyToiminnot {
             suoritaKysely();
             
             if (results.next()) {
-                return palautaKilpailu();
+                return palauta();
             }
             
         } catch (SQLException ex) {
@@ -103,21 +92,37 @@ public class Kilpailu extends KyselyToiminnot {
         return null;
     }
     
-    private Kilpailu palautaKilpailu() {
+    private ArrayList<Kilpailu> palautaKaikki() {
+        
+        ArrayList<Kilpailu> kilpailut = new ArrayList<Kilpailu>();
+        
         try {
-            Kilpailu kilpailu = new Kilpailu();
+            while (results.next()) {
+                kilpailut.add(palauta());
+            }
+        }
+        catch (SQLException e) {
+            Logger.getLogger(Kilpailu.class.getName()).log(Level.SEVERE, null, e);
+        }    
+        
+        return kilpailut;
+    }
+    
+    private Kilpailu palauta() {
+        Kilpailu kilpailu = null;
+        
+        try {
+            kilpailu = new Kilpailu();
             
             kilpailu.setId(results.getInt("id"));
             kilpailu.setNimi(results.getString("nimi"));
-            
-            return kilpailu;
         }
         
         catch (SQLException ex) {
             Logger.getLogger(Valiaikapiste.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return null;
+        return kilpailu;
     }
 
     public void poistaKilpailu(int kilpailuId) {
@@ -213,5 +218,26 @@ public class Kilpailu extends KyselyToiminnot {
         catch (SQLException e) {
             Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+    
+    public ArrayList<Kilpailu> haeKilpailut(int kilpailijaId) {
+        try {
+            String sql = "SELECT * FROM kilpailu, osallistuja WHERE kilpailu.id = osallistuja.kilpailu AND osallistuja.kilpailija = ?";
+            alustaKysely(sql);
+            
+            statement.setInt(1, kilpailijaId);
+            
+            suoritaKysely();
+            
+            return palautaKaikki();
+        }
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        finally {
+            lopeta();
+        }
+        return null;
     }
 }

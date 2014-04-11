@@ -5,12 +5,24 @@
         <servlet-class>Servletit.EtusivuServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>Kilpailija</servlet-name>
+        <servlet-class>Servletit.KilpailijaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>KilpailijanMuokkaus</servlet-name>
+        <servlet-class>Servletit.muokkaus.KilpailijanMuokkausServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>Kilpailu</servlet-name>
         <servlet-class>Servletit.KilpailuServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>KilpailuMuokkaus</servlet-name>
         <servlet-class>Servletit.muokkaus.KilpailuMuokkausServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>KilpailunNimenMuokkaus</servlet-name>
+        <servlet-class>Servletit.muokkaus.KilpailunNimenMuokkausServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>KirjaaTulos</servlet-name>
@@ -29,28 +41,44 @@
         <servlet-class>Servletit.lisays.LisaaKilpailijaServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>LisaaKilpailijaKilpailuun</servlet-name>
+        <servlet-class>Servletit.lisays.LisaaKilpailijaKilpailuunServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LisaaKilpailijaLomake</servlet-name>
+        <servlet-class>Servletit.lisays.LisaaKilpailijaLomakeServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LisaaKilpailu</servlet-name>
         <servlet-class>Servletit.lisays.LisaaKilpailuServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>LisaaKilpailulleNimi</servlet-name>
-        <servlet-class>Servletit.lisays.LisaaKilpailulleNimiServlet</servlet-class>
+        <servlet-name>LisaaKilpailuLomake</servlet-name>
+        <servlet-class>Servletit.lisays.LisaaKilpailuLomakeServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LisaaValiaikapiste</servlet-name>
         <servlet-class>Servletit.lisays.LisaaValiaikapisteServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>MuutaKilpailunNimi</servlet-name>
-        <servlet-class>Servletit.muokkaus.MuutaKilpailunNimiServlet</servlet-class>
+        <servlet-name>MuutaKilpailijanNimea</servlet-name>
+        <servlet-class>Servletit.muokkaus.MuutaKilpailijanNimeaServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>MuutaKilpailunNimea</servlet-name>
         <servlet-class>Servletit.muokkaus.MuutaKilpailunNimeaServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>OhjaaKirjautumisSivulle</servlet-name>
+        <servlet-class>Servletit.OhjaaKirjautumisSivulle</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>PoistaKilpailija</servlet-name>
         <servlet-class>Servletit.poisto.PoistaKilpailijaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PoistaKilpailijaKilpailusta</servlet-name>
+        <servlet-class>Servletit.poisto.PoistaKilpailijaKilpailustaServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PoistaKilpailu</servlet-name>
@@ -60,9 +88,18 @@
         <servlet-name>PoistaValiaikapiste</servlet-name>
         <servlet-class>Servletit.poisto.PoistaValiaikapisteServlet</servlet-class>
     </servlet>
+    
     <servlet-mapping>
         <servlet-name>Etusivu</servlet-name>
         <url-pattern>/etusivu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Kilpailija</servlet-name>
+        <url-pattern>/kilpailija</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>KilpailijanMuokkaus</servlet-name>
+        <url-pattern>/kilpailijanmuokkaus</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Kilpailu</servlet-name>
@@ -71,6 +108,10 @@
     <servlet-mapping>
         <servlet-name>KilpailuMuokkaus</servlet-name>
         <url-pattern>/kilpailumuokkaus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>KilpailunNimenMuokkaus</servlet-name>
+        <url-pattern>/kilpailunnimenmuokkaus</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>KirjaaTulos</servlet-name>
@@ -89,28 +130,44 @@
         <url-pattern>/lisaakilpailija</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>LisaaKilpailijaKilpailuun</servlet-name>
+        <url-pattern>/lisaakilpailijakilpailuun</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LisaaKilpailijaLomake</servlet-name>
+        <url-pattern>/lisaakilpailijalomake</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>LisaaKilpailu</servlet-name>
         <url-pattern>/lisaakilpailu</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>LisaaKilpailulleNimi</servlet-name>
-        <url-pattern>/lisaakilpailullenimi</url-pattern>
+        <servlet-name>LisaaKilpailuLomake</servlet-name>
+        <url-pattern>/lisaakilpailulomake</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LisaaValiaikapiste</servlet-name>
         <url-pattern>/lisaavaliaikapiste</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>MuutaKilpailunNimi</servlet-name>
-        <url-pattern>/muutakilpailunnimi</url-pattern>
-    </servlet-mapping>    
+        <servlet-name>MuutaKilpailijanNimea</servlet-name>
+        <url-pattern>/muutakilpailijannimea</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MuutaKilpailunNimea</servlet-name>
         <url-pattern>/muutakilpailunnimea</url-pattern>
-    </servlet-mapping>   
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OhjaaKirjautumisSivulle</servlet-name>
+        <url-pattern>/ohjaaKirjautumisSivulle</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PoistaKilpailija</servlet-name>
         <url-pattern>/poistakilpailija</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PoistaKilpailijaKilpailusta</servlet-name>
+        <url-pattern>/poistakilpailijakilpailusta</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PoistaKilpailu</servlet-name>

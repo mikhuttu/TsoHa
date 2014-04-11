@@ -34,9 +34,8 @@
             </d:if>
             
             <d:if test= "${kirjautunut!= null}">
-                <li><a href="/HiihtoTulosPalvelu/lisaakilpailullenimi">Lisää kilpailu</a></li>
-                <li><a href="/HiihtoTulosPalvelu/lisaakilpailijajarjestelmaan">Lisää kilpailija</a></li>
-                <li><a href="/HiihtoTulosPalvelu/tuhoakilpailija">Poista kilpailija</a></li>
+                <li><a href="/HiihtoTulosPalvelu/lisaakilpailulomake">Lisää kilpailu</a></li>
+                <li><a href="/HiihtoTulosPalvelu/lisaakilpailijalomake">Lisää kilpailija</a></li>
                 <li><a href="/HiihtoTulosPalvelu/kirjauduulos">Kirjaudu ulos</a></li>
             </d:if>
         </ul>

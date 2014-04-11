@@ -11,10 +11,6 @@ public class LisaaKilpailuServlet extends YleisServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         
-        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
-            return;
-        }
-        
         PrintWriter out = luoPrintWriter(response);
         
         try {
@@ -22,19 +18,19 @@ public class LisaaKilpailuServlet extends YleisServlet {
             
             if (nimi == null || nimi.isEmpty()) {
                 tallennaIlmoitus("Nimikenttä oli jätetty tyhjäksi. Uutta kilpailua ei lisätty.", request);
-                ohjaaSivulle("lisaakilpailullenimi", response);   
+                ohjaaSivulle("lisaakilpailulomake", response);   
                 return;
             }
             
             if (nimi.length() > 30) {
-                tallennaIlmoitus("Kilpailun nimi saa olla max. 30 merkkiä pitkä. Antamasi kilpailu oli pituudeltaan " + nimi.length() + " merkkinen.", request);
-                ohjaaSivulle("lisaakilpailullenimi", response);   
+                tallennaIlmoitus("Kilpailun nimi saa olla max. 30 merkkiä pitkä. Antamasi nimi oli pituudeltaan " + nimi.length() + " merkkinen.", request);
+                ohjaaSivulle("lisaakilpailulomake", response);   
                 return;
             }
             
             if (new Kilpailu().lisaaKilpailu(nimi)) {
                 tallennaIlmoitus("Nimellä '" + nimi + "' oleva kilpailu on jo olemassa. Valitse kilpailulle toinen nimi.", request);
-                ohjaaSivulle("lisaakilpailullenimi", response);
+                ohjaaSivulle("lisaakilpailulomake", response);
                 return;
             }
             

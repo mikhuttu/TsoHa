@@ -23,7 +23,7 @@
                     <div class="panel-body">
                         <ul>
                             <c:forEach var="kilpailija" items="${kilpailijat}">
-                                <div class="${kilpailija.id}">${kilpailija.nimi}</div>
+                                <li><a href="/HiihtoTulosPalvelu/kilpailija?id=${kilpailija.id}">${kilpailija.nimi}</a></li>
                             </c:forEach>
 
                         </ul>

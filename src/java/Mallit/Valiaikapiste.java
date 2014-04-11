@@ -54,8 +54,10 @@ public class Valiaikapiste extends KyselyToiminnot {
             
             statement.setString(1, "tulos.valiaikapiste");
             suoritaKysely();
-            return palautaValiaikapiste();
             
+            if (results.next()) {
+                return palautaValiaikaPiste();
+            }
         }
         
         catch (SQLException ex) {
@@ -98,7 +100,10 @@ public class Valiaikapiste extends KyselyToiminnot {
 
             statement.setInt(1, kilpailu.getId());
             suoritaKysely();
-            return palautaValiaikapiste();
+            
+            if (results.next()) {
+                return palautaValiaikaPiste();
+            }
         }
         
         catch (SQLException ex) {
@@ -121,7 +126,9 @@ public class Valiaikapiste extends KyselyToiminnot {
             statement.setInt(1, valiaikapisteId);
             suoritaKysely();
             
-            return palautaValiaikapiste();
+            if (results.next()) {
+                return palautaValiaikaPiste();
+            }
         }
         
         catch (SQLException ex) {
@@ -173,28 +180,12 @@ public class Valiaikapiste extends KyselyToiminnot {
         }
     }
     
-    private Valiaikapiste palautaValiaikapiste() {
-        
-        try {
-            
-            if (results.next ()) {
-                return palautaPiste();
-            }
-            
-            return null;
-        }
-
-        catch (SQLException e) {}
-        
-        return null;
-    }
-    
     private ArrayList<Valiaikapiste> palautaListaValiaikapisteista() {
         try {
             ArrayList<Valiaikapiste> pisteet = new ArrayList<Valiaikapiste>();
             
             while (results.next()) {
-                pisteet.add(palautaPiste());
+                pisteet.add(palautaValiaikaPiste());
             }
             return pisteet;
         } 
@@ -206,7 +197,7 @@ public class Valiaikapiste extends KyselyToiminnot {
         return null;
     }
     
-    private Valiaikapiste palautaPiste() {
+    private Valiaikapiste palautaValiaikaPiste() {
         
         try {
             Valiaikapiste piste = new Valiaikapiste();

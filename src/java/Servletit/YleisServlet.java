@@ -1,7 +1,6 @@
 package Servletit;
 
 import Mallit.Kayttaja;
-import Mallit.Tulos;
 import Mallit.Valiaikapiste;
 import java.io.IOException;
 import java.io.PrintWriter;

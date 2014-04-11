@@ -9,14 +9,6 @@ public class Kilpailija extends KyselyToiminnot {
     private int id;
     private String nimi;
     
-    public Kilpailija() {
-    }
-    
-    public Kilpailija(int id, String nimi) {
-        this.id = id;
-        this.nimi = nimi;
-    }
-    
     public int getId() {
         return this.id;
     }
@@ -33,6 +25,36 @@ public class Kilpailija extends KyselyToiminnot {
         this.nimi = nimi;
     }
     
+    private ArrayList<Kilpailija> palautaKaikki() {
+        ArrayList<Kilpailija> kilpailijat = new ArrayList<Kilpailija>();
+        
+        try {
+            while (results.next()) {
+                kilpailijat.add(palauta());
+            }
+        }   
+        catch (SQLException ex) {
+            Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return kilpailijat;
+    }
+    
+    private Kilpailija palauta() {
+        Kilpailija kilpailija = null;
+        
+        try {
+            kilpailija = new Kilpailija();
+            
+            kilpailija.setId(results.getInt("id"));
+            kilpailija.setNimi(results.getString("nimi"));
+        }
+        catch (SQLException e) {
+            Logger.getLogger(Kilpailu.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        return kilpailija;
+    }
+    
     public Kilpailija haeKilpailija(int id) {
 
         try {
@@ -43,19 +65,37 @@ public class Kilpailija extends KyselyToiminnot {
             
             suoritaKysely();
             
-            Kilpailija kilpailija = null;
+            if (results.next()) {
+                return palauta();
+            }
+        }
+        catch (SQLException e) {
+            Logger.getLogger(Kilpailu.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+        finally {
+            lopeta();
+        }
+        
+        return null;
+    }
+    
+    public Kilpailija haeKilpailijaTulosTaulunKautta() {
+        
+        try {
+            String sql = "SELECT id, nimi FROM kilpailija WHERE kilpailija.id = ? LIMIT 1";
+            
+            alustaKysely(sql);
+            statement.setString(1, "tulos.kilpailija");
+            
+            suoritaKysely();
             
             if (results.next()) {
-                kilpailija = new Kilpailija();
-                
-                kilpailija.setId(results.getInt("id"));
-                kilpailija.setNimi(results.getString("nimi"));
+                return palauta();
             }
-            
-            return kilpailija;
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Kilpailu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         finally {
@@ -63,6 +103,22 @@ public class Kilpailija extends KyselyToiminnot {
         }
         
         return null;
+    }
+    
+    public ArrayList<Kilpailija> haeKilpailijat() {
+        
+        try {
+            String sql = "SELECT * FROM kilpailija ORDER BY nimi asc";
+            alustaKysely(sql);
+            
+            suoritaKysely();
+       
+            return palautaKaikki();
+        }
+
+        finally {
+            lopeta();
+        }
     }
     
     public ArrayList<Kilpailija> haeKilpailunKilpailijat(Kilpailu kilpailu) {
@@ -76,19 +132,8 @@ public class Kilpailija extends KyselyToiminnot {
             statement.setInt(1, kilpailu.getId());
 
             suoritaKysely();
-            
-            ArrayList<Kilpailija> kilpailijat = new ArrayList<Kilpailija>();
-            
-            while (results.next()) {
-                Kilpailija k = new Kilpailija();
-                k.setId(results.getInt("id"));
-                k.setNimi(results.getString("nimi"));
 
-                kilpailijat.add(k);
-            }
-            
-            return kilpailijat;
-            
+            return palautaKaikki();
         } 
         catch (SQLException ex) {
             Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,39 +142,6 @@ public class Kilpailija extends KyselyToiminnot {
         finally {
             lopeta();
         }
-        
-        return null;
-    }
-    
-    
-    public Kilpailija haeKilpailijaTulosTaulunKautta() {
-        
-        try {
-            String sql = "SELECT id, nimi FROM kilpailija WHERE kilpailija.id = ? LIMIT 1";
-            
-            alustaKysely(sql);
-            statement.setString(1, "tulos.kilpailija");
-            
-            suoritaKysely();
-            
-            Kilpailija kilpailija =  null;
-            
-            if (results.next()) {
-                kilpailija = new Kilpailija();
-                kilpailija.setId(results.getInt("id"));
-                kilpailija.setNimi(results.getString("nimi"));
-            }
-            
-            return kilpailija;
-        }
-        catch (SQLException ex) {
-            Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        finally {
-            lopeta();
-        }
-        
         return null;
     }
 
@@ -142,22 +154,10 @@ public class Kilpailija extends KyselyToiminnot {
             
             alustaKysely(sql);
             statement.setInt(1, kilpailu.getId());
-            //statement.setInt(2, kilpailu.getId());
 
             suoritaKysely();
             
-            ArrayList<Kilpailija> kilpailijat = new ArrayList<Kilpailija>();
-            
-            while (results.next()) {
-                Kilpailija kilpailija = new Kilpailija();
-                kilpailija.setId(results.getInt("id"));
-                kilpailija.setNimi(results.getString("nimi"));
-
-                kilpailijat.add(kilpailija);
-            }
-            
-            return kilpailijat;
-            
+            return palautaKaikki();    
         } 
         catch (SQLException ex) {
             Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, ex);
@@ -168,5 +168,59 @@ public class Kilpailija extends KyselyToiminnot {
         }
         
         return null;
+    }
+    
+    public void lisaaKilpailija(String nimi) {
+        try {
+            String sql = "INSERT INTO kilpailija (nimi) VALUES (?)";
+            alustaKysely(sql);
+            
+            statement.setString(1, nimi);
+            suoritaKysely();
+        }
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        finally {
+            lopeta();
+        }
+    }
+    
+    public void paivitaNimi(int id, String uusi) {
+        try {
+            String sql = "UPDATE kilpailija SET nimi = ? WHERE id = ?";
+            alustaKysely(sql);
+            
+            statement.setString(1, uusi);
+            statement.setInt(2, id);
+            suoritaKysely();
+        }
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        finally {
+            lopeta();
+        }
+    }
+    
+    public void poistaKilpailija(int id) {
+        
+        try {
+            String sql = "DELETE FROM kilpailija WHERE kilpailija.id = ?";
+            alustaKysely(sql);
+            
+            statement.setInt(1, id);
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        finally {
+            lopeta();
+        }
     }
 }

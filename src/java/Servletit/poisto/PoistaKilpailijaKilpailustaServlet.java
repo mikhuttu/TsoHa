@@ -1,33 +1,33 @@
 package Servletit.poisto;
 
-import Mallit.Valiaikapiste;
+import Mallit.Kilpailija;
+import Mallit.Osallistuja;
 import Servletit.YleisServlet;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class PoistaValiaikapisteServlet extends YleisServlet {
+public class PoistaKilpailijaKilpailustaServlet extends YleisServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
         response.setContentType("text/html;charset=UTF-8");
         
         int kilpailuId = haeId(request);
+        int kilpailijaId = haeIntArvo("kilpailija", request);
         
-        int valiaikapisteId = haeIntArvo("valiaikapiste", request);
-        
-        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, valiaikapisteId, kilpailuId)) {
-            tallennaIlmoitus("Väliaikapistettä ei ollut valittu.", request);
+        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, kilpailijaId, kilpailuId)) {
+            tallennaIlmoitus("Kilpailijaa ei ollut valittu.", request);
             return;
         }
         
-        Valiaikapiste piste = new Valiaikapiste().haeValiaikapiste(valiaikapisteId);
+        Kilpailija kilpailija = new Kilpailija().haeKilpailija(kilpailijaId);
         
         PrintWriter out = luoPrintWriter(response);
         
         try {
-            new Valiaikapiste().poistaValiaikapiste(valiaikapisteId);
+            new Osallistuja().poistaOsallistuja(kilpailuId, kilpailijaId);
             
-            String paivitys = "Väliaikapiste " + piste.getNumero() + " poistettiin kilpailusta onnistuneesti!";
+            String paivitys = "Kilpailija '" + kilpailija.getNimi() + "' poistettiin kilpailusta onnistuneesti!";
             ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
         }
         
@@ -50,6 +50,6 @@ public class PoistaValiaikapisteServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Poistaa kilpailusta väliaikapisteen.";
+        return "Poistaa kilpailijan kilpailusta.";
     }
 }

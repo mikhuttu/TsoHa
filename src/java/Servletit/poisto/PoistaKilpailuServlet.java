@@ -11,10 +11,6 @@ public class PoistaKilpailuServlet extends YleisServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
         response.setContentType("text/html;charset=UTF-8");
         
-        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
-            return;
-        }
-        
         int kilpailuId = haeId(request);
         Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
         

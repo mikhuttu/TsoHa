@@ -1,7 +1,6 @@
 package Servletit.poisto;
 
 import Mallit.Kilpailija;
-import Mallit.Osallistuja;
 import Servletit.YleisServlet;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -12,27 +11,16 @@ public class PoistaKilpailijaServlet extends YleisServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
         response.setContentType("text/html;charset=UTF-8");
         
-        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
-            return;
-        }
-        
-        int kilpailuId = haeId(request);
-        int kilpailijaId = haeIntArvo("kilpailija", request);
-        
-        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, kilpailijaId, kilpailuId)) {
-            tallennaIlmoitus("Kilpailijaa ei ollut valittu.", request);
-            return;
-        }
-        
+        int kilpailijaId = haeId(request);
         Kilpailija kilpailija = new Kilpailija().haeKilpailija(kilpailijaId);
         
         PrintWriter out = luoPrintWriter(response);
         
         try {
-            new Osallistuja().poistaOsallistuja(kilpailuId, kilpailijaId);
+            new Kilpailija().poistaKilpailija(kilpailijaId);
             
-            String paivitys = "Kilpailija '" + kilpailija.getNimi() + "' poistettiin kilpailusta onnistuneesti!";
-            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
+            tallennaIlmoitus("Kilpailija '" + kilpailija.getNimi() + "' poistettiin onnistuneesti!", request);
+            ohjaaSivulle("etusivu", response);
         }
         
         finally {
@@ -41,7 +29,7 @@ public class PoistaKilpailijaServlet extends YleisServlet {
             }
         }
     }
-
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         processRequest(request, response);
@@ -54,6 +42,6 @@ public class PoistaKilpailijaServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Poistaa kilpailijan kilpailusta.";
+        return "Poistaa kilpailijan tietokannasta.";
     }
 }

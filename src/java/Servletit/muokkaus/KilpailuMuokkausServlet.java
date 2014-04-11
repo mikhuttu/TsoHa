@@ -14,13 +14,9 @@ public class KilpailuMuokkausServlet extends YleisServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = luoPrintWriter(response);
         
-        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
-            return;
-        }
-        
         int id = haeId(request);
         Kilpailu kilpailu = new Kilpailu().haeKilpailu(id);
-        
+         
         request.setAttribute("kilpailu", kilpailu);
         request.setAttribute("osallistujat",new Kilpailija().haeKilpailunKilpailijat(kilpailu));
         request.setAttribute("muutKilpailijat", new Kilpailija().haeKaikkiJotkaEivatOsallistu(kilpailu));

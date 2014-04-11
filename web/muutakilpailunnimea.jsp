@@ -2,7 +2,12 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <t:pohja pageTitle="Muuta kilpailun nimeä">
 
+    <c:if test ="${kirjautunut == null}">
+        <jsp:forward page="ohjaaKirjautumisSivulle"></jsp:forward>
+    </c:if>
+
     <div class="container">
+
 
         <h1>Muuta kilpailun '${kilpailu.nimi}' nimeä</h1>
 

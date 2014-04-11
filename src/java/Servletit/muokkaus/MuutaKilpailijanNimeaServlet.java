@@ -1,4 +1,4 @@
-package Servletit.lisays;
+package Servletit.muokkaus;
 
 import Mallit.Kilpailija;
 import Servletit.YleisServlet;
@@ -6,32 +6,39 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LisaaKilpailijaServlet extends YleisServlet {
- 
+public class MuutaKilpailijanNimeaServlet extends YleisServlet {
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         
         PrintWriter out = luoPrintWriter(response);
         
         try {
-            String nimi = haeStringArvo("nimi", request).trim();
+            int id = haeId(request);
             
-            if (nimi == null || nimi.isEmpty()) {
+            talletaSessionId(request, id);
+            
+            String uusi = haeStringArvo("uusi", request).trim();
+            
+            if (uusi == null || uusi.isEmpty()) {
                 tallennaIlmoitus("Nimikenttä oli jätetty tyhjäksi. Uutta kilpailijaa ei lisätty.", request);
-                ohjaaSivulle("lisaakilpailijalomake", response);   
+                ohjaaSivulle("kilpailijanmuokkaus", response);   
                 return;
             }
             
-            if (nimi.length() > 50) {
-                tallennaIlmoitus("Kilpailijan nimi saa olla max. 50 merkkiä pitkä. Antamasi nimi oli pituudeltaan " + nimi.length() + " merkkinen.", request);
-                ohjaaSivulle("lisaakilpailijalomake", response);   
+            if (uusi.length() > 50) {
+                tallennaIlmoitus("Kilpailijan nimi saa olla max. 50 merkkiä pitkä. Antamasi nimi oli pituudeltaan " + uusi.length() + " merkkinen.", request);
+                ohjaaSivulle("kilpailijanmuokkaus", response);   
                 return;
             }
             
-            new Kilpailija().lisaaKilpailija(nimi);
+            Kilpailija kilpailija = new Kilpailija().haeKilpailija(id);
+            String vanha = kilpailija.getNimi();
             
-            tallennaIlmoitus("Kilpailija '" + nimi + "' lisätty kantaan onnistuneesti!", request);
-            ohjaaSivulle("etusivu", response);
+            new Kilpailija().paivitaNimi(id, uusi);
+            
+            tallennaIlmoitus("Kilpailijan '" + vanha + "' nimi vaihdettiin onnistuneesti!", request);  
+            ohjaaSivulle("kilpailija", response);
         }
         
         finally {
@@ -53,6 +60,6 @@ public class LisaaKilpailijaServlet extends YleisServlet {
     
     @Override
     public String getServletInfo() {
-        return "Lisää kantaan uuden kilpailijan.";
+        return "Muuttaa kannassa olevan kilpailijan nimeä.";
     }
 }

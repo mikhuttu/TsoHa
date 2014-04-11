@@ -2,16 +2,20 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <t:pohja pageTitle="Kilpailun muokkaussivu">
 
+    <c:if test ="${kirjautunut == null}">
+        <jsp:forward page="ohjaaKirjautumisSivulle"></jsp:forward>
+    </c:if>
+    
     <div class="container">
         <h1>Muokkaa kilpailua: ${kilpailu.nimi}</h1>
 
         <br>
-
-        <a href="/HiihtoTulosPalvelu/muutakilpailunnimi?id=${kilpailu.id}">Muuta nimeä</a>
+        
+        <a href="/HiihtoTulosPalvelu/kilpailunnimenmuokkaus?id=${kilpailu.id}">Muuta nimeä</a>
 
         <br><br>
 
-        <form action="lisaakilpailija?id=${kilpailu.id}" method="POST">
+        <form action="lisaakilpailijakilpailuun?id=${kilpailu.id}" method="POST">
             <div class="form group">
 
                 <label for="lisaa kilpailija">Lisää kilpailija</label>
@@ -68,7 +72,7 @@
 
         <br><br>
 
-        <form action="poistakilpailija?id=${kilpailu.id}" method="POST">
+        <form action="poistakilpailijakilpailusta?id=${kilpailu.id}" method="POST">
             <label for="poista kilpaija">Poista kilpailija</label>
 
             <select id="kilpailija" name="kilpailija" onchange="return setValue();">
@@ -101,7 +105,7 @@
         <br><br>
 
         <p>HUOM!<br>
-            "Poista kilpailu" nappia painamalla kilpailu poistetaan välittömästi ja sitä on mahdotonta enää saada käyttöön.</p>
+            "Poista kilpailu" nappia painamalla kilpailu poistetaan välittömästi ja sitä on mahdotonta enää takaisin.</p>
 
         <form action="poistakilpailu?id=${kilpailu.id}" method="POST">
             <button type="submit" class="btn-danger">Poista kilpailu</button>
