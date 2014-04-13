@@ -27,7 +27,7 @@ public class KilpailunNimenMuokkausServlet extends YleisServlet {
         
         try {
             paivitaIlmoitus(request);
-            naytaJSP("muutakilpailunnimea", request, response);
+            naytaJSP("kilpailunnimenmuokkaus", request, response);
         }
         
         finally {
@@ -49,7 +49,7 @@ public class KilpailunNimenMuokkausServlet extends YleisServlet {
     
     @Override
     public String getServletInfo() {
-        return "Muuttaa kannassa olevan kilpailun nimeä.";
+        return "";
     }
     
 }

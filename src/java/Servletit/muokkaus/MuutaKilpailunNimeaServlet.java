@@ -53,7 +53,7 @@ public class MuutaKilpailunNimeaServlet extends YleisServlet {
             new Kilpailu().paivitaNimi(id, uusi);
             
             tallennaIlmoitus("Kilpailun '" + vanha + "' nimi vaihdettiin onnistuneesti!", request);  
-            ohjaaSivulle("kilpailumuokkaus", response);
+            ohjaaSivulle("kilpailu", response);
         }
         
         finally {
