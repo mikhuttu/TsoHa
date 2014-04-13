@@ -9,7 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LisaaKilpailijaKilpailuunServlet extends YleisServlet {
     
+    /**
+     * Hakee kilpailun id-arvon, jonka jälkeen lisää valitun kilpailijan ko. kilpailuun.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         
         int kilpailuId = haeId(request);
@@ -50,6 +58,6 @@ public class LisaaKilpailijaKilpailuunServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Lisää kilpailijan kilpailuun.";
+        return "";
     }
 }

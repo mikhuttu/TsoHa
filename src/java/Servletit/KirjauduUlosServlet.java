@@ -7,6 +7,10 @@ import javax.servlet.http.HttpSession;
 
 public class KirjauduUlosServlet extends YleisServlet {
     
+    /**
+     * Toteuttaa uloskirjautumisen ja vie käyttäjän etusivulle.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         
@@ -42,6 +46,6 @@ public class KirjauduUlosServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Toteuttaa uloskirjautumisen.";
+        return "";
     }  
 }

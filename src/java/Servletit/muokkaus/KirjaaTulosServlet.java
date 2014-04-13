@@ -9,12 +9,24 @@ import javax.servlet.http.HttpServletResponse;
 
 public class KirjaaTulosServlet extends YleisServlet {
     
+    /**
+     * kilpailumuokkaus -näkymä ohjaa tähän servlettiin.
+     * Näkymän puolella käyttäjän pitäisi olla valinnut kilpailija sekä väliaikapiste että
+     * täyttänyt ajan, jolloin kilpailija tälle väliaikapisteellä pääsi.
+     * 
+     * Jos nämä kaikki on valittu (ja täytetty aika on muotoa hh:mm:ss), kirjataan valitulle
+     * kilpailijalle tulos tälle väliaikapisteelle.
+     * 
+     * Jos kilpailijalla on jo olemassa tulos ko. väliaikapisteellä, aiempi tulos korvataan
+     * tällä uudella.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType("text/html;charset=UTF-8");
-        
         if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
             return;
         }
+        
+        response.setContentType("text/html;charset=UTF-8");
         
         int kilpailuId = haeId(request);
         
@@ -67,7 +79,7 @@ public class KirjaaTulosServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Kilpailijan tuloksen lisäämisen kilpailuun.";
+        return "";
     }
     
     private String poistaKaksoisPisteet(String aika) {

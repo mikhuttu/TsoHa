@@ -8,7 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PoistaKilpailuServlet extends YleisServlet {
     
+    /**
+     * Poistaa valitun kilpailun tietokannasta.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         
         int kilpailuId = haeId(request);
@@ -42,6 +50,6 @@ public class PoistaKilpailuServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Poistaa kilpailun tietokannasta.";
+        return "";
     }
 }

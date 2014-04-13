@@ -10,7 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 
 public class KilpailuMuokkausServlet extends YleisServlet {
     
+    /**
+     * Näyttää valitun kilpailun muokkauslomakkeen.
+     * Lomakkeen näyttäminen vaatii kilpailun osallistujien sekä sen väliaikapisteiden hakemista.
+     * Lisäksi pitää tietokannasta hakea muut kilpailijat jotka eivät vielä osallistu, jotta heitä voi
+     * kilpailuun halutessa lisätä.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = luoPrintWriter(response);
         
@@ -47,6 +58,6 @@ public class KilpailuMuokkausServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Vie käyttäjän kilpailun muokkaussivulle.";
+        return "";
     }  
 }

@@ -8,7 +8,17 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LisaaKilpailuServlet extends YleisServlet {
     
+    /**
+     * Lisää tietokantaan uuden kilpailun mikäli kilpailulle valittu nimi on oikeanlainen ja samannimistä kilpailua
+     * ei ole vielä olemassa.
+     * Jos lisäys onnistuu, käyttäjä viedään sivulle, jossa hän voi muokata lisätyn kilpailun tietoja.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         
         PrintWriter out = luoPrintWriter(response);

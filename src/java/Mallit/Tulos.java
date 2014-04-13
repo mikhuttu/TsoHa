@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Malli kuvaa kilpailijoiden tuloksia tietyillä väliaikapisteillä.
+ */
+
 public class Tulos extends KyselyToiminnot {
     
     private int id;
@@ -15,6 +19,12 @@ public class Tulos extends KyselyToiminnot {
     public void setId(int id) {
         this.id = id;
     }
+    
+    /**
+     * Ajanmääritys tapahtuu näin sillä siihen halutaan kaksoispisteet tuntien ja minuuttien sekä
+     * minuuttien ja sekuntien väliin.
+     * @param aika 
+     */
     
     public void setAika(String aika) {
         this.aika = "";
@@ -56,6 +66,12 @@ public class Tulos extends KyselyToiminnot {
         return this.valiaikapiste;
     }
     
+    /**
+     * Joissain tilanteissa näkymien puolella on mielekästä kysyä tulokselta kilpailija, jota tulos koskee.
+     * Sillä tulos sisältää ainoastaan tiedon kilpailijan id:stä, tällä metodilla saadaa ko. kilpailijan
+     * nimi helposti selville.
+     */
+    
     public String getKilpailijaNimi() {
         try {
             String sql = "SELECT * FROM kilpailija WHERE kilpailija.id = ? LIMIT 1";
@@ -78,6 +94,10 @@ public class Tulos extends KyselyToiminnot {
         return null;
     }
     
+    /**
+     * Palauttaa "results":sta seuraavan tuloksen.
+     */
+    
     private Tulos palautaTulos() {
         
         try {
@@ -98,16 +118,16 @@ public class Tulos extends KyselyToiminnot {
         return null;
     }
     
+    /**
+     * Hakee kaikki tulokset, jotka koskevat tietttyä väliaikapistettä.
+     * @param valiaikapiste
+     */
     
     public ArrayList<Tulos> haeValiaikapisteenTulokset(Valiaikapiste valiaikapiste) {
         
         try {
             
             String sql = "SELECT tulos.id, aika, kilpailija, valiaikapiste FROM tulos, kilpailija WHERE tulos.valiaikapiste = ? AND kilpailija = kilpailija.id ORDER BY aika";
-            
-//            String sql = "select tulos.id as tulos_id, aika, kilpailija.nimi, valiaikapiste.id as valiaika_id, numero from osallistuja "
-//                    + "JOIN kilpailija ON kilpailija.id = osallistuja.kilpailija JOIN tulos on kilpailija.id = tulos.kilpailija JOIN valiaikapiste ON tulos.valiaikapiste = valiaikapiste.id  "
-//                    + "where osallistuja.kilpailu = ?";
 
             alustaKysely(sql);
             statement.setInt(1, valiaikapiste.getId());
@@ -134,6 +154,14 @@ public class Tulos extends KyselyToiminnot {
         return null;
     }
 
+    /**
+     * Tuloksen kirjaaminen tapahtuu siten että tarkistetaan, onko ko. kilpailijalla olemassa jo tulos
+     * ko. väliaikapisteellä. Jos ei ole, lisätään uusi tulos ja jos on, päivitetään vanhaa.
+     * @param aika
+     * @param kilpailijaId
+     * @param valiaikapisteId 
+     */
+    
     public void kirjaaTulos(String aika, int kilpailijaId, int valiaikapisteId) {
         
         try {
@@ -151,7 +179,7 @@ public class Tulos extends KyselyToiminnot {
             lopeta();
         }
     }
-        
+   
     private int paivitetaankoVanhaTulos(int kilpailijaId, int valiaikapisteId) {
         try {
             String sql = "SELECT * FROM tulos WHERE kilpailija = ? AND valiaikapiste = ? LIMIT 1";

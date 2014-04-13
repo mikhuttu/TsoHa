@@ -11,15 +11,17 @@ public class Tietokanta {
 
     private static InitialContext cxt;
     private static DataSource yhteysVarasto;
-
     private static Tietokanta tietokantaYhteys;
-    
+
     private Tietokanta() throws Exception {
         cxt = new InitialContext();
         yhteysVarasto = (DataSource) cxt.lookup("java:/comp/env/jdbc/tietokanta");
-        System.out.println(yhteysVarasto);
     }
 
+    /**
+     * Luo ensimmäisellä kerralla tietokantayhteyden ja muilla kerroilla ainoastaan palauttaa sen.
+     */
+    
     public static Connection getYhteys() throws SQLException {
         if (tietokantaYhteys == null) {
             try {

@@ -6,6 +6,12 @@ import java.util.logging.Logger;
 
 public class Kirjautuminen extends KyselyToiminnot {
     
+    /**
+     * Palauttaa käyttäjän jonka tunnus on "tunnus" ja salasana "salasana", jos sellainen kayttaja-taulussa on.
+     * @param tunnus
+     * @param salasana
+     */
+    
     public Kayttaja etsiKayttajaTunnuksilla(String tunnus, String salasana) {
         
         try {

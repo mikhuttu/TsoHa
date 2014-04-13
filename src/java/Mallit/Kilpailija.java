@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Malli joka sisältää tietoa kilpailijoista sekä tekee niiden hakuun liittyviä SQL-kyselyjä.
+ */
+
 public class Kilpailija extends KyselyToiminnot {
     private int id;
     private String nimi;
@@ -25,6 +29,10 @@ public class Kilpailija extends KyselyToiminnot {
         this.nimi = nimi;
     }
     
+    /**
+    * Palauttaa kaikki tietokannasta haetut kilpailijat.
+    */
+    
     private ArrayList<Kilpailija> palautaKaikki() {
         ArrayList<Kilpailija> kilpailijat = new ArrayList<Kilpailija>();
         
@@ -38,6 +46,10 @@ public class Kilpailija extends KyselyToiminnot {
         }
         return kilpailijat;
     }
+    
+    /**
+    * Palauttaa seuraavana "results":ssa olevan kilpailijan.
+    */
     
     private Kilpailija palauta() {
         Kilpailija kilpailija = null;
@@ -80,30 +92,10 @@ public class Kilpailija extends KyselyToiminnot {
         return null;
     }
     
-    public Kilpailija haeKilpailijaTulosTaulunKautta() {
-        
-        try {
-            String sql = "SELECT id, nimi FROM kilpailija WHERE kilpailija.id = ? LIMIT 1";
-            
-            alustaKysely(sql);
-            statement.setString(1, "tulos.kilpailija");
-            
-            suoritaKysely();
-            
-            if (results.next()) {
-                return palauta();
-            }
-        }
-        catch (SQLException ex) {
-            Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        finally {
-            lopeta();
-        }
-        
-        return null;
-    }
+    /**
+    * Hakee kaikki kilpailijat nimen mukaan aakkosjärjestyksessä.
+    * @param kilpailu
+    */
     
     public ArrayList<Kilpailija> haeKilpailijat() {
         
@@ -120,6 +112,11 @@ public class Kilpailija extends KyselyToiminnot {
             lopeta();
         }
     }
+    
+    /**
+    * Palauttaa kaikki kilpailijat jotka osallistuvat kilpailuun.
+    * @param kilpailu
+    */
     
     public ArrayList<Kilpailija> haeKilpailunKilpailijat(Kilpailu kilpailu) {
 
@@ -144,7 +141,12 @@ public class Kilpailija extends KyselyToiminnot {
         }
         return null;
     }
-
+    
+    /**
+    * Palauttaa kaikki kilpailijat jotka eivät osallistu kilpailuun.
+    * @param kilpailu
+    */
+    
     public ArrayList<Kilpailija> haeKaikkiJotkaEivatOsallistu(Kilpailu kilpailu) {
         
         try {
@@ -186,6 +188,12 @@ public class Kilpailija extends KyselyToiminnot {
             lopeta();
         }
     }
+    
+    /**
+     * Päivittää kilpailijan nimen, jonka id on kyseessä.
+     * @param id = kilpailijan id
+     * @param uusi = päivitettävä nimi
+     */
     
     public void paivitaNimi(int id, String uusi) {
         try {

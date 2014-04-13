@@ -6,8 +6,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class LisaaKilpailijaLomakeServlet extends YleisServlet {
+
+    /**
+     * Näyttää kilpailijanlisäyslomakkeen jos käyttäjä on kirjautunut sisään.
+     */
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = luoPrintWriter(response);
         
@@ -34,6 +42,6 @@ public class LisaaKilpailijaLomakeServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Vie käyttäjän kilpailijanlisäyslomakkeelle.";
+        return "";
     }
 }

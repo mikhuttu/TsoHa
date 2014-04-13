@@ -1,6 +1,5 @@
 package Servletit;
 
-import Mallit.Kayttaja;
 import Mallit.Kilpailija;
 import Mallit.Kilpailu;
 import java.io.PrintWriter;
@@ -9,11 +8,12 @@ import javax.servlet.http.HttpServletResponse;
     
 public class EtusivuServlet extends YleisServlet {
 
+    /**
+    * Vie käyttäjän etusivulle.
+    */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
         response.setContentType("text/html;charset=UTF-8");
-        
-        Kayttaja kirjautunut = onkoKirjautunut(request);
-        request.setAttribute("kirjautunut", kirjautunut);
         
         request.setAttribute("kilpailijat", new Kilpailija().haeKilpailijat());
         request.setAttribute("kilpailut", new Kilpailu().haeKilpailut());
@@ -44,6 +44,6 @@ public class EtusivuServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Vie käyttäjän etusivulle.";
+        return "";
     }
 }

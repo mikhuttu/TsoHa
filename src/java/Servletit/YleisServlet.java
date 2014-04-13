@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Luokka sisältää yleismetodeja, joita muut servletit käyttävät.
+ * Kaikki muut servletit perivän YleisServletin.
+ */
+
 public class YleisServlet extends HttpServlet {
     
     protected boolean ohjaaKirjautumisSivulleJosEiKirjautunut(HttpServletRequest request, HttpServletResponse response) {
@@ -54,6 +59,11 @@ public class YleisServlet extends HttpServlet {
         ohjaaSivulle("kilpailu", response);
     }
     
+    /**
+     * Ilmoitusten muokkaaminen liittyy "virheilmoituksiin", joita näkymissä näytetään, mikäli
+     * ilmoitus sisältää jotain tekstiä.
+     */
+    
     protected void paivitaIlmoitus(HttpServletRequest request) {
         asetaIlmoitus(haeJaTyhjennaIlmoitus(request), request);
     }
@@ -66,12 +76,17 @@ public class YleisServlet extends HttpServlet {
         request.getSession().setAttribute("ilmoitus", ilmoitus);
     }
     
-    protected String haeJaTyhjennaIlmoitus(HttpServletRequest request) {
+    private String haeJaTyhjennaIlmoitus(HttpServletRequest request) {
        String ilmoitus = (String) request.getSession().getAttribute("ilmoitus");
        request.getSession().removeAttribute("ilmoitus");
        
        return ilmoitus;
     }
+    
+    /**
+     * Ohjaa määrätyn servletin luo.
+     * @param sivu = servletin url web.xml:ssä.
+     */
     
     protected void ohjaaSivulle(String sivu, HttpServletResponse response) {
         try {
@@ -82,6 +97,11 @@ public class YleisServlet extends HttpServlet {
             Logger.getLogger(YleisServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Näyttää näkymän.
+     * @param sivu = näkymän nimi
+     */
     
     protected void naytaJSP(String sivu, HttpServletRequest request, HttpServletResponse response) {
 
@@ -119,6 +139,11 @@ public class YleisServlet extends HttpServlet {
         return out;
     }
     
+    /**
+     * Tallettaa ko. olevan id arvon tulevaa käyttöä varten.
+     * @param id 
+     */
+    
     protected void talletaSessionId(HttpServletRequest request, int id) {
         request.getSession().setAttribute("id", id);
     }
@@ -127,8 +152,12 @@ public class YleisServlet extends HttpServlet {
         return (Integer) request.getSession().getAttribute("id");
     }
     
+    /**
+     * Hakee id-parametria vastaavan arvon.
+     */
+    
     protected int haeIdParametrina(HttpServletRequest request) {
-        return palautaArvo(request.getParameter("id"), request);
+        return palautaArvo(request.getParameter("id"));
     }
     
     protected int haeId(HttpServletRequest request) {
@@ -141,10 +170,10 @@ public class YleisServlet extends HttpServlet {
     }
     
     protected int haeIntArvo(String param, HttpServletRequest request) {
-        return palautaArvo(request.getParameter(param), request);
+        return palautaArvo(request.getParameter(param));
     }
     
-    private int palautaArvo(String param, HttpServletRequest request) {
+    private int palautaArvo(String param) {
         int arvo;
         
         try {
@@ -160,6 +189,12 @@ public class YleisServlet extends HttpServlet {
     protected String haeStringArvo(String param, HttpServletRequest request) {
         return request.getParameter(param);
     }
+    
+    /**
+     * Metodia ei taideta tällä hetkellä käyttää kuin yhdessä servletissä, joten se voisi olla myös siellä,
+     * mutta uskon tarvitsevani sitä viellä muualla joten se löytyy tässä vaiheessa täältä.
+     * Valiaikapiste piste voi olla null, joten sen numeroa ei voi kysyä piste oliolta suoraan.
+     */
     
     protected int getNumero (Valiaikapiste piste) {
         if (piste == null) {

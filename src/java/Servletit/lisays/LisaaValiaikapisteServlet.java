@@ -9,12 +9,18 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LisaaValiaikapisteServlet extends YleisServlet {
     
+    /**
+     * Lisää muokattavaan kilpailuun uuden väliaikapisteen.
+     * Väliaikapisteen numeroksi tulee yhdellä suurempi kuin mikä on tällä hetkellä suurin
+     * ko. kilpailun väliaikapisteen numero.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType("text/html;charset=UTF-8");
-        
         if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
             return;
         }
+        
+        response.setContentType("text/html;charset=UTF-8");
         
         int kilpailuId = haeId(request);
         Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
@@ -49,7 +55,7 @@ public class LisaaValiaikapisteServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Lisää väliaikapisteen kilpailuun.";
+        return "";
     }  
 
 

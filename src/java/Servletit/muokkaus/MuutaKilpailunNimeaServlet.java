@@ -8,7 +8,16 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MuutaKilpailunNimeaServlet extends YleisServlet {
     
+    /**
+     * Muuttaa valitun kilpailun nimeä mikäli syötetty uusi nimi on oikeanlainen, ja
+     * sen nimistä kilpailua ei ole vielä tietokannassa.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         
         PrintWriter out = luoPrintWriter(response);
@@ -66,6 +75,6 @@ public class MuutaKilpailunNimeaServlet extends YleisServlet {
     
     @Override
     public String getServletInfo() {
-        return "Muuttaa kannassa olevan kilpailun nimeä.";
+        return "";
     }
 }

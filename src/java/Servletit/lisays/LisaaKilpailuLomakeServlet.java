@@ -7,7 +7,15 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LisaaKilpailuLomakeServlet extends YleisServlet {
     
+    /**
+     * Ohjaa käyttäjän kilpailunlisäyslomakkeelle, jos käyttäjä on kirjautunut.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = luoPrintWriter(response);
         
@@ -34,6 +42,6 @@ public class LisaaKilpailuLomakeServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Vie käyttäjän kilpailunlisäyslomakkeelle.";
+        return "";
     }
 }

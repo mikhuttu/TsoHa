@@ -5,29 +5,25 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Malli kuvaa väliaikapistettä, joka liittyy yhteen kilpailuun.
+ */
+
 public class Valiaikapiste extends KyselyToiminnot {
     private int id;
     private int numero;
     private int kilpailu;
 
-
     public int getId() {
-        return this.getValue(this.id);
+        return this.id;
     }
     
     public int getKilpailu() {
-        return this.getValue(this.kilpailu);
+        return this.kilpailu;
     }
     
     public int getNumero() {
-        return this.getValue(this.numero);
-    }
-    
-    public int getValue(int value) {
-        if (this == null) {
-            return 0;
-        }
-        return value;
+        return this.numero;
     }
     
     public void setId(int id) {
@@ -42,35 +38,6 @@ public class Valiaikapiste extends KyselyToiminnot {
         this.numero = numero;
     }
     
-    public ArrayList<Tulos> haeTulokset() {
-        return new Tulos().haeValiaikapisteenTulokset(this);
-    }
-    
-    public Valiaikapiste haeValiaikapisteTulosTaulunKautta() {
-
-        try {
-            String sql = "SELECT id, kilpailu FROM valiaikapiste WHERE valiaikapiste.id = ? LIMIT 1"; 
-            alustaKysely(sql);
-            
-            statement.setString(1, "tulos.valiaikapiste");
-            suoritaKysely();
-            
-            if (results.next()) {
-                return palautaValiaikaPiste();
-            }
-        }
-        
-        catch (SQLException ex) {
-            Logger.getLogger(Tulos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        finally {
-            lopeta();
-        }
-        
-        return null;
-    }
-    
     public ArrayList<Valiaikapiste> haeKilpailunValiaikapisteet(Kilpailu kilpailu) {
         
         try {
@@ -79,7 +46,7 @@ public class Valiaikapiste extends KyselyToiminnot {
             
             statement.setInt(1, kilpailu.getId());
             suoritaKysely();
-            return palautaListaValiaikapisteista();
+            return palautaValiaikapisteet();
         }
 
         catch (SQLException ex) {
@@ -91,6 +58,12 @@ public class Valiaikapiste extends KyselyToiminnot {
         }
         return null;
     }
+    
+    /**
+     * Hakee kilpailun väliaikapisteen, jolla on korkein numero.
+     * Ts. kyseinen väliaikapiste on "maali", ja sitä varten halutaan hakea kilpailun lopputuloksia.
+     * @param kilpailu
+     */
     
     public Valiaikapiste haeValiaikapisteKorkeimmallaNumerolla(Kilpailu kilpailu) {
         
@@ -102,7 +75,7 @@ public class Valiaikapiste extends KyselyToiminnot {
             suoritaKysely();
             
             if (results.next()) {
-                return palautaValiaikaPiste();
+                return palauta();
             }
         }
         
@@ -116,7 +89,6 @@ public class Valiaikapiste extends KyselyToiminnot {
         return null;
     }
     
-
     public Valiaikapiste haeValiaikapiste (int valiaikapisteId) {
         try {
             
@@ -127,7 +99,7 @@ public class Valiaikapiste extends KyselyToiminnot {
             suoritaKysely();
             
             if (results.next()) {
-                return palautaValiaikaPiste();
+                return palauta();
             }
         }
         
@@ -180,12 +152,17 @@ public class Valiaikapiste extends KyselyToiminnot {
         }
     }
     
-    private ArrayList<Valiaikapiste> palautaListaValiaikapisteista() {
+    /**
+     * Palauttaa listan haetuista väliaikapisteistä.
+     */
+    
+    private ArrayList<Valiaikapiste> palautaValiaikapisteet() {
+        
         try {
             ArrayList<Valiaikapiste> pisteet = new ArrayList<Valiaikapiste>();
             
             while (results.next()) {
-                pisteet.add(palautaValiaikaPiste());
+                pisteet.add(palauta());
             }
             return pisteet;
         } 
@@ -197,7 +174,11 @@ public class Valiaikapiste extends KyselyToiminnot {
         return null;
     }
     
-    private Valiaikapiste palautaValiaikaPiste() {
+    /**
+     * Palauttaa "results":ssa seuraavana olevan väliaikapisteen.
+     */
+    
+    private Valiaikapiste palauta() {
         
         try {
             Valiaikapiste piste = new Valiaikapiste();

@@ -8,7 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 
 public class PoistaValiaikapisteServlet extends YleisServlet {
     
+    /**
+     * Poistaa kilpailusta väliaikapisteen mikäli se on valittu.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {   
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         
         int kilpailuId = haeId(request);
@@ -50,6 +58,6 @@ public class PoistaValiaikapisteServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Poistaa kilpailusta väliaikapisteen.";
+        return "";
     }
 }

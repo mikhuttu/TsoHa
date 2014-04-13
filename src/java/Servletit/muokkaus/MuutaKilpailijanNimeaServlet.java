@@ -8,7 +8,16 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MuutaKilpailijanNimeaServlet extends YleisServlet {
     
+    /**
+     * Mikäli kilpailijanmuokkaus -näkymässä täytetty nimi on oikeanlainen, korvataan ko.
+     * kilpailijan nimi tällä uudella nimellä.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         
         PrintWriter out = luoPrintWriter(response);
@@ -60,6 +69,6 @@ public class MuutaKilpailijanNimeaServlet extends YleisServlet {
     
     @Override
     public String getServletInfo() {
-        return "Muuttaa kannassa olevan kilpailijan nimeä.";
+        return "";
     }
 }

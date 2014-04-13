@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Malli joka sisältää tietoa kilpailuista sekä tekee niiden hakuun liittyviä SQL-kyselyjä.
+ */
+
 public class Kilpailu extends KyselyToiminnot {
     private int id;
     private String nimi;
@@ -25,6 +29,11 @@ public class Kilpailu extends KyselyToiminnot {
     public void setNimi(String nimi) {
         this.nimi = nimi;
     }
+    
+    /**
+    * Hakee kaikki kilpailijat nimen mukaan aakkosjärjestyksessä.
+    * @param kilpailu
+    */
     
     public List<Kilpailu> haeKilpailut() {
 
@@ -67,6 +76,10 @@ public class Kilpailu extends KyselyToiminnot {
         return null;
     }
     
+    /**
+    * Hakee kilpailun nimen perusteella. Kaikilla kilpailuilla on myös identifioiva nimi.
+    */
+    
     public Kilpailu haeKilpailu(String nimi) {
 
         try {
@@ -92,6 +105,10 @@ public class Kilpailu extends KyselyToiminnot {
         return null;
     }
     
+    /**
+    * Palauttaa kaikki tietokannasta haetut kilpailut.
+    */    
+    
     private ArrayList<Kilpailu> palautaKaikki() {
         
         ArrayList<Kilpailu> kilpailut = new ArrayList<Kilpailu>();
@@ -107,6 +124,10 @@ public class Kilpailu extends KyselyToiminnot {
         
         return kilpailut;
     }
+    
+    /**
+    * Palauttaa seuraavana "results":ssa olevan kilpailun.
+    */
     
     private Kilpailu palauta() {
         Kilpailu kilpailu = null;
@@ -125,13 +146,47 @@ public class Kilpailu extends KyselyToiminnot {
         return kilpailu;
     }
 
-    public void poistaKilpailu(int kilpailuId) {
+    private void luoUusiKilpailu(String nimi) {
+        
+        try {
+            String sql = "INSERT INTO kilpailu (nimi) VALUES (?)";
+            
+            alustaKysely(sql);
+            statement.setString(1, nimi);
+            
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void paivitaNimi(int id, String nimi) {
+        
+        try {
+            String sql = "UPDATE kilpailu SET nimi = ? WHERE id = ?";
+            alustaKysely(sql);
+
+            statement.setString(1, nimi);
+            statement.setInt(2, id);
+            
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    public void poistaKilpailu(int id) {
         
         try {
             String sql = "DELETE FROM kilpailu WHERE kilpailu.id = ?";
             alustaKysely(sql);
             
-            statement.setInt(1, kilpailuId);
+            statement.setInt(1, id);
+            
             suoritaKysely();
         }
         
@@ -144,6 +199,12 @@ public class Kilpailu extends KyselyToiminnot {
         }
     }
 
+    /**
+     * Kilpailun lisäys tapahtuu siten että ensin kysytään, onko samannimistä kilpailua jo olemassa.
+     * Jos ei ole, voidaan kilpailu lisätä.
+     * @param nimi = lisättävän kilpailun nimi
+     */
+    
     public boolean lisaaKilpailu(String nimi) {
         
         try {
@@ -159,6 +220,11 @@ public class Kilpailu extends KyselyToiminnot {
             lopeta();
         }
     }
+    
+    /**
+     * Metodi selvittää onko samannimistä kilpailua jo olemassa.
+     * @param nimi
+     */
     
     public boolean onOlemassa(String nimi) {
         try {
@@ -188,37 +254,10 @@ public class Kilpailu extends KyselyToiminnot {
         return true;
     }
     
-    private void luoUusiKilpailu(String nimi) {
-        try {
-            String sql = "INSERT INTO kilpailu (nimi) VALUES (?)";
-            
-            alustaKysely(sql);
-
-            statement.setString(1, nimi);
-            
-            suoritaKysely();
-        }
-        
-        catch (SQLException e) {
-            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
-    
-    public void paivitaNimi(int id, String nimi) {
-        try {
-            String sql = "UPDATE kilpailu SET nimi = ? WHERE id = ?";
-            alustaKysely(sql);
-
-            statement.setString(1, nimi);
-            statement.setInt(2, id);
-            
-            suoritaKysely();
-        }
-        
-        catch (SQLException e) {
-            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
+    /**
+     * Palauttaa kaikki kilpailut, jossa parametrina määritelty kilpailija kilpailee.
+     * @param kilpailijaId = kilpailijan id
+     */
     
     public ArrayList<Kilpailu> haeKilpailut(int kilpailijaId) {
         try {

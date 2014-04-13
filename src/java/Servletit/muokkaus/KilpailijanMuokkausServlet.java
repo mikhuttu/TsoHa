@@ -8,7 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 
 public class KilpailijanMuokkausServlet extends YleisServlet {
     
+    /**
+     * Jos käyttäjä on kirjautunut sisään, näytetään kilpailijan tietojen muokkauslomake.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = luoPrintWriter(response);
         
@@ -41,7 +49,7 @@ public class KilpailijanMuokkausServlet extends YleisServlet {
     
     @Override
     public String getServletInfo() {
-        return "Muuttaa kannassa olevan kilpailijan nimeä.";
+        return "";
     }
     
 }

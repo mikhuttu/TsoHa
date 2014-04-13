@@ -4,8 +4,12 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Osallistuja extends KyselyToiminnot {
+    /**
+     * Osallistuja on välitaulu, joka linkittää kilpailut ja kilpailijat toisiinsa.
+    */
 
+public class Osallistuja extends KyselyToiminnot {
+    
     public void lisaaOsallistuja(int kilpailuId, int kilpailijaId) {
         try {
             String sql = "INSERT INTO osallistuja (kilpailu, kilpailija) VALUES (?, ?)";

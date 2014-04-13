@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletResponse;
     
 public class KilpailuServlet extends YleisServlet {
 
+    /**
+     * Näyttää yleisen kilpailusivun, jossa listataan kilpailun kilpailijat, väliaikapisteet sekä
+     * lopputulokset.
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
         response.setContentType("text/html;charset=UTF-8");
 
@@ -54,6 +58,6 @@ public class KilpailuServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Näyttää kilpailusivun.";
+        return "";
     }
 }

@@ -6,9 +6,12 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 public class KirjautuminenServlet extends YleisServlet {
 
+    /**
+     * Toteuttaa sisäänkirjautumisessa tapahtuvan logiikan.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {       
         response.setContentType("text/html;charset=UTF-8");
         
@@ -72,6 +75,6 @@ public class KirjautuminenServlet extends YleisServlet {
 
     @Override
     public String getServletInfo() {
-        return "Kirjautumissivu.";
+        return "";
     }
 }

@@ -8,7 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 
 public class KilpailunNimenMuokkausServlet extends YleisServlet {
     
+    /**
+     * Jos käyttäjä on kirjautunut, päästetään hänet muuttamaan kilpailun nimeä.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = luoPrintWriter(response);
         

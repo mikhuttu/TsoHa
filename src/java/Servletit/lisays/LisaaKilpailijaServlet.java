@@ -8,7 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LisaaKilpailijaServlet extends YleisServlet {
  
+    /**
+     * Lisää tietokantaan uuden kilpailijan, mikäli kilpailijalle määrätty nimi-arvo on oikeanlainen.
+     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+        if (ohjaaKirjautumisSivulleJosEiKirjautunut(request, response)) {
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
         
         PrintWriter out = luoPrintWriter(response);
@@ -53,6 +61,6 @@ public class LisaaKilpailijaServlet extends YleisServlet {
     
     @Override
     public String getServletInfo() {
-        return "Lisää kantaan uuden kilpailijan.";
+        return "";
     }
 }

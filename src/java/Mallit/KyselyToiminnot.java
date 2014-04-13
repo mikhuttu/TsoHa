@@ -8,10 +8,19 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Sisältää yleisesti SQL-kyselyissä tarvittavia toiminnallisuuksia.
+ */
+
 public class KyselyToiminnot {
     protected Connection connection;
     protected PreparedStatement statement;
     protected ResultSet results;
+    
+    /**
+     * Luo tietokantayhteyden ja "valmistelee" kyselyn "statement" käyttäen määriteltyä kyselyä
+     * @param sql = ennalta määritelty kysely
+     */
     
     protected void alustaKysely(String sql) {
         connection = null;
@@ -42,6 +51,10 @@ public class KyselyToiminnot {
         }
     }
     
+    /**
+     * Suorittaa tietokantakyselyn ja asettaa tulokset "results":iin.
+     */
+    
     protected void suoritaKysely() {
         try {
             results = statement.executeQuery();
@@ -51,6 +64,11 @@ public class KyselyToiminnot {
             results = null;
         }
     }
+    
+    /**
+     * Kyselyiden lopetus tapahtuu sulkemalla kaikki tarpeellinen tätä kautta.
+     * Virheet käsitellään näin, sillä Exception voi olla myös "NullPointerException", etenekin results:in tapauksessa.
+     */
     
     protected void lopeta() {
         try { results.close(); } catch (Exception e) {}
