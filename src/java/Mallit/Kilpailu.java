@@ -32,7 +32,6 @@ public class Kilpailu extends KyselyToiminnot {
     
     /**
     * Hakee kaikki kilpailijat nimen mukaan aakkosjärjestyksessä.
-    * @param kilpailu
     */
     
     public List<Kilpailu> haeKilpailut() {

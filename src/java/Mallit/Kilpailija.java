@@ -94,7 +94,6 @@ public class Kilpailija extends KyselyToiminnot {
     
     /**
     * Hakee kaikki kilpailijat nimen mukaan aakkosjärjestyksessä.
-    * @param kilpailu
     */
     
     public ArrayList<Kilpailija> haeKilpailijat() {
