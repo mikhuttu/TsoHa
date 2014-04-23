@@ -73,8 +73,9 @@ public class Tulos extends KyselyToiminnot {
      */
     
     public String getKilpailijaNimi() {
+        
         try {
-            String sql = "SELECT * FROM kilpailija WHERE kilpailija.id = ? LIMIT 1";
+            String sql = "SELECT * FROM kilpailija WHERE kilpailijaId = ? LIMIT 1";
             alustaKysely(sql);
             
             statement.setInt(1, this.kilpailija);
@@ -103,7 +104,7 @@ public class Tulos extends KyselyToiminnot {
         try {
             Tulos tulos = new Tulos();
             
-            tulos.setId(results.getInt("id"));
+            tulos.setId(results.getInt("tulosId"));
             tulos.setAika(results.getString("aika"));
             tulos.setKilpailija(results.getInt("kilpailija"));
             tulos.setValiaikapiste(results.getInt("valiaikapiste"));
@@ -123,14 +124,14 @@ public class Tulos extends KyselyToiminnot {
      * @param valiaikapiste
      */
     
-    public ArrayList<Tulos> haeValiaikapisteenTulokset(Valiaikapiste valiaikapiste) {
+    public ArrayList<Tulos> haeValiaikapisteenTulokset(int valiaikapisteId) {
         
         try {
             
-            String sql = "SELECT tulos.id, aika, kilpailija, valiaikapiste FROM tulos, kilpailija WHERE tulos.valiaikapiste = ? AND kilpailija = kilpailija.id ORDER BY aika";
+            String sql = "SELECT tulosId, aika, kilpailija, valiaikapiste FROM tulos, kilpailija WHERE tulos.valiaikapiste = ? AND kilpailija = kilpailijaId ORDER BY aika";
 
             alustaKysely(sql);
-            statement.setInt(1, valiaikapiste.getId());
+            statement.setInt(1, valiaikapisteId);
             
             suoritaKysely();
             
@@ -181,6 +182,7 @@ public class Tulos extends KyselyToiminnot {
     }
    
     private int paivitetaankoVanhaTulos(int kilpailijaId, int valiaikapisteId) {
+        
         try {
             String sql = "SELECT * FROM tulos WHERE kilpailija = ? AND valiaikapiste = ? LIMIT 1";
             alustaKysely(sql);
@@ -190,7 +192,7 @@ public class Tulos extends KyselyToiminnot {
             suoritaKysely();
             
             if (results.next()) {
-                return results.getInt("id");
+                return results.getInt("tulosId");
             }
         }
         catch (SQLException e) {
@@ -202,7 +204,7 @@ public class Tulos extends KyselyToiminnot {
     
     private void paivitaVanhaTulos(int tulosId, String aika, int kilpailijaId, int valiaikapisteId) {
         try {
-            String sql = "UPDATE tulos SET aika = ?, kilpailija = ?, valiaikapiste = ? WHERE id = ?";
+            String sql = "UPDATE tulos SET aika = ?, kilpailija = ?, valiaikapiste = ? WHERE tulosId = ?";
             
             alustaKysely(sql);
 

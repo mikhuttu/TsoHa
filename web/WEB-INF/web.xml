@@ -13,6 +13,10 @@
         <servlet-class>Servletit.muokkaus.KilpailijanMuokkausServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>KilpailijanSijoittuminen</servlet-name>
+        <servlet-class>Servletit.KilpailijanSijoittuminenServlet</servlet-class>
+    </servlet>    
+    <servlet>
         <servlet-name>Kilpailu</servlet-name>
         <servlet-class>Servletit.KilpailuServlet</servlet-class>
     </servlet>
@@ -88,6 +92,10 @@
         <servlet-name>PoistaValiaikapiste</servlet-name>
         <servlet-class>Servletit.poisto.PoistaValiaikapisteServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ValiaikapisteServlet</servlet-name>
+        <servlet-class>Servletit.ValiaikapisteServlet</servlet-class>
+    </servlet>    
     
     <servlet-mapping>
         <servlet-name>Etusivu</servlet-name>
@@ -100,6 +108,10 @@
     <servlet-mapping>
         <servlet-name>KilpailijanMuokkaus</servlet-name>
         <url-pattern>/kilpailijanmuokkaus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>KilpailijanSijoittuminen</servlet-name>
+        <url-pattern>/kilpailijansijoittuminen</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Kilpailu</servlet-name>
@@ -177,6 +189,10 @@
         <servlet-name>PoistaValiaikapiste</servlet-name>
         <url-pattern>/poistavaliaikapiste</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ValiaikapisteServlet</servlet-name>
+        <url-pattern>/valiaikapiste</url-pattern>
+    </servlet-mapping>    
     <session-config>
         <session-timeout>
             30

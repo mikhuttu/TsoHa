@@ -12,14 +12,14 @@
             <br>
         </c:if>
 
-        <div class="panel-group" id="accordio">
+        <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordio" href="#collapsOne">Tarkastele lähtölistaa</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Tarkastele lähtölistaa</a>
                     </h4>
                 </div>
-                <div id="collapeOne" class="panel-collapse collapse in">
+                <div id="collapseOne" class="panel-collapse collapse in">
                     <div class="panel-body">
                         <ul>
                             <c:forEach var="kilpailija" items="${kilpailijat}">
@@ -34,14 +34,14 @@
 
         <br>
 
-        <div class="panel-group" id="accordio">
+        <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordio" href="#collapsTwo">Tarkastele lopputuloksia</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Tarkastele lopputuloksia</a>
                     </h4>
                 </div>
-                <div id="collapeTwo" class="panel-collapse collapse in">
+                <div id="collapseTwo" class="panel-collapse collapse in">
                     <div class="panel-body">
                         <ul>
                             <c:forEach var="tulos" items="${kilpailutulokset}">
@@ -55,19 +55,19 @@
 
         <br>
 
-        <div class="panel-group" id="accordio">
+        <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordio" href="#collapsThree">Väliaikapisteen tilanne</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Väliaikapisteen tilanne</a>
                     </h4>
                 </div>
-                <div id="collapeThree" class="panel-collapse collapse in">
+                <div id="collapseThree" class="panel-collapse collapse in">
                     <div class="panel-body">
                         <ul>
                             <c:forEach var="valiaikapiste" items="${valiaikapisteet}">
-                                <li><a href="/HiihtoTulosPalvelu/valiaikapiste=?id=${valiaikapiste.id}">Väliaikapiste ${valiaikapiste.numero}</a></li>
-                                </c:forEach>   
+                                <li><a href="/HiihtoTulosPalvelu/valiaikapiste?id=${valiaikapiste.id}">Väliaikapiste ${valiaikapiste.numero}</a></li>
+                            </c:forEach>
                         </ul>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
 
         <br>
 
-        <form action="kilpailijansijoittuminen" method="POST">
+        <form action="kilpailijansijoittuminen?id=${kilpailu.id}" method="POST">
             <label>Kilpailijat</label>
 
             <select name="kilpailija">
@@ -84,16 +84,18 @@
                     <option value="${kilpailija.id}" name="kilpailija" >${kilpailija.nimi}</option>
                 </c:forEach>   
             </select>
-
+            
             <label>Väliaikapisteet</label>
 
             <select name="valiaikapiste">
                 <c:forEach var="valiaikapiste" items="${valiaikapisteet}">
-                    <option value="${valiaikapiste.id}" name="valiaikapiste">${valiaikapiste.numero}</option>
+                    <option value="${valiaikapiste.id}" name="valiaikapiste" >${valiaikapiste.numero}</option>
                 </c:forEach>   
             </select>
+            
+            
 
-            <button type="submit" class="btn btn-default">Kilpailijan sijoittuminen</button>
+            <button type="submit" class="btn btn-default">Kilpailijan sijoittuminen matkalla</button>
         </form>
     </div>
 

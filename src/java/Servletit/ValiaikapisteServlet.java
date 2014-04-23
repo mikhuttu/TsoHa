@@ -9,36 +9,30 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
     
-public class KilpailuServlet extends YleisServlet {
+public class ValiaikapisteServlet extends YleisServlet {
 
     /**
-     * Näyttää yleisen kilpailusivun, jossa listataan kilpailun kilpailijat, väliaikapisteet sekä
-     * lopputulokset.
+     * Hakee kilpailijat jotka ovat saapuneet ko. väliaikapisteelle sekä ne jotka ovat
+     * vielä matkalla ja näyttää valiaikapiste.jsp:n.
      */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
         response.setContentType("text/html;charset=UTF-8");
-
-        int kilpailuId = haeId(request);
         
-        Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
+        int valiaikapisteId = haeId(request);
+        Kilpailu kilpailu = new Kilpailu().haeKilpailuJossaValiaikapiste(valiaikapisteId);
+        
+        request.setAttribute("valiaikapiste", new Valiaikapiste().haeValiaikapiste(valiaikapisteId));
         request.setAttribute("kilpailu", kilpailu);
-        request.setAttribute("kilpailijat", new Kilpailija().haeKilpailunKilpailijat(kilpailuId));
+        request.setAttribute("tulokset", new Tulos().haeValiaikapisteenTulokset(valiaikapisteId));
         
-        Valiaikapiste piste = new Valiaikapiste().haeValiaikapisteKorkeimmallaNumerolla(kilpailuId);
-        
-        if (piste != null) {
-            List<Valiaikapiste> pisteet = new Valiaikapiste().haeKilpailunValiaikapisteet(kilpailuId);
-            pisteet.remove(pisteet.size() - 1);
-            request.setAttribute("valiaikapisteet", pisteet);
-            
-            request.setAttribute("kilpailutulokset", new Tulos().haeValiaikapisteenTulokset(piste.getId()));
-        } 
+        request.setAttribute("eisaapuneet", new Kilpailija().haeEivatSaapuneetValiaikapisteelle(valiaikapisteId));
         
         PrintWriter out = luoPrintWriter(response);
         
         try {
             paivitaIlmoitus(request);
-            naytaJSP("kilpailu", request, response);
+            naytaJSP("valiaikapiste", request, response);
         }
         
         finally {

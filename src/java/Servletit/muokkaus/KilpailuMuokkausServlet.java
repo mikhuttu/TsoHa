@@ -26,12 +26,11 @@ public class KilpailuMuokkausServlet extends YleisServlet {
         PrintWriter out = luoPrintWriter(response);
         
         int id = haeId(request);
-        Kilpailu kilpailu = new Kilpailu().haeKilpailu(id);
          
-        request.setAttribute("kilpailu", kilpailu);
-        request.setAttribute("osallistujat",new Kilpailija().haeKilpailunKilpailijat(kilpailu));
-        request.setAttribute("muutKilpailijat", new Kilpailija().haeKaikkiJotkaEivatOsallistu(kilpailu));
-        request.setAttribute("valiaikapisteet", new Valiaikapiste().haeKilpailunValiaikapisteet(kilpailu));
+        request.setAttribute("kilpailu", new Kilpailu().haeKilpailu(id));
+        request.setAttribute("osallistujat",new Kilpailija().haeKilpailunKilpailijat(id));
+        request.setAttribute("muutKilpailijat", new Kilpailija().haeKaikkiJotkaEivatOsallistu(id));
+        request.setAttribute("valiaikapisteet", new Valiaikapiste().haeKilpailunValiaikapisteet(id));
         
         try {
             paivitaIlmoitus(request);

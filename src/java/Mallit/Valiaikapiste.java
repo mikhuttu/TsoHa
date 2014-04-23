@@ -38,13 +38,13 @@ public class Valiaikapiste extends KyselyToiminnot {
         this.numero = numero;
     }
     
-    public ArrayList<Valiaikapiste> haeKilpailunValiaikapisteet(Kilpailu kilpailu) {
+    public ArrayList<Valiaikapiste> haeKilpailunValiaikapisteet(int kilpailuId) {
         
         try {
             String sql = "SELECT * FROM valiaikapiste WHERE valiaikapiste.kilpailu = ? ORDER BY valiaikapiste.numero";
             alustaKysely(sql);
             
-            statement.setInt(1, kilpailu.getId());
+            statement.setInt(1, kilpailuId);
             suoritaKysely();
             return palautaValiaikapisteet();
         }
@@ -65,13 +65,13 @@ public class Valiaikapiste extends KyselyToiminnot {
      * @param kilpailu
      */
     
-    public Valiaikapiste haeValiaikapisteKorkeimmallaNumerolla(Kilpailu kilpailu) {
+    public Valiaikapiste haeValiaikapisteKorkeimmallaNumerolla(int kilpailuId) {
         
         try {
             String sql = "SELECT * FROM valiaikapiste WHERE valiaikapiste.kilpailu = ? ORDER BY numero desc LIMIT 1";
             alustaKysely(sql);
 
-            statement.setInt(1, kilpailu.getId());
+            statement.setInt(1, kilpailuId);
             suoritaKysely();
             
             if (results.next()) {
@@ -92,7 +92,7 @@ public class Valiaikapiste extends KyselyToiminnot {
     public Valiaikapiste haeValiaikapiste (int valiaikapisteId) {
         try {
             
-            String sql = "SELECT * FROM valiaikapiste WHERE valiaikapiste.id = ? LIMIT 1";
+            String sql = "SELECT * FROM valiaikapiste WHERE valiaikapisteId = ? LIMIT 1";
             alustaKysely(sql);
             
             statement.setInt(1, valiaikapisteId);
@@ -115,6 +115,7 @@ public class Valiaikapiste extends KyselyToiminnot {
     }
 
     public void lisaaValiaikapisteKilpailuun(int valiaikaPisteita, int kilpailuId) {
+        
         try {
             String sql = "INSERT INTO valiaikapiste (numero, kilpailu) VALUES (?, ?)";
             alustaKysely(sql);
@@ -134,8 +135,9 @@ public class Valiaikapiste extends KyselyToiminnot {
     }
 
     public void poistaValiaikapiste(int valiaikapisteId) {
+        
         try {
-            String sql = "DELETE FROM valiaikapiste WHERE valiaikapiste.id = ?";
+            String sql = "DELETE FROM valiaikapiste WHERE valiaikapisteId = ?";
             
             alustaKysely(sql);
 
@@ -183,7 +185,7 @@ public class Valiaikapiste extends KyselyToiminnot {
         try {
             Valiaikapiste piste = new Valiaikapiste();
             
-            piste.setId(results.getInt("id"));
+            piste.setId(results.getInt("valiaikapisteId"));
             piste.setNumero(results.getInt("numero"));
             piste.setKilpailu(results.getInt("kilpailu"));
             

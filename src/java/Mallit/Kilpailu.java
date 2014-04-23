@@ -37,7 +37,7 @@ public class Kilpailu extends KyselyToiminnot {
     public List<Kilpailu> haeKilpailut() {
 
        try {
-           String sql = "SELECT id, nimi FROM kilpailu ORDER BY nimi";
+           String sql = "SELECT * FROM kilpailu ORDER BY nimi";
            alustaKysely(sql);
             
            suoritaKysely();
@@ -50,13 +50,13 @@ public class Kilpailu extends KyselyToiminnot {
        }
     }
     
-    public Kilpailu haeKilpailu(int id) {
+    public Kilpailu haeKilpailu(int kilpailuId) {
 
         try {
-            String sql = "SELECT * FROM kilpailu WHERE id = ? LIMIT 1";
+            String sql = "SELECT * FROM kilpailu WHERE kilpailuId = ? LIMIT 1";
 
             alustaKysely(sql);
-            statement.setInt(1, id);
+            statement.setInt(1, kilpailuId);
             
             suoritaKysely();
             
@@ -86,6 +86,39 @@ public class Kilpailu extends KyselyToiminnot {
 
             alustaKysely(sql);
             statement.setString(1, nimi);
+            
+            suoritaKysely();
+            
+            if (results.next()) {
+                return palauta();
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Kilpailu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        finally {
+            lopeta();
+        }
+        
+        return null;
+    }
+    
+    
+    /**
+     * Palauttaa kilpailun, joka sisältää ko. väliaikapisteen.
+     * @param valiaikapisteId
+     * @return 
+     */
+    
+    public Kilpailu haeKilpailuJossaValiaikapiste(int valiaikapisteId) {
+        
+        try {
+            String sql = "SELECT kilpailuId, nimi FROM kilpailu, valiaikapiste WHERE "
+                    + "kilpailuId = valiaikapiste.kilpailu AND valiaikapisteId = ? LIMIT 1";
+
+            alustaKysely(sql);
+            statement.setInt(1, valiaikapisteId);
             
             suoritaKysely();
             
@@ -134,7 +167,7 @@ public class Kilpailu extends KyselyToiminnot {
         try {
             kilpailu = new Kilpailu();
             
-            kilpailu.setId(results.getInt("id"));
+            kilpailu.setId(results.getInt("kilpailuId"));
             kilpailu.setNimi(results.getString("nimi"));
         }
         
@@ -164,7 +197,7 @@ public class Kilpailu extends KyselyToiminnot {
     public void paivitaNimi(int id, String nimi) {
         
         try {
-            String sql = "UPDATE kilpailu SET nimi = ? WHERE id = ?";
+            String sql = "UPDATE kilpailu SET nimi = ? WHERE kilpailuId = ?";
             alustaKysely(sql);
 
             statement.setString(1, nimi);
@@ -181,7 +214,7 @@ public class Kilpailu extends KyselyToiminnot {
     public void poistaKilpailu(int id) {
         
         try {
-            String sql = "DELETE FROM kilpailu WHERE kilpailu.id = ?";
+            String sql = "DELETE FROM kilpailu WHERE kilpailuId = ?";
             alustaKysely(sql);
             
             statement.setInt(1, id);
@@ -260,7 +293,7 @@ public class Kilpailu extends KyselyToiminnot {
     
     public ArrayList<Kilpailu> haeKilpailut(int kilpailijaId) {
         try {
-            String sql = "SELECT * FROM kilpailu, osallistuja WHERE kilpailu.id = osallistuja.kilpailu AND osallistuja.kilpailija = ?";
+            String sql = "SELECT * FROM kilpailu, osallistuja WHERE kilpailuId = osallistuja.kilpailu AND osallistuja.kilpailija = ?";
             alustaKysely(sql);
             
             statement.setInt(1, kilpailijaId);

@@ -28,7 +28,7 @@ public class LisaaValiaikapisteServlet extends YleisServlet {
         PrintWriter out = luoPrintWriter(response);
 
         try {
-            Valiaikapiste piste = new Valiaikapiste().haeValiaikapisteKorkeimmallaNumerolla(kilpailu);
+            Valiaikapiste piste = new Valiaikapiste().haeValiaikapisteKorkeimmallaNumerolla(kilpailuId);
             
             new Valiaikapiste().lisaaValiaikapisteKilpailuun(getNumero(piste), kilpailuId);
             

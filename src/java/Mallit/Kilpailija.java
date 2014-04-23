@@ -57,7 +57,7 @@ public class Kilpailija extends KyselyToiminnot {
         try {
             kilpailija = new Kilpailija();
             
-            kilpailija.setId(results.getInt("id"));
+            kilpailija.setId(results.getInt("kilpailijaId"));
             kilpailija.setNimi(results.getString("nimi"));
         }
         catch (SQLException e) {
@@ -70,7 +70,7 @@ public class Kilpailija extends KyselyToiminnot {
     public Kilpailija haeKilpailija(int id) {
 
         try {
-            String sql = "SELECT * FROM kilpailija WHERE id = ? LIMIT 1";
+            String sql = "SELECT * FROM kilpailija WHERE kilpailijaId = ? LIMIT 1";
 
             alustaKysely(sql);
             statement.setInt(1, id);
@@ -117,15 +117,15 @@ public class Kilpailija extends KyselyToiminnot {
     * @param kilpailu
     */
     
-    public ArrayList<Kilpailija> haeKilpailunKilpailijat(Kilpailu kilpailu) {
+    public ArrayList<Kilpailija> haeKilpailunKilpailijat(int kilpailuId) {
 
         try {
-            String sql = "SELECT kilpailija.id, kilpailija.nimi "
-                       + "FROM kilpailija, osallistuja WHERE kilpailija.id = osallistuja.kilpailija AND osallistuja.kilpailu = ? "
+            String sql = "SELECT kilpailijaId, nimi "
+                       + "FROM kilpailija, osallistuja WHERE kilpailijaId = osallistuja.kilpailija AND osallistuja.kilpailu = ? "
                        + "ORDER BY nimi asc";
             
             alustaKysely(sql);
-            statement.setInt(1, kilpailu.getId());
+            statement.setInt(1, kilpailuId);
 
             suoritaKysely();
 
@@ -143,23 +143,49 @@ public class Kilpailija extends KyselyToiminnot {
     
     /**
     * Palauttaa kaikki kilpailijat jotka eivät osallistu kilpailuun.
-    * @param kilpailu
+    * @param kilpailuId
     */
     
-    public ArrayList<Kilpailija> haeKaikkiJotkaEivatOsallistu(Kilpailu kilpailu) {
+    public ArrayList<Kilpailija> haeKaikkiJotkaEivatOsallistu(int kilpailuId) {
         
         try {
-            String sql = "SELECT kilpailija.id, kilpailija.nimi FROM kilpailija WHERE"
-                   + " kilpailija.id NOT IN"
+            String sql = "SELECT kilpailijaId, nimi FROM kilpailija WHERE"
+                   + " kilpailijaId NOT IN"
                    + " (SELECT osallistuja.kilpailija FROM osallistuja WHERE osallistuja.kilpailu = ?) ORDER BY nimi asc";
             
             alustaKysely(sql);
-            statement.setInt(1, kilpailu.getId());
+            statement.setInt(1, kilpailuId);
 
             suoritaKysely();
             
             return palautaKaikki();    
         } 
+        catch (SQLException ex) {
+            Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        finally {
+            lopeta();
+        }
+        
+        return null;
+    }
+    
+    public ArrayList<Kilpailija> haeEivatSaapuneetValiaikapisteelle(int valiaikapisteId) {
+        try {
+          
+          String sql = "SELECT DISTINCT kilpailijaId, kilpailija.nimi FROM kilpailija, tulos, valiaikapiste WHERE "
+                    + "kilpailijaId = tulos.kilpailija AND tulos.valiaikapiste = ? "
+                    + "ORDER BY kilpailija.nimi asc";
+            
+            alustaKysely(sql);
+            statement.setInt(1, valiaikapisteId);
+
+            suoritaKysely();
+            
+            return palautaKaikki();  
+        }
+        
         catch (SQLException ex) {
             Logger.getLogger(Kilpailija.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -196,7 +222,7 @@ public class Kilpailija extends KyselyToiminnot {
     
     public void paivitaNimi(int id, String uusi) {
         try {
-            String sql = "UPDATE kilpailija SET nimi = ? WHERE id = ?";
+            String sql = "UPDATE kilpailija SET nimi = ? WHERE kilpailijaId = ?";
             alustaKysely(sql);
             
             statement.setString(1, uusi);
@@ -215,7 +241,7 @@ public class Kilpailija extends KyselyToiminnot {
     public void poistaKilpailija(int id) {
         
         try {
-            String sql = "DELETE FROM kilpailija WHERE kilpailija.id = ?";
+            String sql = "DELETE FROM kilpailija WHERE kilpailijaId = ?";
             alustaKysely(sql);
             
             statement.setInt(1, id);
