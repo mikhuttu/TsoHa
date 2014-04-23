@@ -238,5 +238,32 @@ public class Tulos extends KyselyToiminnot {
         catch (SQLException e) {
             Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
         }
-    }    
+    }
+    
+    public void poistaKilpailijanTulokset(int kilpailuId, int kilpailijaId) {
+        
+        try {
+            
+            String sql = "DELETE t.* FROM tulos t, valiaikapiste v "
+                    + "WHERE t.kilpailija = ? AND "
+                    + "t.valiaikapiste = v.valiaikapisteId AND "
+                    + "v.kilpailu = ?";
+            
+            alustaKysely(sql);
+
+            statement.setInt(1, kilpailijaId);
+            statement.setInt(2, kilpailuId);
+            
+            
+            suoritaKysely();
+        }
+        
+        catch (SQLException e) {
+            Logger.getLogger(Osallistuja.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        finally {
+            lopeta();
+        }
+    }
 }

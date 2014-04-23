@@ -2,6 +2,7 @@ package Servletit.poisto;
 
 import Mallit.Kilpailija;
 import Mallit.Osallistuja;
+import Mallit.Tulos;
 import Servletit.YleisServlet;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,7 @@ public class PoistaKilpailijaKilpailustaServlet extends YleisServlet {
         
         try {
             new Osallistuja().poistaOsallistuja(kilpailuId, kilpailijaId);
+            new Tulos().poistaKilpailijanTulokset(kilpailuId, kilpailijaId);
             
             String paivitys = "Kilpailija '" + kilpailija.getNimi() + "' poistettiin kilpailusta onnistuneesti!";
             ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
