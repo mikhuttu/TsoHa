@@ -9,19 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 public class KilpailijaServlet extends YleisServlet {
 
     /**
-     * Riippuen siitä mentiinkö sivulle linkin, vai "button" nappulan klikkaamisen kautta,
-     * kilpailijan id-arvo määritetään eri kautta.
-     * 
-     * Lopulta näytetään kilpailijan sivu.
+     * Näytetään kilpailijan sivu.
      */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
         response.setContentType("text/html;charset=UTF-8");
         
-        int kilpailijaId = haeIntArvo("kilpailija", request);
-        
-        if (kilpailijaId == 0) {
-            kilpailijaId = haeId(request);
-        }
+        int kilpailijaId = haeId(request);
 
         request.setAttribute("kilpailija", new Kilpailija().haeKilpailija(kilpailijaId));
         request.setAttribute("kilpailut", new Kilpailu().haeKilpailut(kilpailijaId));

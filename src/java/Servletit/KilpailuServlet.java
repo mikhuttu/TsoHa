@@ -27,12 +27,17 @@ public class KilpailuServlet extends YleisServlet {
         Valiaikapiste piste = new Valiaikapiste().haeValiaikapisteKorkeimmallaNumerolla(kilpailuId);
         
         if (piste != null) {
-            List<Valiaikapiste> pisteet = new Valiaikapiste().haeKilpailunValiaikapisteet(kilpailuId);
-            pisteet.remove(pisteet.size() - 1);
-            request.setAttribute("valiaikapisteet", pisteet);
-            
+            request.setAttribute("valiaikapisteet", new Valiaikapiste().haeKilpailunValiaikapisteet(kilpailuId));
             request.setAttribute("kilpailutulokset", new Tulos().haeValiaikapisteenTulokset(piste.getId()));
-        } 
+        }
+        
+//        if (piste != null) {
+//            List<Valiaikapiste> pisteet = new Valiaikapiste().haeKilpailunValiaikapisteet(kilpailuId);
+//            pisteet.remove(pisteet.size() - 1);
+//            request.setAttribute("valiaikapisteet", pisteet);
+//            
+//            request.setAttribute("kilpailutulokset", new Tulos().haeValiaikapisteenTulokset(piste.getId()));
+//        } 
         
         PrintWriter out = luoPrintWriter(response);
         

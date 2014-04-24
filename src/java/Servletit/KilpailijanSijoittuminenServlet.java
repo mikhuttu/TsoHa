@@ -26,6 +26,7 @@ public class KilpailijanSijoittuminenServlet extends YleisServlet {
         
         if (kilpailijaId == 0 || valiaikapisteId == 0) {
             ohjaaKilpailuSivulle("Kilpailijaa tai väliaikapistettä ei ollut valittu.", request, response, kilpailuId);
+            return;
         }
         
         request.setAttribute("kilpailu", new Kilpailu().haeKilpailu(kilpailuId));
@@ -38,6 +39,7 @@ public class KilpailijanSijoittuminenServlet extends YleisServlet {
         if (sijoitus == -1) {
             request.setAttribute("sijoitus", "Ei vielä saaapunut ko. väliaikapisteelle.");
         }
+        
         else {
             String karkiaika = tulokset.get(0).getAika();
             String aika = tulokset.get(sijoitus).getAika();
@@ -48,7 +50,7 @@ public class KilpailijanSijoittuminenServlet extends YleisServlet {
             }
             
             request.setAttribute("sijoitus", sijoitus + 1);
-            request.setAttribute("matkaakarkeen", laskeErotus(karkiaika, aika));
+            request.setAttribute("matkaakarkeen", matkaaKarkeen(request, karkiaika, aika));
             request.setAttribute("edellaseuraavasta", edellaSeuraavasta(aika, seuraava));
         }
 
@@ -95,6 +97,14 @@ public class KilpailijanSijoittuminenServlet extends YleisServlet {
         return -1;
     }
 
+    private String matkaaKarkeen(HttpServletRequest request, String karkiaika, String aika) {
+        if (aika.equals(karkiaika)) {
+            request.setAttribute("sijoitus", 1);
+            return "-";
+        }
+        return laskeErotus(karkiaika, aika);
+    }
+    
     private String edellaSeuraavasta(String aika, String seuraava) {
         if (seuraava == null) {
             return "-";
@@ -108,9 +118,9 @@ public class KilpailijanSijoittuminenServlet extends YleisServlet {
     }
     
     private int sekuntteina(String aika) {
-        int tunnit = Integer.parseInt(aika.substring(0, 1));
-        int minuutit = Integer.parseInt(aika.substring(3,4));
-        int sekunnit = Integer.parseInt(aika.substring(6,7));
+        int tunnit = Integer.parseInt(aika.substring(0, 2));
+        int minuutit = Integer.parseInt(aika.substring(3, 5));
+        int sekunnit = Integer.parseInt(aika.substring(6, 8));
     
         return (tunnit * 60 + minuutit) * 60 + sekunnit;
     }

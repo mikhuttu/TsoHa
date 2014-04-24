@@ -244,16 +244,16 @@ public class Tulos extends KyselyToiminnot {
         
         try {
             
-            String sql = "DELETE t.* FROM tulos t, valiaikapiste v "
-                    + "WHERE t.kilpailija = ? AND "
-                    + "t.valiaikapiste = v.valiaikapisteId AND "
-                    + "v.kilpailu = ?";
+            String sql = "DELETE FROM tulos WHERE tulosId IN "
+                    + "(SELECT t.tulosId FROM tulos t "
+                    + "JOIN kilpailija k ON t.kilpailija = k.kilpailijaId "
+                    + "JOIN valiaikapiste v ON t.valiaikapiste = v.valiaikapisteId "
+                    + "WHERE t.kilpailija = ? AND v.kilpailu = ?)";
             
             alustaKysely(sql);
 
             statement.setInt(1, kilpailijaId);
             statement.setInt(2, kilpailuId);
-            
             
             suoritaKysely();
         }

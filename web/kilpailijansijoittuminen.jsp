@@ -4,10 +4,10 @@
 
     <div class="container">
         
-        <h1>Kilpailu: ${kilpailu.nimi}</h1>
+        <h1>Kilpailu: <a href="/HiihtoTulosPalvelu/kilpailu?id=${kilpailu.id}">${kilpailu.nimi}</a></h1>
         
-        <h2>Kilpailija: ${kilpailija.nimi}</h2>
-        <h2>Väliaikapiste: ${valiaikapiste.numero}</h2>
+        <h2>Kilpailija: <a href="/HiihtoTulosPalvelu/kilpailija?id=${kilpailija.id}">${kilpailija.nimi}</a></h2>
+        <h2>Väliaikapiste: <a href="/HiihtoTulosPalvelu/valiaikapiste?id=${valiaikapiste.id}">${valiaikapiste.numero}</a></h2>
 
         <ul>   
             <li>Sijoitus: ${sijoitus}</li>

@@ -16,21 +16,11 @@
         
         <h1>Kilpailijat</h1>
         
-        <br>
-        
-        <form action="kilpailija" method="POST">
-            <div class="form group">
-
-                <select id="kilpailija" name="kilpailija" onchange="return setValue();">
-                    <c:forEach var="kilpailija" items="${kilpailijat}">
-                        <option value="${kilpailija.id}">${kilpailija.nimi}</option>
-                    </c:forEach>
-                </select>
-                
-                <input type="hidden" name="kilpailija" id="kilpailija">
-                <input type="submit" class="btn-info" value="Mene kilpailijan sivulle" name="btn_kilpailija">
-            </div>
-        </form>
+        <ul>   
+            <c:forEach var="kilpailija" items="${kilpailijat}">
+                <li><a href="/HiihtoTulosPalvelu/kilpailija?id=${kilpailija.id}"> ${kilpailija.nimi}</a></li>
+            </c:forEach>
+        </ul>  
     </div>
 
 </t:pohja>

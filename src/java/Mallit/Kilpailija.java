@@ -174,9 +174,15 @@ public class Kilpailija extends KyselyToiminnot {
     public ArrayList<Kilpailija> haeEivatSaapuneetValiaikapisteelle(int valiaikapisteId) {
         try {
           
-          String sql = "SELECT DISTINCT kilpailijaId, kilpailija.nimi FROM kilpailija, tulos, valiaikapiste WHERE "
-                    + "kilpailijaId = tulos.kilpailija AND tulos.valiaikapiste = ? "
-                    + "ORDER BY kilpailija.nimi asc";
+            String sql = "SELECT h.kilpailijaId, h.nimi "
+                    + "FROM valiaikapiste v "
+                    + "JOIN kilpailu k ON v.kilpailu = k.kilpailuId "
+                    + "JOIN osallistuja o ON k.kilpailuId = o.kilpailu "
+                    + "JOIN kilpailija h ON o.kilpailija = h.kilpailijaId "
+                    + "LEFT JOIN tulos t ON v.valiaikapisteId = t.valiaikapiste "
+                    + "AND h.kilpailijaId = t.kilpailija "
+                    + "WHERE t.tulosId IS NULL AND v.valiaikapisteid = ? "
+                    + "ORDER BY h.nimi";
             
             alustaKysely(sql);
             statement.setInt(1, valiaikapisteId);

@@ -34,8 +34,8 @@ public class PoistaKilpailijaKilpailustaServlet extends YleisServlet {
         PrintWriter out = luoPrintWriter(response);
         
         try {
-            new Osallistuja().poistaOsallistuja(kilpailuId, kilpailijaId);
             new Tulos().poistaKilpailijanTulokset(kilpailuId, kilpailijaId);
+            new Osallistuja().poistaOsallistuja(kilpailuId, kilpailijaId);
             
             String paivitys = "Kilpailija '" + kilpailija.getNimi() + "' poistettiin kilpailusta onnistuneesti!";
             ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
