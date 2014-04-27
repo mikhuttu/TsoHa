@@ -30,7 +30,7 @@ public class MuutaKilpailijanNimeaServlet extends YleisServlet {
             String uusi = haeStringArvo("uusi", request).trim();
             
             if (uusi == null || uusi.isEmpty()) {
-                tallennaIlmoitus("Nimikenttä oli jätetty tyhjäksi. Uutta kilpailijaa ei lisätty.", request);
+                tallennaIlmoitus("Nimikenttä oli jätetty tyhjäksi. Nimeä ei muokattu.", request);
                 ohjaaSivulle("kilpailijanmuokkaus", response);   
                 return;
             }
