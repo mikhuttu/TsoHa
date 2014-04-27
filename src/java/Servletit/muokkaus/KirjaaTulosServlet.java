@@ -50,6 +50,7 @@ public class KirjaaTulosServlet extends YleisServlet {
             ohjaaSivulle(paivitys, request, response, kilpailuId, sivu);
             return;
         }
+        
         String aikaIlmanPisteita = poistaKaksoisPisteet(aika);
         Valiaikapiste piste = new Valiaikapiste().haeValiaikapiste(valiaikapisteId);
         
@@ -107,26 +108,21 @@ public class KirjaaTulosServlet extends YleisServlet {
         String minuutit = aika.charAt(3) +  "" + aika.charAt(4) + "";
         String sekunnit = aika.charAt(6) +  "" + aika.charAt(7) + "";
         
-        int t;
-        int m;
-        int s;
-        
         try {
-            t = Integer.parseInt(tunnit);
-            m = Integer.parseInt(minuutit);
-            s = Integer.parseInt(sekunnit);
-        }
-        catch (NumberFormatException e) {
-            return false;
-        }
+            int t = Integer.parseInt(tunnit);
+            int m = Integer.parseInt(minuutit);
+            int s = Integer.parseInt(sekunnit);
         
-        if (t >= 0 && t < 100) {
-            if (m >= 0 && m < 60) {
-                if (s >= 0 && s < 60) {
-                    return true;
+            if (t >= 0 && t < 100) {
+                if (m >= 0 && m < 60) {
+                    if (s >= 0 && s < 60) {
+                        return true;
+                    }
                 }
             }
         }
+        
+        catch (NumberFormatException e) {}
         return false;
     }
 }

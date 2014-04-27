@@ -1,7 +1,6 @@
 package Servletit;
 
 import Mallit.Kayttaja;
-import Mallit.Kirjautuminen;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +38,7 @@ public class KirjautuminenServlet extends YleisServlet {
                 return;
             }
             
-            Kayttaja kayttaja = new Kirjautuminen().etsiKayttajaTunnuksilla(tunnus, salasana);
+            Kayttaja kayttaja = new Kayttaja().etsiKayttaja(tunnus, salasana);
             
             if (kayttaja != null) {
                 kirjauduSisaan(request, kayttaja);

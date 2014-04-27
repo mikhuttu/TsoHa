@@ -5,7 +5,6 @@ import Mallit.Kilpailu;
 import Mallit.Tulos;
 import Mallit.Valiaikapiste;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
     
@@ -15,6 +14,7 @@ public class KilpailuServlet extends YleisServlet {
      * Näyttää yleisen kilpailusivun, jossa listataan kilpailun kilpailijat, väliaikapisteet sekä
      * lopputulokset.
      */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {    
         response.setContentType("text/html;charset=UTF-8");
 
@@ -30,14 +30,6 @@ public class KilpailuServlet extends YleisServlet {
             request.setAttribute("valiaikapisteet", new Valiaikapiste().haeKilpailunValiaikapisteet(kilpailuId));
             request.setAttribute("kilpailutulokset", new Tulos().haeValiaikapisteenTulokset(piste.getId()));
         }
-        
-//        if (piste != null) {
-//            List<Valiaikapiste> pisteet = new Valiaikapiste().haeKilpailunValiaikapisteet(kilpailuId);
-//            pisteet.remove(pisteet.size() - 1);
-//            request.setAttribute("valiaikapisteet", pisteet);
-//            
-//            request.setAttribute("kilpailutulokset", new Tulos().haeValiaikapisteenTulokset(piste.getId()));
-//        } 
         
         PrintWriter out = luoPrintWriter(response);
         
