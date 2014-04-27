@@ -22,8 +22,9 @@ public class LisaaKilpailijaKilpailuunServlet extends YleisServlet {
         
         int kilpailuId = haeId(request);
         int kilpailijaId = haeIntArvo("kilpailija", request);
+        String sivu = "kilpailumuokkaus";
         
-        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, kilpailijaId, kilpailuId)) {
+        if (ohjaaSivulleJosArvoaEiValittu(request, response, kilpailijaId, kilpailuId, sivu)) {
             tallennaIlmoitus("Kilpailijaa ei ollut valittu.", request);
             return;
         }
@@ -36,7 +37,7 @@ public class LisaaKilpailijaKilpailuunServlet extends YleisServlet {
             new Osallistuja().lisaaOsallistuja(kilpailuId, kilpailijaId);
             
             String paivitys = "Kilpailija '" + kilpailija.getNimi() + "' lisättiin kilpailuun onnistuneesti!";
-            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
+            ohjaaSivulle(paivitys, request, response, kilpailuId, sivu);
         }
         
         finally {

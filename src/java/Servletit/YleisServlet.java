@@ -30,33 +30,33 @@ public class YleisServlet extends HttpServlet {
         return false;
     }
     
-    protected boolean ohjaaKilpailuSivulleJosArvoaEiValittu(HttpServletRequest request, HttpServletResponse response, int arvoId, int kilpailuId) {
+    protected boolean ohjaaSivulleJosArvoaEiValittu(HttpServletRequest request, HttpServletResponse response, int arvoId, int id, String sivu) {
         
         if (arvoId == 0) {
-            talletaSessionId(request, kilpailuId);
+            talletaSessionId(request, id);
             
-            ohjaaSivulle("kilpailu", response);
+            ohjaaSivulle(sivu, response);
             return true;
         }
         return false;
     }
     
-    protected boolean ohjaaKilpailuSivulleJosArvoaEiValittu(HttpServletRequest request, HttpServletResponse response, String arvo, int kilpailuId) {
+    protected boolean ohjaaSivulleJosArvoaEiValittu(HttpServletRequest request, HttpServletResponse response, String arvo, int id, String sivu) {
         
         if (arvo == null || arvo.isEmpty()) {
-            talletaSessionId(request, kilpailuId);
+            talletaSessionId(request, id);
             
-            ohjaaSivulle("kilpailu", response);
+            ohjaaSivulle(sivu, response);
             return true;
         }
         return false;
     }
     
-    protected void ohjaaKilpailuSivulle(String paivitys, HttpServletRequest request, HttpServletResponse response, int kilpailuId) {
+    protected void ohjaaSivulle(String paivitys, HttpServletRequest request, HttpServletResponse response, int id, String sivu) {
         tallennaIlmoitus(paivitys, request);
-        talletaSessionId(request, kilpailuId);
+        talletaSessionId(request, id);
             
-        ohjaaSivulle("kilpailu", response);
+        ohjaaSivulle(sivu, response);
     }
     
     /**

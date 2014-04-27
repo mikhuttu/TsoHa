@@ -2,6 +2,7 @@ package Servletit.muokkaus;
 
 import Mallit.Kilpailija;
 import Mallit.Tulos;
+import Mallit.Valiaikapiste;
 import Servletit.YleisServlet;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
@@ -34,9 +35,11 @@ public class KirjaaTulosServlet extends YleisServlet {
         int valiaikapisteId = haeIntArvo("valiaikapiste", request);
         String aika = haeStringArvo("aika", request);
         
-        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, osallistujaId, kilpailuId) || 
-            ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, valiaikapisteId, kilpailuId) ||
-            ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, aika, kilpailuId)) {
+        String sivu = "kilpailumuokkaus";
+        
+        if (ohjaaSivulleJosArvoaEiValittu(request, response, osallistujaId, kilpailuId, sivu) || 
+            ohjaaSivulleJosArvoaEiValittu(request, response, valiaikapisteId, kilpailuId, sivu) ||
+            ohjaaSivulleJosArvoaEiValittu(request, response, aika, kilpailuId, sivu)) {
             
             tallennaIlmoitus("Kilpailija-, väliaikapiste- tai aikakenttä oli jätetty tyhjäksi.", request);
             return;
@@ -44,10 +47,11 @@ public class KirjaaTulosServlet extends YleisServlet {
         
         if (! aikaOnValidi(aika)) {
             String paivitys = "Valittu aika ei ollut muotoa 'hours:minutes:seconds'";
-            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
+            ohjaaSivulle(paivitys, request, response, kilpailuId, sivu);
             return;
         }
         String aikaIlmanPisteita = poistaKaksoisPisteet(aika);
+        Valiaikapiste piste = new Valiaikapiste().haeValiaikapiste(valiaikapisteId);
         
         Kilpailija kilpailija = new Kilpailija().haeKilpailija(osallistujaId);
         
@@ -56,8 +60,8 @@ public class KirjaaTulosServlet extends YleisServlet {
         try {
             new Tulos().kirjaaTulos(aikaIlmanPisteita, osallistujaId, valiaikapisteId);
             
-            String paivitys = "Kilpailijan " + kilpailija.getNimi() + " aika (" + aika + ") kirjattiin onnistuneesti!";
-            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
+            String paivitys = "Kilpailijan " + kilpailija.getNimi() + " aika (" + aika + ") väliaikapisteelle " + piste.getNumero() + " kirjattiin onnistuneesti!";
+            ohjaaSivulle(paivitys, request, response, kilpailuId, sivu);
         }
         
         finally {

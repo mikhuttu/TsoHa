@@ -25,7 +25,7 @@ public class KilpailijanSijoittuminenServlet extends YleisServlet {
         int valiaikapisteId = haeIntArvo("valiaikapiste", request);
         
         if (kilpailijaId == 0 || valiaikapisteId == 0) {
-            ohjaaKilpailuSivulle("Kilpailijaa tai väliaikapistettä ei ollut valittu.", request, response, kilpailuId);
+            ohjaaSivulle("Kilpailijaa tai väliaikapistettä ei ollut valittu.", request, response, kilpailuId, "kilpailu");
             return;
         }
         

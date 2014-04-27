@@ -23,8 +23,9 @@ public class PoistaKilpailijaKilpailustaServlet extends YleisServlet {
         
         int kilpailuId = haeId(request);
         int kilpailijaId = haeIntArvo("kilpailija", request);
+        String sivu = "kilpailumuokkaus";
         
-        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, kilpailijaId, kilpailuId)) {
+        if (ohjaaSivulleJosArvoaEiValittu(request, response, kilpailijaId, kilpailuId, sivu)) {
             tallennaIlmoitus("Kilpailijaa ei ollut valittu.", request);
             return;
         }
@@ -38,7 +39,7 @@ public class PoistaKilpailijaKilpailustaServlet extends YleisServlet {
             new Osallistuja().poistaOsallistuja(kilpailuId, kilpailijaId);
             
             String paivitys = "Kilpailija '" + kilpailija.getNimi() + "' poistettiin kilpailusta onnistuneesti!";
-            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
+            ohjaaSivulle(paivitys, request, response, kilpailuId, sivu);
         }
         
         finally {

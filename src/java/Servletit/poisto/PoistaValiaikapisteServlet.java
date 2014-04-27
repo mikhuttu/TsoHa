@@ -20,10 +20,10 @@ public class PoistaValiaikapisteServlet extends YleisServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         int kilpailuId = haeId(request);
-        
         int valiaikapisteId = haeIntArvo("valiaikapiste", request);
+        String sivu = "kilpailumuokkaus";
         
-        if (ohjaaKilpailuSivulleJosArvoaEiValittu(request, response, valiaikapisteId, kilpailuId)) {
+        if (ohjaaSivulleJosArvoaEiValittu(request, response, valiaikapisteId, kilpailuId, sivu)) {
             tallennaIlmoitus("Väliaikapistettä ei ollut valittu.", request);
             return;
         }
@@ -36,7 +36,7 @@ public class PoistaValiaikapisteServlet extends YleisServlet {
             new Valiaikapiste().poistaValiaikapiste(valiaikapisteId);
             
             String paivitys = "Väliaikapiste " + piste.getNumero() + " poistettiin kilpailusta onnistuneesti!";
-            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
+            ohjaaSivulle(paivitys, request, response, kilpailuId, sivu);
         }
         
         finally {

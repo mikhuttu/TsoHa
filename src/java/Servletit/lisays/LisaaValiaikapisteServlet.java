@@ -1,6 +1,5 @@
 package Servletit.lisays;
 
-import Mallit.Kilpailu;
 import Mallit.Valiaikapiste;
 import Servletit.YleisServlet;
 import java.io.PrintWriter;
@@ -23,7 +22,7 @@ public class LisaaValiaikapisteServlet extends YleisServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         int kilpailuId = haeId(request);
-        Kilpailu kilpailu = new Kilpailu().haeKilpailu(kilpailuId);
+        String sivu = "kilpailumuokkaus";
         
         PrintWriter out = luoPrintWriter(response);
 
@@ -33,7 +32,7 @@ public class LisaaValiaikapisteServlet extends YleisServlet {
             new Valiaikapiste().lisaaValiaikapisteKilpailuun(getNumero(piste), kilpailuId);
             
             String paivitys = "Uusi väliaikapiste lisätty kilpailuun.";
-            ohjaaKilpailuSivulle(paivitys, request, response, kilpailuId);
+            ohjaaSivulle(paivitys, request, response, kilpailuId, sivu);
         }
         
         finally {

@@ -7,7 +7,7 @@
     </c:if>
     
     <div class="container">
-        <h1>Muokkaa kilpailua: ${kilpailu.nimi}</h1>
+        <h1>Muokkaa kilpailua: <a href="/HiihtoTulosPalvelu/kilpailu?id=${kilpailu.id}">${kilpailu.nimi}</h1>
 
         <br>
         
